@@ -3,14 +3,91 @@
 <form method="POST">
     <h2>Sign up</h2>
     <label for="name">Name</label>
-    <input type="text" name="name" id="name" />
+    <input type="text" placeholder="Enter a name" name="name" id="name" />
+    <div class="name error"></div>
     <label for="surname">Surname</label>
-    <input type="text" name="surname" id="surname" />
+    <input type="text" placeholder="Enter a surname" id="surname" />
+    <div class="surname error"></div>
     <label for="email">Email</label>
-    <input type="email" name="email" id="email" />
+    <input type="email" placeholder="example@example.com" name="email" id="email" />
+    <div class="email error"></div>
     <label for="password">Password</label>
-    <input type="password" name="password" id="password" />
-    <button>Sign up</button>
+    <input type="password" placeholder="Enter a password" id="password" />
+    <div class="password error"></div>
+    <button type="submit" id="signup_button">Sign up</button>
 </form>
 
+
+<script>
+
+    $('#name').keyup(function(){
+        $('.name.error').html('');
+        $('#name').removeClass('error-input');
+    });
+
+    $('#surname').keyup(function(){
+        $('.surname.error').html('');
+        $('#surname').removeClass('error-input');
+    });
+
+    $('#email').keyup(function(){
+        $('.email.error').html('');
+        $('#email').removeClass('error-input');
+    });
+
+    $('#password').keyup(function(){
+        $('.password.error').html('');
+        $('#password').removeClass('error-input');
+    });
+
+
+    $('#signup_button').click(function(e){
+        e.preventDefault();
+        var data = {};
+        data.name = $('#name').val();
+        data.surname = $('#surname').val();
+        data.email = $('#email').val();
+        data.password = $('#password').val();
+        
+        $('.name.error').html('');
+        $('.surname.error').html('');
+        $('.email.error').html('');
+        $('.password.error').html('');
+        $('#name').removeClass('error-input');
+        $('#surname').removeClass('error-input');
+        $('#email').removeClass('error-input');
+        $('#password').removeClass('error-input');
+        
+
+        $.ajax({
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            url: '/signup',
+            success: function(data) {
+                window.location.href = '/';
+            },
+            error: function(data) {
+                const errString = JSON.stringify(data.responseJSON.errors);
+                const err = JSON.parse(errString);
+                if(err.name){
+                    $('.name.error').html(err.name);
+                    $('#name').addClass('error-input');
+                }
+                if(err.surname){
+                    $('.surname.error').html(err.surname);
+                    $('#surname').addClass('error-input');
+                }
+                if(err.email){
+                    $('.email.error').html(err.email);
+                    $('#email').addClass('error-input');
+                }
+                if(err.password){
+                    $('.password.error').html(err.password);
+                    $('#password').addClass('error-input');
+                }
+            }
+        });
+    });
+</script>
 <%- include('partials/footer'); -%>

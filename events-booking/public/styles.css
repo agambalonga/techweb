@@ -96,11 +96,15 @@ button{
   letter-spacing: 2px;
 }
 .error{
-  color: #ff0099;
+  color: #f30d1c;
   margin: 10px 2px;
   font-size: 0.8em;
   font-weight: bold;
 }
+.error-input{
+  border: 1px solid #f30d1c;
+}
+
 header{
   display: flex;
   align-items: center;

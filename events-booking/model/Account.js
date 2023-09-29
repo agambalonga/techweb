@@ -20,11 +20,12 @@ const accountSchema = new mongoose.Schema({
     },
     password : {
         type : String,
-        required : [true, 'Password is not provided. Please provide a password'],
+        required : [true, 'Password is not provided. Please provide a password']
     },
  });
 
  accountSchema.pre('save', async function(next) {
+    console.log('ready to encrypt password for user:', this);
     const salt = await bcrypt.genSalt();
     this.password = await bcrypt.hash(this.password, salt);
     next();
