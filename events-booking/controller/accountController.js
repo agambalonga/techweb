@@ -1,5 +1,5 @@
 const { Router }  = require('express');
-const Account = require('../model/Account');
+const User = require('../model/User');
 const jwt = require('jsonwebtoken');
 
 
@@ -13,7 +13,15 @@ const handleErrors = (err) => {
         return errors;
     }
 
-    if(err.message.includes('accounts validation failed')) {
+    if(err.message === 'incorrect email') {
+        errors.email = 'Email not registered';
+    }
+
+    if(err.message === 'incorrect password') {
+        errors.password = 'Incorrect password';
+    }
+
+    if(err.message.includes('users validation failed')) {
         Object.values(err.errors).forEach(({properties}) => {
             errors[properties.path] = properties.message;
         });
@@ -32,25 +40,43 @@ const createToken = (id) =>{
 
 
 
-const router = new Router();
+module.exports.signup_get = (req, res) => {res.render('signup')};
 
-router.get('/signup', (req, res) => {res.render('signup')});
+module.exports.login_get = (req, res) => {res.render('login')};
 
-router.post('/signup', async (req, res) => {
-    const { name, surname, email, password } = req.body;
+module.exports.signup_post = async (req, res) => {
+    console.log(req.body)
+    const { name, surname, email, password, phone_number } = req.body;
     try {
-        const account = await Account.create({name, surname, email, password});
-        const token = createToken(account._id);
+        const user = await User.create({name, surname, email, password, phone_number});
+        console.log('user created successfully');
+        const token = createToken(user._id);
         res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
-        res.status(201).json({account: account._id});
+        res.status(201).json({user: user._id});
     } catch (err) {
+        console.log(err);
         const errors = handleErrors(err);
+        console.log(errors)
         res.status(400).send({ errors });
     }
-});
+}
 
-router.get('/login', (req, res) => {res.render('login')});
+module.exports.login_post = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const user = await User.login(email, password);
+        console.log('user logged in successfully');
+        const token = createToken(user._id);
+        res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
+        res.status(200).json({user: user._id});
+    } catch (err) {
+        const errors = handleErrors(err);
+        res.status(400).json({ errors });
+    }
+};
 
-router.post('/login', (req, res) => {res.send('user login')});
-
-module.exports = router;
+module.exports.logout_get = (req, res) => {
+    res.cookie('jwt', '', {maxAge: 1});
+    console.log('user logged out successfully');
+    res.redirect('/');
+}

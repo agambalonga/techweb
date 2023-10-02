@@ -27,6 +27,128 @@ h1, h2, h3, h4, ul, li, a, p, input, label, button, div, footer{
   font-family: 'Quicksand', sans-serif;
   color: #444;
 }
+
+.select-box {
+  position: relative;
+}
+
+.select-box input {
+  width: 100%;
+  padding: 1rem .6rem;
+  font-size: 1.1rem;
+  outline: none;
+}
+
+.selected-option {
+  background-color: #eee;
+  border-radius: .5rem;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selected-option div{
+  position: relative;
+
+  width: 6rem;
+  padding: 0 2.8rem 0 .5rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.selected-option div::after{
+  position: absolute;
+  content: "";
+  right: .8rem;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  
+  width: .8rem;
+  height: .8rem;
+  border-right: .12rem solid var(--primary);
+  border-bottom: .12rem solid var(--primary);
+
+  transition: .2s;
+}
+
+.selected-option div.active::after{
+  transform: translateY(-50%) rotate(225deg);
+}
+
+.select-box .options {
+  position: absolute;
+  top: 4rem;
+  width: 100%;
+  background-color: #fff;
+  border-radius: .5rem;
+  display: none;
+  z-index:99;
+}
+
+.select-box .options.active {
+  display: block;
+}
+
+.select-box .options::before {
+  position: absolute;
+  content: "";
+  left: 1rem;
+  top: -1.2rem;
+
+  width: 0;
+  height: 0;
+  border: .6rem solid transparent;
+  border-bottom-color: var(--primary);
+}
+
+input.search-box {
+  background-color: var(--primary);
+  border-radius: .5rem .5rem 0 0;
+  padding: 1.4rem 1rem;
+}
+
+.select-box ol {
+  list-style: none;
+  max-height: 23rem;
+  overflow: overlay;
+}
+
+.select-box ol::-webkit-scrollbar {
+  width: 0.6rem;
+}
+
+.select-box ol::-webkit-scrollbar-thumb {
+  width: 0.4rem;
+  height: 3rem;
+  background-color: #ccc;
+  border-radius: .4rem;
+}
+
+.select-box ol li {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.select-box ol li.hide {
+  display: none;
+}
+
+.select-box ol li:not(:last-child) {
+  border-bottom: .1rem solid #eee;
+}
+
+.select-box ol li:hover {
+  background-color: lightcyan;
+}
+
+.select-box ol li .country-name {
+  margin-left: .4rem;
+}
+
 ul{
   list-style-type: none;
 }
@@ -54,9 +176,76 @@ nav li a{
   padding: 10px 16px;
   letter-spacing: 2px;
 }
+#drop-menu {
+	margin: 0;
+	padding: 0;
+}
+ul#menu {
+	list-style: none;
+	float:right;
+}
+
+ul#menu li {
+	float:right;
+	display: block;
+	position: relative;
+}
+
+ul#menu li a {
+	float: right;
+	padding:12px 30px;
+	text-transform: uppercase;
+	text-decoration:none;
+}
+
+ul#menu li a:hover {
+	background: #FEE996;
+  border-radius: 36px;
+}
+
+ul#menu ul {
+	margin:2px 0 0;
+	padding:0;
+	display:inline-block;
+	list-style: none;
+	opacity: 0;
+	visibility: hidden;
+	position: absolute;
+	top: 38px;
+	left: 0;
+	z-index:9999;
+}
+
+ul#menu li:hover ul {
+	opacity: 1;
+	visibility: visible;
+}
+
+ul#menu ul li {
+	float: none;
+	display: block;
+	border: 0;
+}
+
+ul#menu ul a {
+	padding:10px;
+	display: block;
+	white-space: nowrap;
+	float: none;
+	text-transform: none;
+}
+
+ul#menu ul a:hover {
+	background-color: #FEE996;
+}
 .btn{
   border-radius: 36px;
   padding: 7px 14px;
+  background: #FEE996;
+  cursor: pointer;
+}
+.btn-yellow-hover:hover {
+  border-radius: 36px;
   background: #FEE996;
 }
 form h2{
@@ -123,6 +312,11 @@ header h3{
   margin-left: 2px;
   color: #999;
 }
+
+.btn{
+  cursor: pointer;
+}
+
 header .btn{
   margin-top: 20px;
   padding: 12px 18px;
@@ -130,6 +324,7 @@ header .btn{
   font-weight: bold;
   display: inline-block;
   font-size: 0.8em;
+  cursor: pointer;
 }
 .recipes{
   display: grid;
@@ -155,4 +350,41 @@ footer{
   text-align: center;
   margin-top: 120px;
   color: #aaa;
+}
+
+.valid {
+  color: green;
+}
+
+.valid:before {
+  position: relative;
+  content: "\2713";
+}
+
+.invalid {
+  color: red;
+}
+
+.invalid:before {
+  position: relative;
+  content: "\2716";
+}
+
+.input-box {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.input-box input {
+  width: 100%;
+  outline: 0;
+}
+
+.input-box #togglePassword {
+  position: absolute;
+  cursor: pointer;
+  margin-left: 320px;
 }

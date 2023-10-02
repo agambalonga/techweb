@@ -2,19 +2,53 @@
 
 <form method="POST">
     <h2>Sign up</h2>
-    <label for="name">Name</label>
+
+    <label for="name">Name*</label>
     <input type="text" placeholder="Enter a name" name="name" id="name" />
     <div class="name error"></div>
-    <label for="surname">Surname</label>
+
+    <label for="surname">Surname*</label>
     <input type="text" placeholder="Enter a surname" id="surname" />
     <div class="surname error"></div>
-    <label for="email">Email</label>
+
+    <label for="phone">Phone*</label>
+    <div class="select-box">
+        <div class="selected-option">
+            <div>
+                <span class="iconify" data-icon="flag:it-4x3"></span>
+                <strong>+39</strong>
+            </div>
+            <input type="tel" name="phone_number" id="phone_number" placeholder="Phone Number" value="+39">
+        </div>
+        <div class="options">
+            <input type="text" class="search-box" placeholder="Search Country Name">
+            <ol>
+            </ol>
+        </div>
+    </div>
+    <div class="phone error"></div>
+
+    <label for="email">Email*</label>
     <input type="email" placeholder="example@example.com" name="email" id="email" />
     <div class="email error"></div>
-    <label for="password">Password</label>
-    <input type="password" placeholder="Enter a password" id="password" />
-    <div class="password error"></div>
-    <button type="submit" id="signup_button">Sign up</button>
+
+    <label for="password">Password*</label>
+    <div class="input-box">
+        <input type="password" placeholder="Enter a password" id="password" />
+        <i class="far fa-eye" id="togglePassword"></i>
+    </div>
+
+    <input type="password" id="confirm-password" placeholder="Confirm password" />
+
+    <div class="password error">
+        <p id="length" class="invalid">Minimum 8 characters </p>
+        <p id="letter" class="invalid">A uppercase letter</p>
+        <p id="number" class="invalid">A number</b></p>
+        <p id="special" class="invalid">A special character</p>
+        <p id="match" class="invalid">Passwords don't match</p>
+    </div>
+
+    <button type="submit" class="btn" id="signup_button">Sign up</button>
 </form>
 
 
@@ -35,9 +69,71 @@
         $('#email').removeClass('error-input');
     });
 
+    $('#togglePassword').click(function(){
+        $(this).toggleClass('fa-eye fa-eye-slash');
+        var input = $('#password');
+        if(input.attr('type') == 'password'){
+            input.attr('type', 'text');
+        } else {
+            input.attr('type', 'password');
+        }
+    });
+
     $('#password').keyup(function(){
-        $('.password.error').html('');
-        $('#password').removeClass('error-input');
+
+        if($('#password').val().length < 8){
+            $('#length').removeClass('valid');
+            $('#length').addClass('invalid');
+        } else {
+            $('#length').removeClass('invalid');
+            $('#length').addClass('valid');
+        }
+
+        if($('#password').val().match(/[A-Z]/)){
+            $('#letter').removeClass('invalid');
+            $('#letter').addClass('valid');
+        } else {
+            $('#letter').removeClass('valid');
+            $('#letter').addClass('invalid');
+        }
+
+        if($('#password').val().match(/[0-9]/)){
+            $('#number').removeClass('invalid');
+            $('#number').addClass('valid');
+        } else {
+            $('#number').removeClass('valid');
+            $('#number').addClass('invalid');
+        }
+
+        if($('#password').val().match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/)){
+            $('#special').removeClass('invalid');
+            $('#special').addClass('valid');
+        } else {
+            $('#special').removeClass('valid');
+            $('#special').addClass('invalid');
+        }
+
+        if($('#password').val() != '' && ($('#password').val() == $('#confirm-password').val())){
+            $('#match').removeClass('invalid');
+            $('#match').addClass('valid');
+        } else {
+            $('#match').removeClass('valid');
+            $('#match').addClass('invalid');
+        }
+
+        //$('.password.error').html('');
+        //$('#password').removeClass('error-input');
+    });
+
+    $('#confirm-password').keyup(function(){
+
+        if($('#password').val() != '' && ($('#password').val() == $('#confirm-password').val())){
+            $('#match').removeClass('invalid');
+            $('#match').addClass('valid');
+        } else {
+            $('#match').removeClass('valid');
+            $('#match').addClass('invalid');
+        }
     });
 
 
@@ -48,16 +144,25 @@
         data.surname = $('#surname').val();
         data.email = $('#email').val();
         data.password = $('#password').val();
+        data.phone_number = $('#phone_number').val();
+        console.log(data);
         
         $('.name.error').html('');
         $('.surname.error').html('');
         $('.email.error').html('');
         $('.password.error').html('');
+        $('.phone.error').html('');
+
         $('#name').removeClass('error-input');
         $('#surname').removeClass('error-input');
         $('#email').removeClass('error-input');
         $('#password').removeClass('error-input');
-        
+        $('#phone').removeClass('error-input');
+
+
+        if(!($('#password').val().match(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/)) || $('#password').val() != $('#confirm-password').val()){
+            return;
+        }
 
         $.ajax({
             type: 'POST',
@@ -65,7 +170,7 @@
             contentType: 'application/json',
             url: '/signup',
             success: function(data) {
-                window.location.href = '/';
+                window.location.href = '/home';
             },
             error: function(data) {
                 const errString = JSON.stringify(data.responseJSON.errors);
@@ -85,6 +190,11 @@
                 if(err.password){
                     $('.password.error').html(err.password);
                     $('#password').addClass('error-input');
+                }
+
+                if(err.phone_number) {
+                    $('.phone.error').html(err.phone_number);
+                    $('#phone').addClass('error-input');
                 }
             }
         });

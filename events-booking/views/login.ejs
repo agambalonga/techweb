@@ -1,5 +1,93 @@
 <%- include('partials/header'); -%>
 
-<h1>Log in</h1>
+<form method="POST">
+    <h2>Log in</h2>
+    <label for="email">Email*</label>
+    <input type="email" placeholder="example@example.com" name="email" id="email" />
+    <div class="email error"></div>
+    <label for="password">Password*</label>
+    <div class="input-box">
+        <input type="password" placeholder="Enter a password" id="password" />
+        <i class="far fa-eye" id="togglePassword"></i>
+    </div>
+    <button type="submit" class="btn" id="login_button">Log in</button>
+</form>
+
+<script>
+
+$('#togglePassword').click(function(){
+        $(this).toggleClass('fa-eye fa-eye-slash');
+        var input = $('#password');
+        if(input.attr('type') == 'password'){
+            input.attr('type', 'text');
+        } else {
+            input.attr('type', 'password');
+        }
+    });
+
+$('#email').keyup(function(){
+        $('.email.error').html('');
+        $('#email').removeClass('error-input');
+    });
+
+$('#password').keyup(function(){
+    $('.password.error').html('');
+    $('#password').removeClass('error-input');
+});
+
+$('#login_button').click(function(e){
+        e.preventDefault();
+        var data = {};
+        data.email = $('#email').val();
+        data.password = $('#password').val();
+        
+        $('.email.error').html('');
+        $('.password.error').html('');
+        $('#email').removeClass('error-input');
+        $('#password').removeClass('error-input');
+
+        var errors = false;
+
+        if(!data.email){
+            $('.email.error').html('Email is required');
+            $('#email').addClass('error-input');
+            errors = true;
+        }
+
+        if(!data.password){
+            $('.password.error').html('Password is required');
+            $('#password').addClass('error-input');
+            errors = true;
+        }
+
+        if(errors) {
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            url: '/login',
+            success: function(data) {
+                window.location.href = '/home';
+            },
+            error: function(data) {
+                const errString = JSON.stringify(data.responseJSON.errors);
+                const err = JSON.parse(errString);
+                if(err.email){
+                    $('.email.error').html(err.email);
+                    $('#email').addClass('error-input');
+                }
+                if(err.password){
+                    $('.password.error').html(err.password);
+                    $('#password').addClass('error-input');
+                }
+            }
+        });
+    });
+
+
+</script>
 
 <%- include('partials/footer'); -%>

@@ -1,8 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
-const accountController = require('./controller/accountController');
+const authRoutes = require('./routes/authRoutes');
 const cookieParser = require('cookie-parser');
+const {checkAuth} = require('./authMiddleware/authMiddleware');
+const {checkUser} = require('./authMiddleware/authMiddleware');
 
 const app = express();
 
@@ -23,6 +25,7 @@ mongoose.connect(process.env.MONGO_ATLAS_URL)
 .catch((err) => console.log("error "+ err));
 
 // routes
+app.get('*', checkUser);
 app.get('/', (req, res) => res.render('index'));
-app.get('/smoothies', (req, res) => res.render('smoothies'));
-app.use(accountController);
+app.get('/smoothies', checkAuth, (req, res) => res.render('smoothies'));
+app.use(authRoutes);
