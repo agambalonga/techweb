@@ -1,9 +1,7 @@
 <%- include('partials/header'); -%>
 
-<% user.name %>
-
 <form method="POST">
-
+    <input type="hidden" name="user_id" id="user_id" value="<%= user._id %>">
     <label for="name">Name*</label>
     <input type="text" value="<%= user.name %>" name="name" id="name" />
     <div class="name error"></div>
@@ -19,7 +17,7 @@
                 <span class="iconify" data-icon="flag:it-4x3"></span>
                 <strong>+39</strong>
             </div>
-            <input type="tel" name="phone_number" id="phone_number" placeholder="Insert a phone number" value="<%=user.phone_number %>">
+            <input type="tel" name="phone_number" id="phone_number" placeholder="Insert a phone number" value="<%=user.phone_number %>" autocomplete="off">
         </div>
         <div class="options">
             <input type="text" class="search-box" placeholder="Search Country Name">
@@ -30,7 +28,7 @@
     <div class="phone error"></div>
 
     <label for="email">Email*</label>
-    <input type="email" value="<%=user.email %>" disabled name="email" id="email" />
+    <input type="email" value="<%=user.email %>" disabled name="email" id="email"/>
     <div class="email error"></div>
 
     <label for="Date of birth">Date of Birth</label>
@@ -46,28 +44,160 @@
     <% } %>
     <div class="date error"></div>
     
+    <% if(user.password) { %>
     <label for="password">Old Password*</label>
     <div class="input-box">
-        <input type="password" placeholder="Enter a password" id="password" />
-        <i class="far fa-eye" id="togglePassword"></i>
+        <input type="password" placeholder="Enter a password" id="old_password" autocomplete="new-password" />
     </div>
+    <div class="old_password error"></div>
     <label for="password">New Password*</label>
     <div class="input-box">
-        <input type="password" placeholder="Enter a password" id="password" />
-        <i class="far fa-eye" id="togglePassword"></i>
+        <input type="password" placeholder="Enter a password" id="new_password" autocomplete="new-password" />
     </div>
+    <div class="new_password error"></div>
+    <% } else { %>
+    <label for="password">Password*</label>
+    <div class="input-box">
+        <input type="password" placeholder="Enter a password" id="new_password" autocomplete="new-password"/>
+    </div>
+    <div class="new_password error"></div>
+    <% } %>
 
     <div class="password error">
         <p id="length" class="invalid">Minimum 8 characters </p>
         <p id="letter" class="invalid">A uppercase letter</p>
         <p id="number" class="invalid">A number</b></p>
         <p id="special" class="invalid">A special character</p>
-        <p id="match" class="invalid">Passwords don't match</p>
     </div>
 
-    <button type="submit" class="btn" id="signup_button">Sign up</button>
+    <button type="submit" class="btn" id="update_button">Update</button>
+
+    <div class="message">
+    </div>
 </form>
 
 
+<script src="/countries.js" defer async></script>
+
+<script>
+    $('#name').keyup(function(){
+        $('.name.error').html('');
+        $('#name').removeClass('error-input');
+    });
+
+    $('#surname').keyup(function(){
+        $('.surname.error').html('');
+        $('#surname').removeClass('error-input');
+    });
+
+     $('#new_password').keyup(function(){
+
+        if($('#new_password').val().length < 8){
+            $('#length').removeClass('valid');
+            $('#length').addClass('invalid');
+        } else {
+            $('#length').removeClass('invalid');
+            $('#length').addClass('valid');
+        }
+
+        if($('#new_password').val().match(/[A-Z]/)){
+            $('#letter').removeClass('invalid');
+            $('#letter').addClass('valid');
+        } else {
+            $('#letter').removeClass('valid');
+            $('#letter').addClass('invalid');
+        }
+
+        if($('#new_password').val().match(/[0-9]/)){
+            $('#number').removeClass('invalid');
+            $('#number').addClass('valid');
+        } else {
+            $('#number').removeClass('valid');
+            $('#number').addClass('invalid');
+        }
+
+        if($('#new_password').val().match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/)){
+            $('#special').removeClass('invalid');
+            $('#special').addClass('valid');
+        } else {
+            $('#special').removeClass('valid');
+            $('#special').addClass('invalid');
+        }
+});
+
+
+$('#update_button').click(function(e){
+        e.preventDefault();
+        var data = {};
+        data.name = $('#name').val();
+        data.surname = $('#surname').val();
+        data.email = $('#email').val();
+        data.old_password = $('#old_password').val();
+        data.new_password = $('#new_password').val();
+        data.phone_number = $('#phone_number').val();
+        data.birth_date = $('#date_of_birth').val();
+
+        console.log(data);
+        
+        $('.name.error').html('');
+        $('.surname.error').html('');
+        $('.email.error').html('');
+        $('.old_password.error').html('');
+        $('.new_password.error').html('');
+        $('.phone.error').html('');
+        $('.date.error').html('');
+
+        $('#name').removeClass('error-input');
+        $('#surname').removeClass('error-input');
+        $('#email').removeClass('error-input');
+        $('#new_password').removeClass('error-input');
+        $('#old_password').removeClass('error-input');
+        $('#phone').removeClass('error-input');
+        $('#date_of_birth').removeClass('error-input');
+
+
+        if(!($('#new_password').val().match(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/))){
+            return;
+        }
+
+        $.ajax({
+            type: 'PUT',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            url: '/user/'+$('#user_id').val(),
+            success: function(data) {
+                $('.message').html('<p>Profile updated successfully</p>');
+                $('.message').addClass('success');
+                $('.message').removeClass('error');
+            },
+            error: function(data) {
+                const errString = JSON.stringify(data.responseJSON.errors);
+                const err = JSON.parse(errString);
+                if(err.name){
+                    $('.name.error').html(err.name);
+                    $('#name').addClass('error-input');
+                }
+                if(err.surname){
+                    $('.surname.error').html(err.surname);
+                    $('#surname').addClass('error-input');
+                }
+                if(err.email){
+                    $('.email.error').html(err.email);
+                    $('#email').addClass('error-input');
+                }
+                if(err.password){
+                    $('.password.error').html(err.password);
+                    $('#password').addClass('error-input');
+                }
+
+                if(err.phone_number) {
+                    $('.phone.error').html(err.phone_number);
+                    $('#phone').addClass('error-input');
+                }
+            }
+        });
+    });
+
+</script>
 
 <%- include('partials/footer'); -%>

@@ -1,6 +1,8 @@
 const { Router }  = require('express');
 const User = require('../model/User');
 const jwt = require('jsonwebtoken');
+var ObjectId = require('mongoose').Types.ObjectId;
+require('dotenv').config();
 
 
 //handle errors
@@ -38,7 +40,7 @@ const handleErrors = (err) => {
 const maxAge = 15 * 60;
 
 const createToken = (id) =>{
-    return jwt.sign({id}, 'techweb secret', {
+    return jwt.sign({id}, process.env.JWT_SECRET , {
         expiresIn: maxAge
     });
 };
@@ -113,11 +115,8 @@ module.exports.login_google = async (req, res) => {
 }
 
 module.exports.get_profile = async (req, res) => {
-    try {
-        let user = await User.findById(req.params.id);
-        res.locals.user = user;
-        res.render('profile');
-    } catch (err) {
-        console.log(err);
-    }
+    console.log('retrieving user with id: '+ req.params.id);
+    let user = await User.findOne({_id: req.params.id});
+    console.log('user retrieved: '+ user);
+    res.render('profile', {user});
 }

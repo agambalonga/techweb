@@ -3,6 +3,10 @@ const bcrypt = require('bcrypt');
 const { isEmail } = require('validator');
 
 const userSchema = new mongoose.Schema({
+    _id : {
+        type : mongoose.Schema.Types.ObjectId,
+        auto : true
+    },
     name : {
         type : String
     },
@@ -52,9 +56,9 @@ const userSchema = new mongoose.Schema({
         throw Error('incorrect email');
     }
 
-    userSchema.statics.loginGoogle = async function(googleId) {
+
+userSchema.statics.loginGoogle = async function(googleId) {
         const user = await this.findOne({google_id: googleId});
-        console.log(user);
         return user;
     }
 

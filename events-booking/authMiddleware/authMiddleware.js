@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../model/User');
+require('dotenv').config();
 
 const maxAge = 15 * 60;
 
@@ -10,7 +11,7 @@ const checkAuth = (req, res, next)  => {
     console.log("token: " + token);
     if(token){
         //verify token
-        jwt.verify(token, 'techweb secret', (err, decodedToken) => {
+        jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
             if(err){
                 console.log("error: " + err.message);
                 console.log(err.message);
@@ -28,9 +29,10 @@ const checkAuth = (req, res, next)  => {
 }
 
 const checkUser = (req, res, next) => {
+    console.log('checking user')
     const token = req.cookies.jwt;
     if(token) {
-        jwt.verify(token, 'techweb secret', async (err, decodedToken) => {
+        jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
             if(err) {
                 console.log(err.message);
                 res.locals.user = null;
