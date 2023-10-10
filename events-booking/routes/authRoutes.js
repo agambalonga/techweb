@@ -1,16 +1,19 @@
 const { Router }  = require('express');
-const accountController = require('../controller/accountController');
+const userController = require('../controller/userController');
 
 const router = new Router();
 
-router.get('/signup', accountController.signup_get);
+router.get('/signup', userController.signup_get);
 
-router.post('/signup', accountController.signup_post);
+router.post('/signup', userController.signup_post);
 
-router.get('/login', accountController.login_get);
+router.get('/login', userController.login_get);
 
-router.post('/login', accountController.login_post);
+router.post('/login', userController.login_post);
 
-router.get('/logout', accountController.logout_get);
+router.get('/logout', userController.logout_get);
+
+router.post('/auth/google', userController.login_google);
+
 
 module.exports = router;    

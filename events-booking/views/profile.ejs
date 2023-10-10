@@ -1,0 +1,73 @@
+<%- include('partials/header'); -%>
+
+<% user.name %>
+
+<form method="POST">
+
+    <label for="name">Name*</label>
+    <input type="text" value="<%= user.name %>" name="name" id="name" />
+    <div class="name error"></div>
+
+    <label for="surname">Surname*</label>
+    <input type="text" value="<%= user.surname %>" id="surname" />
+    <div class="surname error"></div>
+
+    <label for="phone">Phone</label>
+    <div class="select-box">
+        <div class="selected-option">
+            <div>
+                <span class="iconify" data-icon="flag:it-4x3"></span>
+                <strong>+39</strong>
+            </div>
+            <input type="tel" name="phone_number" id="phone_number" placeholder="Insert a phone number" value="<%=user.phone_number %>">
+        </div>
+        <div class="options">
+            <input type="text" class="search-box" placeholder="Search Country Name">
+            <ol>
+            </ol>
+        </div>
+    </div>
+    <div class="phone error"></div>
+
+    <label for="email">Email*</label>
+    <input type="email" value="<%=user.email %>" disabled name="email" id="email" />
+    <div class="email error"></div>
+
+    <label for="Date of birth">Date of Birth</label>
+    <% if(user.birth_date) { 
+        let date = new Date(user.birth_date);
+        let day = date.getDate().toString().padStart(2, '0');
+        let month = (date.getMonth() + 1).toString().padStart(2, '0');
+        let year = date.getFullYear();
+        let formattedDate = `${year}-${month}-${day}`; %>
+    <input type="date" value="<%=formattedDate%>" name="date_of_birth" id="date_of_birth" />
+    <% } else { %>
+    <input type="date" name="date_of_birth" id="date_of_birth" />
+    <% } %>
+    <div class="date error"></div>
+    
+    <label for="password">Old Password*</label>
+    <div class="input-box">
+        <input type="password" placeholder="Enter a password" id="password" />
+        <i class="far fa-eye" id="togglePassword"></i>
+    </div>
+    <label for="password">New Password*</label>
+    <div class="input-box">
+        <input type="password" placeholder="Enter a password" id="password" />
+        <i class="far fa-eye" id="togglePassword"></i>
+    </div>
+
+    <div class="password error">
+        <p id="length" class="invalid">Minimum 8 characters </p>
+        <p id="letter" class="invalid">A uppercase letter</p>
+        <p id="number" class="invalid">A number</b></p>
+        <p id="special" class="invalid">A special character</p>
+        <p id="match" class="invalid">Passwords don't match</p>
+    </div>
+
+    <button type="submit" class="btn" id="signup_button">Sign up</button>
+</form>
+
+
+
+<%- include('partials/footer'); -%>

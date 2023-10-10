@@ -17,7 +17,7 @@
 
 body{
   margin: 20px 40px;
-  font-size: 1.2rem;
+  font-size: 1.0rem;
   letter-spacing: 1px;
   background: #fafafa;
 }
@@ -26,6 +26,13 @@ h1, h2, h3, h4, ul, li, a, p, input, label, button, div, footer{
   padding: 0;
   font-family: 'Quicksand', sans-serif;
   color: #444;
+}
+
+a.link {
+  text-decoration: underline;
+}
+.text-info {
+  font-size: 15px;
 }
 
 .select-box {
@@ -387,4 +394,26 @@ footer{
   position: absolute;
   cursor: pointer;
   margin-left: 320px;
+}
+
+.divider {
+  text-align: center;
+  position: relative;
+}
+
+/* Stile per la linea del divisore */
+.divider hr {
+  border: none;
+  border-top: 1px solid #000; /* Crea una linea orizzontale continua */
+  margin: 20px 0; /* Spazio sopra e sotto la linea del divisore */
+}
+
+/* Stile per il testo nel divisore */
+.divider span {
+  background-color: #fff; /* Sfondo bianco per il testo */
+  position: absolute;
+  top: -10px; /* Posizione sopra la linea */
+  left: 50%; /* Posizione al centro orizzontale */
+  transform: translateX(-50%); /* Per centrare orizzontalmente il testo */
+  padding: 0 10px; /* Aggiunge spazio intorno al testo */
 }

@@ -2,6 +2,28 @@
 
 <form method="POST">
     <h2>Log in</h2>
+    <div id="g_id_onload"
+        data-client_id="456515688442-f92dp1vudi369d67j8hredi65a6sianu.apps.googleusercontent.com"
+        data-auto-select="false"
+        data-context="signin"
+        data-ux_mode="popup"
+        data-callback="handleCredentialResponse"
+        data-auto_prompt="false">
+    </div>
+    <div class="g_id_signin"
+        data-locale="en"
+        data-type="standard"
+        data-shape="pill"
+        data-theme="outline"
+        data-text="continue_with"
+        data-size="large"
+        data-logo_alignment="left"
+        data-width="350">
+    </div>
+    <div class="divider">
+        <hr>
+        <span>or</span>
+    </div>
     <label for="email">Email*</label>
     <input type="email" placeholder="example@example.com" name="email" id="email" />
     <div class="email error"></div>
@@ -10,10 +32,50 @@
         <input type="password" placeholder="Enter a password" id="password" />
         <i class="far fa-eye" id="togglePassword"></i>
     </div>
+    <div class="password error"></div>
     <button type="submit" class="btn" id="login_button">Log in</button>
+    <br/>
+    <br/>
+    <p class="text-info">Don't have an account? <a href="/signup" class="link">Sign up</a></p>
+    <br/>
 </form>
 
+<script src="https://accounts.google.com/gsi/client"></script>
 <script>
+
+/*
+$('#google-login').click(function() {
+  google.accounts.id.initialize({
+    client_id: '456515688442-f92dp1vudi369d67j8hredi65a6sianu.apps.googleusercontent.com',
+    scope: 'https://www.googleapis.com/auth/userinfo.profile',
+    callback: handleCredentialResponse
+  });
+  google.accounts.id.prompt();
+});
+*/
+
+function handleCredentialResponse(response) {
+    console.log(response);
+    if (response.credential) {
+        var data = {
+            credential: response.credential
+        };
+        console.log(data)
+        // Invia i dati al server per effettuare il login
+        $.ajax({
+            type: 'POST',
+            url: '/auth/google',
+            data: JSON.stringify(data),
+            contentType: 'application/json',    
+            success: function(response) {
+                window.location.href = '/home';
+            },
+            error: function(xhr, status, error) {
+                // Gestisci gli errori
+            }
+        });
+  }
+}
 
 $('#togglePassword').click(function(){
         $(this).toggleClass('fa-eye fa-eye-slash');
@@ -73,6 +135,7 @@ $('#login_button').click(function(e){
                 window.location.href = '/home';
             },
             error: function(data) {
+                console.log(data)
                 const errString = JSON.stringify(data.responseJSON.errors);
                 const err = JSON.parse(errString);
                 if(err.email){

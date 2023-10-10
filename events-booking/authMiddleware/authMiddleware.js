@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const User = require('../model/User');
 
+const maxAge = 15 * 60;
+
 const checkAuth = (req, res, next)  => {
     console.log('checking authentication')
     //retrieve token from cookies
@@ -15,6 +17,8 @@ const checkAuth = (req, res, next)  => {
                 res.redirect('/login');
             } else {
                 console.log(decodedToken);
+                //refresh jwt token if is all ok
+                res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000})
                 next();
             }
         });

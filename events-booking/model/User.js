@@ -4,39 +4,45 @@ const { isEmail } = require('validator');
 
 const userSchema = new mongoose.Schema({
     name : {
-        type : String,
-        required : [true, 'Name is not provided. Please provide a name'],
+        type : String
     },
     surname : {
-        type : String,
-        required : [true, 'Surname is not provided. Please provide a surname'],
+        type : String
     },
     email : {
         type : String,
-        required : [true, 'Email is not provided. Please provide an email'],
         unique : true,
         lowercase : true,
         validate: [isEmail, 'Email is not valid. Please enter a valid email']
     },
+    birth_date : {
+        type : Date
+    },
     password : {
-        type : String,
-        required : [true, 'Password is not provided. Please provide a password']
+        type : String
     },
     phone_number : {
-        type : String,
-        required : [true, 'Phone number is not provided. Please provide a telephone']
+        type : String
+    },
+    google_id : {
+        type : String
     }
  });
 
  userSchema.pre('save', async function(next) {
-    const salt = await bcrypt.genSalt();
-    this.password = await bcrypt.hash(this.password, salt);
+    if(this.password) {
+        const salt = await bcrypt.genSalt();
+        this.password = await bcrypt.hash(this.password, salt);
+    }
     next();
  });
 
  userSchema.statics.login = async function(email, password) {
         const user = await this.findOne({email});
         if(user) {
+            if(!user.password) {
+                throw Error('User not registered with email. Please login with Google');
+            }
             const auth = await bcrypt.compare(password, user.password);
             if(auth) {
                 return user;
@@ -44,6 +50,12 @@ const userSchema = new mongoose.Schema({
             throw Error('incorrect password');
         }
         throw Error('incorrect email');
+    }
+
+    userSchema.statics.loginGoogle = async function(googleId) {
+        const user = await this.findOne({google_id: googleId});
+        console.log(user);
+        return user;
     }
 
 

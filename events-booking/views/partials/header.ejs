@@ -2,10 +2,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-signin-client_id" content="456515688442-f92dp1vudi369d67j8hredi65a6sianu.apps.googleusercontent.com">
   <title>Document</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -14,10 +16,10 @@
     <% if(user) { %>
     <div id="drop-menu">
 			<ul id="menu">
-				<li><a href="/">Home</a></li>
-				<li><a href="#"><%=user.name %></a>
+				<li><a href="/home">Home</a></li>
+				<li><a href="/user/<%=user._id%>"><%=user.name %></a>
 					<ul>
-						<li><a href="/user/<%=user.id%>">My profile</a></li>
+						<li><a href="/user/<%=user._id%>">My profile</a></li>
 						<li><a href="#">My Events</a></li>
             <li><a href="/logout">Log out</a></li>
 					</ul>
