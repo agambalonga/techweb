@@ -297,6 +297,12 @@ button{
   font-size: 0.8em;
   font-weight: bold;
 }
+.success{
+  color: #0ca506;
+  margin: 10px 2px;
+  font-size: 0.8em;
+  font-weight: bold;
+}
 .error-input{
   border: 1px solid #f30d1c;
 }
@@ -383,6 +389,10 @@ footer{
   display: flex;
   align-items: center;
   position: relative;
+}
+
+.input_checkbox{
+  width: 30px;
 }
 
 .input-box input {

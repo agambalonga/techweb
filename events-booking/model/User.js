@@ -33,7 +33,8 @@ const userSchema = new mongoose.Schema({
     }
  });
 
- userSchema.pre('save', async function(next) {
+ userSchema.pre(['save', 'update'], async function(next) {
+    console.log('pre save. Encrypt password= '+ this.password);
     if(this.password) {
         const salt = await bcrypt.genSalt();
         this.password = await bcrypt.hash(this.password, salt);
@@ -61,6 +62,19 @@ userSchema.statics.loginGoogle = async function(googleId) {
         const user = await this.findOne({google_id: googleId});
         return user;
     }
+
+userSchema.statics.comparePassword = async function(password, oldPassword) {
+    console.log('comparing password: '+ password + ' with oldPassword: '+ oldPassword);
+    let auth=false;
+    
+    auth = await bcrypt.compare(oldPassword, password);
+
+    if(auth) {
+        return true;
+    }
+    return false;
+}
+
 
 
 

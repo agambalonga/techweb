@@ -45,6 +45,13 @@
     <div class="date error"></div>
     
     <% if(user.password) { %>
+    <div class="password_change">
+        <label for="Change password">
+        <input class="input_checkbox" type="checkbox" id="change_password" name="change_password">
+        Change password
+        </label>
+    </div>
+    <div class="password_ins" hidden>
     <label for="password">Old Password*</label>
     <div class="input-box">
         <input type="password" placeholder="Enter a password" id="old_password" autocomplete="new-password" />
@@ -54,21 +61,14 @@
     <div class="input-box">
         <input type="password" placeholder="Enter a password" id="new_password" autocomplete="new-password" />
     </div>
-    <div class="new_password error"></div>
-    <% } else { %>
-    <label for="password">Password*</label>
-    <div class="input-box">
-        <input type="password" placeholder="Enter a password" id="new_password" autocomplete="new-password"/>
     </div>
-    <div class="new_password error"></div>
-    <% } %>
-
     <div class="password error">
         <p id="length" class="invalid">Minimum 8 characters </p>
         <p id="letter" class="invalid">A uppercase letter</p>
         <p id="number" class="invalid">A number</b></p>
         <p id="special" class="invalid">A special character</p>
     </div>
+    <% } %>
 
     <button type="submit" class="btn" id="update_button">Update</button>
 
@@ -80,6 +80,19 @@
 <script src="/countries.js" defer async></script>
 
 <script>
+
+    $('#change_password').change(function(){
+        if($(this).is(':checked')){
+            $('.password_ins').removeAttr('hidden');
+            $('.old_password.error').html('');
+            $('#old_password').removeClass('error-input');
+            $('.new_password.error').html('');
+            $('#new_password').removeClass('error-input');
+        } else {
+            $('.password_ins').attr('hidden', true);
+        }
+    });
+
     $('#name').keyup(function(){
         $('.name.error').html('');
         $('#name').removeClass('error-input');
@@ -123,21 +136,17 @@
             $('#special').removeClass('valid');
             $('#special').addClass('invalid');
         }
-});
+    });
+
+    $('#old_password').keyup(function(){
+        $('.old_password.error').html('');
+        $('#old_password').removeClass('error-input');
+    });
 
 
 $('#update_button').click(function(e){
         e.preventDefault();
-        var data = {};
-        data.name = $('#name').val();
-        data.surname = $('#surname').val();
-        data.email = $('#email').val();
-        data.old_password = $('#old_password').val();
-        data.new_password = $('#new_password').val();
-        data.phone_number = $('#phone_number').val();
-        data.birth_date = $('#date_of_birth').val();
-
-        console.log(data);
+        var error = false;
         
         $('.name.error').html('');
         $('.surname.error').html('');
@@ -155,48 +164,91 @@ $('#update_button').click(function(e){
         $('#phone').removeClass('error-input');
         $('#date_of_birth').removeClass('error-input');
 
-
-        if(!($('#new_password').val().match(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/))){
-            return;
+        if($('#name').val() == ''){
+            $('.name.error').html('Please enter your name');
+            $('#name').addClass('error-input');
+            error = true;
         }
 
-        $.ajax({
-            type: 'PUT',
-            data: JSON.stringify(data),
-            contentType: 'application/json',
-            url: '/user/'+$('#user_id').val(),
-            success: function(data) {
-                $('.message').html('<p>Profile updated successfully</p>');
-                $('.message').addClass('success');
-                $('.message').removeClass('error');
-            },
-            error: function(data) {
-                const errString = JSON.stringify(data.responseJSON.errors);
-                const err = JSON.parse(errString);
-                if(err.name){
-                    $('.name.error').html(err.name);
-                    $('#name').addClass('error-input');
-                }
-                if(err.surname){
-                    $('.surname.error').html(err.surname);
-                    $('#surname').addClass('error-input');
-                }
-                if(err.email){
-                    $('.email.error').html(err.email);
-                    $('#email').addClass('error-input');
-                }
-                if(err.password){
-                    $('.password.error').html(err.password);
-                    $('#password').addClass('error-input');
-                }
+        if($('#surname').val() == ''){
+            $('.surname.error').html('Please enter your surname');
+            $('#surname').addClass('error-input');
+            error = true;
+        }
 
-                if(err.phone_number) {
-                    $('.phone.error').html(err.phone_number);
-                    $('#phone').addClass('error-input');
+        if($('#change_password').is(':checked') &&  typeof $('#old_password').val() != 'undefined' && $('#old_password').val() == ''){
+            $('.old_password.error').html('Please enter your old password');
+            $('#old_password').addClass('error-input');
+            error = true;
+        }
+
+        if($('#change_password').is(':checked') && typeof $('#new_password').val() != 'undefined' && !($('#new_password').val().match(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/))){
+            $('#new_password').addClass('error-input');
+            error = true;
+        }
+
+
+        if(!error) {
+            var data = {};
+            data.name = $('#name').val();
+            data.surname = $('#surname').val();
+            data.email = $('#email').val();
+
+            if($('#phone_number').val() != '')
+                data.phone_number = $('#phone_number').val();
+
+            if($('#date_of_birth').val() != '')
+                data.birth_date = $('#date_of_birth').val();
+            
+            if($('#change_password').is(':checked') && typeof $('#old_password').val() != 'undefined')
+                data.old_password = $('#old_password').val();
+
+            if($('#change_password').is(':checked') && typeof $('#new_password').val() != 'undefined')
+                data.new_password = $('#new_password').val();
+            
+            console.log(data);
+
+            $.ajax({
+                type: 'PUT',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                url: '/user/'+$('#user_id').val(),
+                success: function(data) {
+                    $('#user_name_menu').html(data.user.name);
+                    $('.message').html('<p class="success">Profile updated successfully</p>');
+                },
+                error: function(data) {
+                    const err = JSON.parse(JSON.stringify(data.responseJSON.errors));
+                    if(err.name){
+                        $('.name.error').html(err.name);
+                        $('#name').addClass('error-input');
+                    }
+                    if(err.surname){
+                        $('.surname.error').html(err.surname);
+                        $('#surname').addClass('error-input');
+                    }
+                    if(err.email){
+                        $('.email.error').html(err.email);
+                        $('#email').addClass('error-input');
+                    }
+                    if(err.old_password){
+                        $('.old_password.error').html(err.old_password);
+                        $('#old_password').addClass('error-input');
+                    }
+                    if(err.new_password){
+                        $('.password.error').html(err.new_password);
+                        $('#password').addClass('error-input');
+                    }
+
+                    if(err.phone_number) {
+                        $('.phone.error').html(err.phone_number);
+                        $('#phone').addClass('error-input');
+                    }
                 }
-            }
-        });
+            });
+        }
     });
+
 
 </script>
 

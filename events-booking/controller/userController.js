@@ -91,16 +91,16 @@ module.exports.logout_get = (req, res) => {
 module.exports.login_google = async (req, res) => {
     const userInfo = jwt.decode(req.body.credential);
     try {
-        let user = await User.findOne({googleId: userInfo.sub});
+        let user = await User.findOne({google_id: userInfo.sub});
         if(!user) {
             console.log('user not found by googleId. Checking if user is already registered with email ' + userInfo.email);
             user = await User.findOne({email: userInfo.email});
             if(!user) {
                 console.log('user not registered. Creating new user by googleId');
-                user = await User.create({name: userInfo.given_name, surname: userInfo.family_name, email: userInfo.email, googleId: userInfo.sub});
+                user = await User.create({name: userInfo.given_name, surname: userInfo.family_name, email: userInfo.email, google_id: userInfo.sub});
             } else {
-                console.log('user already registered with email '+ userInfo.email + '. Ready to link google account');
-                const result = await User.updateOne({email: userInfo.email}, {$set: {googleId: userInfo.sub}});
+                console.log('user already registered with email '+ userInfo.email + '. Ready to link google account'+ userInfo.sub);
+                const result = await User.updateOne({email: userInfo.email}, {$set: {google_id: userInfo.sub}});
             }
         }
 
@@ -119,4 +119,43 @@ module.exports.get_profile = async (req, res) => {
     let user = await User.findOne({_id: req.params.id});
     console.log('user retrieved: '+ user);
     res.render('profile', {user});
+}
+
+module.exports.update_profile = async (req, res) => {
+    console.log('updating user with id: '+ req.params.id);
+    console.log('updating user with data: '+ JSON.stringify(req.body));
+    
+    //find user by id and update
+    let userRetrieved = await User.findOne({_id: req.params.id});
+    console.log('user retrieved id: '+ userRetrieved._id);
+
+    userRetrieved.name = req.body.name;
+    userRetrieved.surname = req.body.surname;
+    userRetrieved.email = req.body.email;
+    userRetrieved.birth_date = req.body.birth_date;
+    userRetrieved.phone_number = req.body.phone_number;
+    
+    if(userRetrieved.password && req.body.old_password && req.body.new_password) {
+        console.log('updating password');
+        const auth = await User.comparePassword(userRetrieved.password, req.body.old_password);
+        if(auth) {
+            console.log('old password correct');
+            userRetrieved.password = req.body.new_password;
+        } else {
+            console.log('incorrect old password');
+            res.status(400).send({ errors: {old_password: 'Incorrect old password'} });
+            return;
+        }
+    }
+
+    try {
+        const user = await userRetrieved.save();
+        console.log('user updated successfully');
+        res.status(200).json({user: user});
+    } catch (err) {
+        console.log(err);
+        const errors = handleErrors(err);
+        res.status(400).send({ errors });
+    }
+        
 }
