@@ -427,3 +427,43 @@ footer{
   transform: translateX(-50%); /* Per centrare orizzontalmente il testo */
   padding: 0 10px; /* Aggiunge spazio intorno al testo */
 }
+
+.profile-pic {
+  display: inline-block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.file-upload {
+  display: none;
+}
+.circle {
+  margin:0 auto;
+  border-radius: 100% !important;
+  overflow: hidden;
+  width: 128px;
+  height: 128px;
+  border: 2px solid #FEE996;
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
+.p-image {
+position: absolute;
+top: 388px;
+right: 457px;
+color: #666666;
+transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+}
+.p-image:hover {
+transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+}
+.upload-button {
+font-size: 1.2em;
+}
+
+.upload-button:hover {
+transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+color: #999;
+}

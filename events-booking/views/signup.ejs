@@ -1,7 +1,21 @@
 <%- include('partials/header'); -%>
 
 <form method="POST">
-    <h2>Sign up</h2>
+    <h2 style="text-align: center;">Sign up</h2>
+    <div class="divider">
+        <hr>
+    </div>
+
+    <div class="row">
+        <div>
+          <div class="circle">
+            <img class="profile-pic" src="https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg">
+          </div>
+          <div class="p-image">
+             <input class="file-upload" type="file" accept="image/*"/>
+          </div>
+       </div>
+     </div>
 
     <label for="name">Name*</label>
     <input type="text" placeholder="Enter a name" name="name" id="name" />
@@ -58,6 +72,35 @@
 
 <script src="/countries.js"></script>
 <script>
+
+var readURL = function(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('.profile-pic').attr('src', e.target.result);
+            }
+    
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $('.circle').hover(function() {
+        $(this).css('cursor', 'pointer');
+    })
+
+    $(".circle").on('click', function() {
+       $(".file-upload").click();
+    });
+    
+
+    $(".file-upload").on('change', function(){
+        readURL(this);
+    });
+    
+    $(".upload-button").on('click', function() {
+       $(".file-upload").click();
+    });
 
     $('#name').keyup(function(){
         $('.name.error').html('');

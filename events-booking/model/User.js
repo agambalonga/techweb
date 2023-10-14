@@ -30,7 +30,10 @@ const userSchema = new mongoose.Schema({
     },
     google_id : {
         type : String
-    }
+    },
+    profile_picture_URL : {
+        type : String
+    },
  });
 
  userSchema.pre(['save', 'update'], async function(next) {
