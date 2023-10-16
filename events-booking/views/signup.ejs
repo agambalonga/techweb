@@ -1,6 +1,6 @@
 <%- include('partials/header'); -%>
 
-<form method="POST">
+<form method="POST" enctype="multipart/form-data" id="reg_form">
     <h2 style="text-align: center;">Sign up</h2>
     <div class="divider">
         <hr>
@@ -192,15 +192,13 @@ var readURL = function(input) {
 
     $('#signup_button').click(function(e){
         e.preventDefault();
-        var data = {};
-        data.name = $('#name').val();
-        data.surname = $('#surname').val();
-        data.email = $('#email').val();
-        data.password = $('#password').val();
-        data.phone_number = $('#phone_number').val();
-        data.birth_date = $('#date_of_birth').val();
 
-        console.log(data);
+        name = $('#name').val();
+        surname = $('#surname').val();
+        email = $('#email').val();
+        password = $('#password').val();
+        phone_number = $('#phone_number').val();
+        birth_date = $('#date_of_birth').val();
         
         $('.name.error').html('');
         $('.surname.error').html('');
@@ -221,10 +219,22 @@ var readURL = function(input) {
             return;
         }
 
+        var formData = new FormData();
+        formData.append('name', name);
+        formData.append('surname', surname);
+        formData.append('email', email);
+        formData.append('password', password);
+
+        var file = $('.file-upload')[0].files[0];
+        if(file){
+            formData.append('profile_pic', file);
+        }
+
         $.ajax({
             type: 'POST',
-            data: JSON.stringify(data),
-            contentType: 'application/json',
+            data: formData,
+            contentType: false,
+            processData: false,
             url: '/signup',
             success: function(data) {
                 window.location.href = '/home';

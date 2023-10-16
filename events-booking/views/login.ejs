@@ -43,17 +43,6 @@
 <script src="https://accounts.google.com/gsi/client"></script>
 <script>
 
-/*
-$('#google-login').click(function() {
-  google.accounts.id.initialize({
-    client_id: '456515688442-f92dp1vudi369d67j8hredi65a6sianu.apps.googleusercontent.com',
-    scope: 'https://www.googleapis.com/auth/userinfo.profile',
-    callback: handleCredentialResponse
-  });
-  google.accounts.id.prompt();
-});
-*/
-
 function handleCredentialResponse(response) {
     console.log(response);
     if (response.credential) {

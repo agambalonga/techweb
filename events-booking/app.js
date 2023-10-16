@@ -6,6 +6,7 @@ const userRoutes = require('./routes/userRoutes');
 const cookieParser = require('cookie-parser');
 const {checkAuth} = require('./authMiddleware/authMiddleware');
 const {checkUser} = require('./authMiddleware/authMiddleware');
+const {v4: uuidv4} = require('uuid');
 
 const app = express();
 

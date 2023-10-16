@@ -3,6 +3,7 @@ const User = require('../model/User');
 const jwt = require('jsonwebtoken');
 var ObjectId = require('mongoose').Types.ObjectId;
 require('dotenv').config();
+var fs = require('fs');
 
 
 //handle errors
@@ -52,14 +53,24 @@ module.exports.signup_get = (req, res) => {res.render('signup')};
 module.exports.login_get = (req, res) => {res.render('login')};
 
 module.exports.signup_post = async (req, res) => {
-    const { name, surname, email, password, phone_number, birth_date } = req.body;
+    const { name, surname, email, password, phone_number, birth_date, profile_pic } = req.body;
+    console.log('profile pic '+ profile_pic);
     try {
-        const user = await User.create({name, surname, email, password, phone_number, birth_date});
+        var profile_pic_URL = null;
+
+        if(profile_pic) {
+            profile_pic_URL = "/uploads/" + profile_pic;
+        }
+        console.log(profile_pic_URL);
+        const user = await User.create({name, surname, email, password, phone_number, birth_date, profile_pic_URL});
         console.log('user '+ user._id +' created successfully');
         const token = createToken(user._id);
         res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
         res.status(201).json({user: user._id});
     } catch (err) {
+        if(profile_pic_URL) {
+            fs.unlinkSync('public' + profile_pic_URL);
+        }
         console.log(err);
         const errors = handleErrors(err);
         console.log(errors)
@@ -90,6 +101,7 @@ module.exports.logout_get = (req, res) => {
 
 module.exports.login_google = async (req, res) => {
     const userInfo = jwt.decode(req.body.credential);
+    console.log('user info: '+ JSON.stringify(userInfo));
     try {
         let user = await User.findOne({google_id: userInfo.sub});
         if(!user) {
@@ -97,10 +109,10 @@ module.exports.login_google = async (req, res) => {
             user = await User.findOne({email: userInfo.email});
             if(!user) {
                 console.log('user not registered. Creating new user by googleId');
-                user = await User.create({name: userInfo.given_name, surname: userInfo.family_name, email: userInfo.email, google_id: userInfo.sub});
+                user = await User.create({name: userInfo.given_name, surname: userInfo.family_name, email: userInfo.email, google_id: userInfo.sub, profile_pic_URL: userInfo.picture});
             } else {
                 console.log('user already registered with email '+ userInfo.email + '. Ready to link google account'+ userInfo.sub);
-                const result = await User.updateOne({email: userInfo.email}, {$set: {google_id: userInfo.sub}});
+                const result = await User.updateOne({email: userInfo.email}, {$set: {google_id: userInfo.sub, profile_pic_URL: userInfo.picture}});
             }
         }
 
@@ -129,11 +141,19 @@ module.exports.update_profile = async (req, res) => {
     let userRetrieved = await User.findOne({_id: req.params.id});
     console.log('user retrieved id: '+ userRetrieved._id);
 
+    var old_profile_pic_URL = userRetrieved.profile_pic_URL;
+    var updatePic = false;
+    
     userRetrieved.name = req.body.name;
     userRetrieved.surname = req.body.surname;
     userRetrieved.email = req.body.email;
     userRetrieved.birth_date = req.body.birth_date;
     userRetrieved.phone_number = req.body.phone_number;
+
+    if(old_profile_pic_URL && req.body.profile_pic_URL && old_profile_pic_URL != req.body.profile_pic_URL) {
+        userRetrieved.profile_pic_URL = req.body.profile_pic_URL;
+        updatePic = true;
+    }
     
     if(userRetrieved.password && req.body.old_password && req.body.new_password) {
         console.log('updating password');
@@ -144,6 +164,8 @@ module.exports.update_profile = async (req, res) => {
         } else {
             console.log('incorrect old password');
             res.status(400).send({ errors: {old_password: 'Incorrect old password'} });
+            if(updatePic && fs.statSync('public' + userRetrieved.profile_pic_URL).isFile())
+                fs.unlinkSync('public' + userRetrieved.profile_pic_URL);
             return;
         }
     }
@@ -151,10 +173,20 @@ module.exports.update_profile = async (req, res) => {
     try {
         const user = await userRetrieved.save();
         console.log('user updated successfully');
+
+        if(updatePic && fs.existsSync('public' + old_profile_pic_URL) && old_profile_pic_URL != userRetrieved.profile_pic_URL) {
+            console.log('deleting old profile pic');
+            fs.unlinkSync('public' + old_profile_pic_URL);
+        }
+
         res.status(200).json({user: user});
     } catch (err) {
         console.log(err);
         const errors = handleErrors(err);
+        if(updatePic && fs.existsSync('public' + userRetrieved.profile_pic_URL) && old_profile_pic_URL != userRetrieved.profile_pic_URL) {
+            console.log('deleting old profile pic');
+            fs.unlinkSync('public' + userRetrieved.profile_pic_URL);
+        }
         res.status(400).send({ errors });
     }
         
