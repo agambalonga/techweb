@@ -53,6 +53,7 @@ module.exports.signup_get = (req, res) => {res.render('signup')};
 module.exports.login_get = (req, res) => {res.render('login')};
 
 module.exports.signup_post = async (req, res) => {
+    console.log(req.body);
     const { name, surname, email, password, phone_number, birth_date, profile_pic } = req.body;
     console.log('profile pic '+ profile_pic);
     try {
@@ -139,7 +140,6 @@ module.exports.update_profile = async (req, res) => {
     
     //find user by id and update
     let userRetrieved = await User.findOne({_id: req.params.id});
-    console.log('user retrieved id: '+ userRetrieved._id);
 
     var old_profile_pic_URL = userRetrieved.profile_pic_URL;
     var updatePic = false;
@@ -150,7 +150,7 @@ module.exports.update_profile = async (req, res) => {
     userRetrieved.birth_date = req.body.birth_date;
     userRetrieved.phone_number = req.body.phone_number;
 
-    if(old_profile_pic_URL && req.body.profile_pic_URL && old_profile_pic_URL != req.body.profile_pic_URL) {
+    if(!old_profile_pic_URL || (old_profile_pic_URL && req.body.profile_pic_URL && old_profile_pic_URL != req.body.profile_pic_URL)) {
         userRetrieved.profile_pic_URL = req.body.profile_pic_URL;
         updatePic = true;
     }
