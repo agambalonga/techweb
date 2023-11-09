@@ -189,5 +189,31 @@ module.exports.update_profile = async (req, res) => {
         }
         res.status(400).send({ errors });
     }
-        
+}
+
+module.exports.get_wallet = async (req, res) => {
+    console.log('retrieving user with id: '+ req.params.id);
+    let user = await User.findOne({_id: req.params.id});
+    console.log('user retrieved: '+ user);
+    res.render('wallet', {user});
+}
+
+module.exports.add_wallet = async (req, res) => {
+    console.log('updating user with id: '+ req.params.id);
+    console.log('updating user with data: '+ JSON.stringify(req.body));
+    
+    //find user by id and update
+    let userRetrieved = await User.findOne({_id: req.params.id});
+    
+    userRetrieved.wallet = userRetrieved.wallet + parseFloat(req.body.amount);
+    
+    try {
+        const user = await userRetrieved.save();
+        console.log('user updated successfully');
+        res.status(200).json({curr_wallet: user.wallet});
+    } catch (err) {
+        console.log(err);
+        const errors = handleErrors(err);
+        res.status(400).send({ errors });
+    }
 }

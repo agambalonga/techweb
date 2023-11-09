@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema({
     },
     profile_pic_URL : {
         type : String
+    },
+    wallet: {
+        type: Number,
+        default: 0.0
     }
  });
 
