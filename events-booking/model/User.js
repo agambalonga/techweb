@@ -37,7 +37,20 @@ const userSchema = new mongoose.Schema({
     wallet: {
         type: Number,
         default: 0.0
-    }
+    },
+    transactions: [
+        {
+            date: {
+                type: Date
+            },
+            sign: {
+                type: String
+            },
+            amount: {
+                type: Number
+            }
+        }
+    ]
  });
 
  userSchema.pre(['save', 'update'], async function(next) {

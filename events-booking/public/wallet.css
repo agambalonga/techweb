@@ -341,3 +341,47 @@ input {
     font-weight: bold;
     text-align: center;
 }
+
+#wallet-transaction{
+    margin-top: 40px;
+}
+
+.tableContainer {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tableContainer {
+    max-height: 400px; /* Altezza massima del contenitore */
+    overflow-y: auto; /* Aggiunge uno scroll verticale se il contenuto supera l'altezza massima */
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+.table th,
+.table td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.table thead {
+    background-color: #f5f5f5;
+}
+
+.table th {
+    font-weight: 600;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+    background-color: #f0f0f0;
+}

@@ -206,14 +206,16 @@ module.exports.add_wallet = async (req, res) => {
     let userRetrieved = await User.findOne({_id: req.params.id});
     
     userRetrieved.wallet = userRetrieved.wallet + parseFloat(req.body.amount);
+    userRetrieved.transactions.push({date: new Date(), sign: '+', amount: parseFloat(req.body.amount)});
     
     try {
         const user = await userRetrieved.save();
         console.log('user updated successfully');
-        res.status(200).json({curr_wallet: user.wallet});
+        res.status(200).json({curr_wallet: user.wallet, transaction: user.transactions[user.transactions.length - 1]});
     } catch (err) {
         console.log(err);
         const errors = handleErrors(err);
         res.status(400).send({ errors });
     }
 }
+

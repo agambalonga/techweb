@@ -1,5 +1,20 @@
 <%- include('partials/header'); -%>
 
+<%
+// Funzione per formattare la data
+function formatDateTime(inputDate) {
+    const date = new Date(inputDate);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+%>
+
 <div id="container">
    
 
@@ -153,11 +168,31 @@
             </div>
         </div>
     </div>
-    
     <div id="wallet-transaction">
-        Transaction
+            <h2>Transactions</h2>
+            <div class="tableContainer">
+                <table id="transaction-table" class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <% if(user.transactions.length > 0) { %>
+                    <% user.transactions.forEach(function(transaction) { %>
+                        <tr>
+                            <td><%= formatDateTime(transaction.date) %></td>
+                            <td><%= transaction.sign; %> <%=transaction.amount %> €</td>
+                        </tr>
+                    <% })} %>
+                    </tbody>
+                </table>
+            </div>
     </div>
+    
 </div>
+
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/imask/3.4.0/imask.min.js'></script>
 <script src="/wallet.js"></script>
@@ -227,6 +262,7 @@ $('#pay_button').click(function(){
                 console.log(JSON.parse(JSON.stringify(data)));
                 $('.modal').css('display', 'none');
                 $('#wallet-info h3').html(data.curr_wallet + ' €');
+                $('#transaction-table').append('<tr><td>' + formatDateTime(data.transaction.date) + '</td><td>' + data.transaction.sign + data.transaction.amount + ' €</td></tr>');
                 $('.message_success').html('Payment executed successfully');
                 //$('#wallet-transaction').html('Transaction: ' + amount + ' €');
             }
@@ -234,6 +270,18 @@ $('#pay_button').click(function(){
         
     }
 });
+
+function formatDateTime(inputDate) {
+    const date = new Date(inputDate);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
 
 </script>
 
