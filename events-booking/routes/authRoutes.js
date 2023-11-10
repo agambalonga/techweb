@@ -1,6 +1,6 @@
 const { Router }  = require('express');
 const userController = require('../controller/userController');
-const saveFile = require('../authMiddleware/multerMiddleware');
+const saveFile = require('../middleware/multerMiddleware');
 
 
 const router = new Router();

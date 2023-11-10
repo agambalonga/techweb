@@ -1,8 +1,8 @@
 const Router = require('express').Router;
 const router = new Router();
-const { checkAuth } = require('../authMiddleware/authMiddleware');
+const { checkAuth } = require('../middleware/authMiddleware');
 const userController = require('../controller/userController');
-const saveFile = require('../authMiddleware/multerMiddleware');
+const saveFile = require('../middleware/multerMiddleware');
 
 
 router.get('/user/:id', checkAuth, userController.get_profile);

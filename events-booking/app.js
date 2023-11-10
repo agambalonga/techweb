@@ -4,8 +4,8 @@ require('dotenv').config();
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const cookieParser = require('cookie-parser');
-const {checkAuth} = require('./authMiddleware/authMiddleware');
-const {checkUser} = require('./authMiddleware/authMiddleware');
+const {checkAuth} = require('./middleware/authMiddleware');
+const {checkUser} = require('./middleware/authMiddleware');
 const {v4: uuidv4} = require('uuid');
 
 const app = express();

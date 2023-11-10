@@ -169,20 +169,22 @@ function formatDateTime(inputDate) {
         </div>
     </div>
     <div id="wallet-transaction">
-            <h2>Transactions</h2>
             <div class="tableContainer">
                 <table id="transaction-table" class="table">
                     <thead>
                         <tr>
                             <th>Date</th>
+                            <th>Description</th>
                             <th>Amount</th>
                         </tr>
                     </thead>
                     <tbody>
                     <% if(user.transactions.length > 0) { %>
+                    <% user.transactions.reverse(); %>
                     <% user.transactions.forEach(function(transaction) { %>
                         <tr>
                             <td><%= formatDateTime(transaction.date) %></td>
+                            <td><%= transaction.description %></td>
                             <td><%= transaction.sign; %> <%=transaction.amount %> €</td>
                         </tr>
                     <% })} %>
@@ -251,6 +253,7 @@ $('#pay_button').click(function(){
 
     var data = {};
     data.amount = amount;
+    data.card_number = cardnumber;
 
     if(!error) {
         $.ajax({
@@ -262,7 +265,7 @@ $('#pay_button').click(function(){
                 console.log(JSON.parse(JSON.stringify(data)));
                 $('.modal').css('display', 'none');
                 $('#wallet-info h3').html(data.curr_wallet + ' €');
-                $('#transaction-table').append('<tr><td>' + formatDateTime(data.transaction.date) + '</td><td>' + data.transaction.sign + data.transaction.amount + ' €</td></tr>');
+                $('#transaction-table').prepend('<tr><td>' + formatDateTime(data.transaction.date) + '</td> <td>'+ data.transaction.description + '</td> <td>' + data.transaction.sign + data.transaction.amount + ' €</td></tr>');
                 $('.message_success').html('Payment executed successfully');
                 //$('#wallet-transaction').html('Transaction: ' + amount + ' €');
             }

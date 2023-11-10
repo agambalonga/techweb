@@ -46,6 +46,10 @@ const createToken = (id) =>{
     });
 };
 
+const getLastFourNumberOfCard = (cardNumber) => {
+    return 'XXXX XXXX XXXX ' + cardNumber.substring(cardNumber.length - 4, cardNumber.length);
+}
+
 
 
 module.exports.signup_get = (req, res) => {res.render('signup')};
@@ -206,7 +210,8 @@ module.exports.add_wallet = async (req, res) => {
     let userRetrieved = await User.findOne({_id: req.params.id});
     
     userRetrieved.wallet = userRetrieved.wallet + parseFloat(req.body.amount);
-    userRetrieved.transactions.push({date: new Date(), sign: '+', amount: parseFloat(req.body.amount)});
+    userRetrieved.transactions.push({date: new Date(), description: 'Deposit from card '+ getLastFourNumberOfCard(req.body.card_number), sign: '+', amount: parseFloat(req.body.amount)});
+
     
     try {
         const user = await userRetrieved.save();
