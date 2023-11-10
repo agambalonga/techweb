@@ -98,4 +98,4 @@ The application will be available at [http://localhost:3000](https://localhost:3
 
 ## License
 
-[MIT](doc:LICENSE)
+[APACHE 2.0](doc:LICENSE)
