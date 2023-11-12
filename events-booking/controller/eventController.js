@@ -8,7 +8,7 @@ var fs = require('fs');
 module.exports.get_events = async (req, res) => {
     try {
         Event.find({date : { $gte: Date.now() }}, function(err, events) {
-            res.render('home', {events : events});  
+            res.render('home_prova', {events : events});  
           });
     } catch (err) {
         console.log(err)
