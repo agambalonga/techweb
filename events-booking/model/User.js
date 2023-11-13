@@ -13,6 +13,11 @@ const userSchema = new mongoose.Schema({
     surname : {
         type : String
     },
+    // 0 - user, 1 - admin
+    role : {
+        type : Number,
+        default : 0
+    },
     email : {
         type : String,
         unique : true,
@@ -97,7 +102,9 @@ userSchema.statics.comparePassword = async function(password, oldPassword) {
     return false;
 }
 
-
+userSchema.statics.isAdmin = async function() {
+    return this.role === 1;
+}
 
 
  const User = mongoose.model('users', userSchema);

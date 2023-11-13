@@ -20,8 +20,12 @@
 			<ul id="menu">
 				<li><a href="/home">Home</a></li>
 				<li><a id="user_name_menu" href="/user/<%=user._id%>"><%=user.name %></a>
-					<ul>
-						<li><a href="/user/<%=user._id%>">My profile</a></li>
+					<ul>      
+          <!-- Manage events solo un utente admin può visualizzarla--> <!-- Da inserire il campo boolean all'utente -->
+          <% if(user.role === 1) { %>
+            <li><a href="home" class="btn-yellow-hover">Manage events</a></li> <!--Porta alla pagina per modificare, eliminare e inserire eventi--> 
+            <% } %>
+						<li><a href="/user/<%=user._id%>">My Profile</a></li>
 						<li><a href="#">My Bookings</a></li>
             <li><a href="/user/<%=user._id%>/wallet">My Wallet</a></li>
             <li><a href="/logout">Log out</a></li>
@@ -30,10 +34,6 @@
 		</div>
     <% } else { %>
     <ul>
-      <!-- Manage events solo un utente admin può visualizzarla--> <!-- Da inserire il campo boolean all'utente -->
-      <% if(user.admin) { %>
-      <li><a href="home" class="btn-yellow-hover">Manage events</a></li> <!--Porta alla pagina per modificare, eliminare e inserire eventi--> 
-      <% } %>
       <li><a href="/login" class="btn-yellow-hover">Log in</a></li>
       <li><a href="/signup" class="btn-yellow-hover">Sign up</a></li>
     </ul>
