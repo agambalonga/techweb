@@ -193,6 +193,9 @@ var readURL = function(input) {
     $('#signup_button').click(function(e){
         e.preventDefault();
 
+        var error = false;
+
+        debugger;
         name = $('#name').val();
         surname = $('#surname').val();
         email = $('#email').val();
@@ -203,70 +206,90 @@ var readURL = function(input) {
         $('.name.error').html('');
         $('.surname.error').html('');
         $('.email.error').html('');
-        $('.password.error').html('');
         $('.phone.error').html('');
         $('.date.error').html('');
 
         $('#name').removeClass('error-input');
         $('#surname').removeClass('error-input');
         $('#email').removeClass('error-input');
-        $('#password').removeClass('error-input');
         $('#phone').removeClass('error-input');
         $('#date_of_birth').removeClass('error-input');
 
 
         if(!($('#password').val().match(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/)) || $('#password').val() != $('#confirm-password').val()){
-            return;
+            $('#password').addClass('error-input');
+            $('#confirm-password').addClass('error-input');
+            error = true;
         }
 
-        var formData = new FormData();
-        formData.append('name', name);
-        formData.append('surname', surname);
-        formData.append('email', email);
-        formData.append('password', password);
-        formData.append('phone_number', phone_number);
-        formData.append('birth_date', birth_date);
-
-        var file = $('.file-upload')[0].files[0];
-        if(file){
-            formData.append('profile_pic', file);
+        if(!name){
+            $('.name.error').html('Name is required');
+            $('#name').addClass('error-input');
+            error = true;
+        }
+        if(!surname){
+            $('.surname.error').html('Surname is required');
+            $('#surname').addClass('error-input');
+            error = true;
+        }
+        if(!email){
+            $('.email.error').html('Email is required');
+            $('#email').addClass('error-input');
+            error = true;
         }
 
-        $.ajax({
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            url: '/signup',
-            success: function(data) {
-                window.location.href = '/home';
-            },
-            error: function(data) {
-                const errString = JSON.stringify(data.responseJSON.errors);
-                const err = JSON.parse(errString);
-                if(err.name){
-                    $('.name.error').html(err.name);
-                    $('#name').addClass('error-input');
-                }
-                if(err.surname){
-                    $('.surname.error').html(err.surname);
-                    $('#surname').addClass('error-input');
-                }
-                if(err.email){
-                    $('.email.error').html(err.email);
-                    $('#email').addClass('error-input');
-                }
-                if(err.password){
-                    $('.password.error').html(err.password);
-                    $('#password').addClass('error-input');
-                }
 
-                if(err.phone_number) {
-                    $('.phone.error').html(err.phone_number);
-                    $('#phone').addClass('error-input');
-                }
+        if(!error) {
+            var formData = new FormData();
+
+            formData.append('name', name);
+            formData.append('surname', surname);
+            formData.append('email', email);
+            formData.append('password', password);
+            formData.append('phone_number', phone_number);
+            formData.append('birth_date', birth_date);
+
+            var file = $('.file-upload')[0].files[0];
+            if(file){
+                formData.append('profile_pic', file);
             }
-        });
+
+            $.ajax({
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                url: '/signup',
+                success: function(data) {
+                    window.location.href = '/home';
+                },
+                error: function(data) {
+                    const errString = JSON.stringify(data.responseJSON.errors);
+                    const err = JSON.parse(errString);
+                    if(err.name){
+                        $('.name.error').html(err.name);
+                        $('#name').addClass('error-input');
+                    }
+                    if(err.surname){
+                        $('.surname.error').html(err.surname);
+                        $('#surname').addClass('error-input');
+                    }
+                    if(err.email){
+                        $('.email.error').html(err.email);
+                        $('#email').addClass('error-input');
+                    }
+                    if(err.password){
+                        $('.password.error').html(err.password);
+                        $('#password').addClass('error-input');
+                    }
+
+                    if(err.phone_number) {
+                        $('.phone.error').html(err.phone_number);
+                        $('#phone').addClass('error-input');
+                    }
+                }
+            });
+    }
     });
 </script>
 <%- include('partials/footer'); -%>

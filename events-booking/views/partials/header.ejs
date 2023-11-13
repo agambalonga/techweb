@@ -5,11 +5,14 @@
   <meta name="google-signin-client_id" content="456515688442-f92dp1vudi369d67j8hredi65a6sianu.apps.googleusercontent.com">
   <title>Document</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/wallet.css">
+
   <!--<link rel="stylesheet" href="/ticket.css"> -->    <!--Non ho ancora capito come gestici i css, ricordami di chiedertelo-->
 </head>
 <body>
@@ -21,7 +24,7 @@
 				<li><a href="/home">Home</a></li>
 				<li><a id="user_name_menu" href="/user/<%=user._id%>"><%=user.name %></a>
 					<ul>      
-          <!-- Manage events solo un utente admin può visualizzarla--> <!-- Da inserire il campo boolean all'utente -->
+          <!-- Manage events solo un utente admin può visualizzarla-->
           <% if(user.role === 1) { %>
             <li><a href="home" class="btn-yellow-hover">Manage events</a></li> <!--Porta alla pagina per modificare, eliminare e inserire eventi--> 
             <% } %>

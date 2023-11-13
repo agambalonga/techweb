@@ -21,8 +21,9 @@ const eventSchema = new mongoose.Schema({
     price : {
         type : Number
     },
-    artist : {
-        type : [String] //Array di stringhe nel caso l'evento sia di più artisti
+    artist_id : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'artists'
     },
     release_date : {
         type : Date

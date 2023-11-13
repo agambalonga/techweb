@@ -520,3 +520,51 @@ color: #999;
   text-decoration: none;
   cursor: pointer;
 }
+
+/* Stile del contenitore della ricerca */
+.search-container {
+  max-width: 600px;
+  margin: 50px auto;
+  text-align: center;
+}
+
+.search-container {
+  max-width: 600px;
+  margin: 50px auto;
+  text-align: center;
+}
+
+/* Stile del campo di ricerca */
+.search-input {
+  width: 80%;
+  padding: 10px;
+  margin: 10px;
+  font-size: 16px;
+}
+
+/* Stile del risultato di ricerca */
+.ui-menu-item {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+/* Stile dell'immagine del risultato di ricerca */
+.search-result img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* Stile del nome d'arte del risultato di ricerca */
+.search-result span {
+  margin: 0;
+}
+
+.ui-menu-item:hover,
+        .ui-menu-item.ui-state-active {
+            background-color: #ddd; /* Cambia il colore di sfondo a grigio quando si passa sopra con il mouse o è attivo */
+            color: #333; /* Cambia il colore del testo a nero durante l'hover o quando è attivo */
+            border:none;
+        }
