@@ -69,7 +69,7 @@ input {
     -o-transition: none !important;
 }
 
-.container {
+.container_wallet {
     margin: 0 auto;
     width: 100%;
     max-width: 400px;
