@@ -1,110 +1,42 @@
 <%- include('partials/header'); -%>
 
-<div class="container_event">
-    <div class="card">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqQ7As9ABrdyKDqHXtKQ15MmdHRBQ0IQXTZA7dmvX0_A&s" alt="Avatar" style="width:100%">
-        <div class="container_info">
-          <h4><b>John Doe</b></h4>
-          <p>Architect & Engineer</p>
-        </div>
-      </div>
+<%
+// Funzione per formattare la data
+function formatDateTime(inputDate) {
+    const date = new Date(inputDate);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+
+    return `${year}/${month}/${day}`;
+}
+%>
+
+  <% if(events.length > 0) { %>
+  <div class="container_event">
+    <% events.forEach(function(event) { %>
       <div class="card">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqQ7As9ABrdyKDqHXtKQ15MmdHRBQ0IQXTZA7dmvX0_A&s" alt="Avatar" style="width:100%">
-        <div class="container_info">
-          <h4><b>John Doe</b></h4>
-          <p>Architect & Engineer</p>
+        <img src="<%= event.image_URL %>" alt="Event Image" style="width:100%">
+        <div class="container_info_artist">
+          <h4><b><%= event.artist.name %></b></h4>
+          <p><%= event.title %></p>
+        </div>
+        <div class="container_info_event">
+          <span><i class="fa-solid fa-calendar"></i> <%= formatDateTime(event.date) %></span>
+          <span><i class="fa-solid fa-couch"></i> <%= event.seats %></span>
+          <span><i class="fa-solid fa-euro-sign"></i> <%= event.price_for_ticket %></span>
         </div>
       </div>
-      <div class="card">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqQ7As9ABrdyKDqHXtKQ15MmdHRBQ0IQXTZA7dmvX0_A&s" alt="Avatar" style="width:100%">
-        <div class="container_info">
-          <h4><b>John Doe</b></h4>
-          <p>Architect & Engineer</p>
-        </div>
-      </div>
-      <div class="card">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqQ7As9ABrdyKDqHXtKQ15MmdHRBQ0IQXTZA7dmvX0_A&s" alt="Avatar" style="width:100%">
-        <div class="container_info">
-          <h4><b>John Doe</b></h4>
-          <p>Architect & Engineer</p>
-        </div>
-      </div>
-      <div class="card">
-        <img src="img_avatar.png" alt="Avatar" style="width:100%">
-        <div class="container_info">
-          <h4><b>John Doe</b></h4>
-          <p>Architect & Engineer</p>
-        </div>
-      </div>
-      <div class="card">
-        <img src="img_avatar.png" alt="Avatar" style="width:100%">
-        <div class="container_info">
-          <h4><b>John Doe</b></h4>
-          <p>Architect & Engineer</p>
-        </div>
-      </div>
-      <div class="card">
-        <img src="img_avatar.png" alt="Avatar" style="width:100%">
-        <div class="container_info">
-          <h4><b>John Doe</b></h4>
-          <p>Architect & Engineer</p>
-        </div>
-      </div>
-      <div class="card">
-        <img src="img_avatar.png" alt="Avatar" style="width:100%">
-        <div class="container_info">
-          <h4><b>John Doe</b></h4>
-          <p>Architect & Engineer</p>
-        </div>
-      </div>
-      <div class="card">
-        <img src="img_avatar.png" alt="Avatar" style="width:100%">
-        <div class="container_info">
-          <h4><b>John Doe</b></h4>
-          <p>Architect & Engineer</p>
-        </div>
-      </div>
-</div>
+    <% }); %>
+  </div>
+  <% } else { %>
+    <h1>No events found</h1>
+  <% } %>
 
 
 
 <script>
 
-    $('.artist').click(function() {
-        var id = $(this).data('id');
-        window.location.href = '/artist/' + id;
-    });
-
-   // Funzione per gestire la ricerca in live search con jQuery UI autocomplete
-   $(document).ready(function() {
-        var artists = [];
-
-        $.ajax({
-            url: '/artists',
-            type: 'GET',
-            success: function(data) {
-                console.log(data);
-                data.artists.map(function(artist) {
-                    artists.push({ id: artist._id, label: artist.artist_name }); // Utilizza 'label' invece di 'artist_name'
-                });
-                console.log(artists);
-
-                // Inizializza l'autocomplete solo dopo che la chiamata AJAX ha avuto successo
-                $("#searchInput").autocomplete({
-                    source: artists,
-                    minLength: 0,
-                    select: function (event, ui) {
-                        var artistId = ui.item.id;
-                        window.location.href = '/artist?id=' + artistId;
-                    }
-                }).autocomplete("instance")._renderItem = function (ul, item) {
-                    return $("<li class='ui-menu-item'>")
-                        .append(item.label)
-                        .appendTo(ul);
-                };
-            }
-        });
-});
 </script>
 
 

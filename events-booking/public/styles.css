@@ -568,6 +568,7 @@ color: #999;
   margin:20px;
   width: 20%;
   height: 30%;
+  cursor: pointer;
 }
 
 /* On mouse-over, add a deeper shadow */
@@ -576,8 +577,14 @@ color: #999;
 }
 
 /* Add some padding inside the card container */
-.container_info {
-  padding: 2px 16px;
+.container_info_artist {
+  padding: 16px;
+}
+
+.container_info_event {
+  padding: 16px;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .container_event {

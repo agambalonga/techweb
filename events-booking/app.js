@@ -8,7 +8,7 @@ const artistRoutes = require('./routes/artistRoutes');
 const cookieParser = require('cookie-parser');
 const {checkAuth} = require('./middleware/authMiddleware');
 const {checkUser} = require('./middleware/authMiddleware');
-const {v4: uuidv4} = require('uuid');
+const eventController = require('./controller/eventController');
 
 const app = express();
 
@@ -32,7 +32,9 @@ mongoose.connect(process.env.MONGO_ATLAS_URL)
 // routes
 app.get('*', checkUser);
 app.get('/', (req, res) => res.render('index'));
-app.get('/home', checkAuth, (req, res) => res.render('home'));
+
+app.get('/home', checkAuth, eventController.get_events);
+
 app.use(authRoutes);
 app.use(userRoutes);
 app.use(eventRoutes);

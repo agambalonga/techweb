@@ -18,15 +18,24 @@ const eventSchema = new mongoose.Schema({
     site : {
         type : String
     },
-    price : {
+    price_for_ticket : {
         type : Number
     },
-    artist_id : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'artists'
+    seats : {
+        type : Number
     },
-    release_date : {
-        type : Date
+    artist : {
+
+        _id: {
+            type : mongoose.Schema.Types.ObjectId,
+            ref : 'artists'
+        },
+        name: {
+            type : String
+        }
+    },
+    image_URL : {
+        type : String
     }
 });
 
