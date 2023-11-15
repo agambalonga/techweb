@@ -20,6 +20,7 @@ function formatDateTime(inputDate) {
         <div class="container_info_artist">
           <h4><b><%= event.artist.name %></b></h4>
           <p><%= event.title %></p>
+          <p><%= event.city %> - <%= event.site %></p>
         </div>
         <div class="container_info_event">
           <span><i class="fa-solid fa-calendar"></i> <%= formatDateTime(event.date) %></span>
