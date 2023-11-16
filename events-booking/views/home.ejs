@@ -15,7 +15,7 @@ function formatDateTime(inputDate) {
   <% if(events.length > 0) { %>
   <div class="container_event">
     <% events.forEach(function(event) { %>
-      <div class="card">
+      <div class="card" data-id="<%=event._id %>">
         <img src="<%= event.image_URL %>" alt="Event Image" style="width:100%">
         <div class="container_info_artist">
           <h4><b><%= event.artist.name %></b></h4>
