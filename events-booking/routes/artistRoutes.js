@@ -6,6 +6,6 @@ const router = new Router();
 
 router.get('/artists', artistController.getAll);
 
-router.get('/artists/:id', artistController.getArtistById);
+router.get('/artist/:id', artistController.getArtistById);
 
 module.exports = router;    
