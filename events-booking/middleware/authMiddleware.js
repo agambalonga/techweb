@@ -8,7 +8,6 @@ const checkAuth = (req, res, next)  => {
     console.log('checking authentication')
     //retrieve token from cookies
     const token = req.cookies.jwt;
-    console.log("token: " + token);
     if(token){
         //verify token
         jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
@@ -17,7 +16,6 @@ const checkAuth = (req, res, next)  => {
                 console.log(err.message);
                 res.redirect('/login');
             } else {
-                console.log(decodedToken);
                 //refresh jwt token if is all ok
                 res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000})
                 next();
@@ -29,7 +27,7 @@ const checkAuth = (req, res, next)  => {
 }
 
 const checkUser = (req, res, next) => {
-    console.log('checking user')
+    console.log('checking user...')
     const token = req.cookies.jwt;
     if(token) {
         jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
@@ -38,8 +36,9 @@ const checkUser = (req, res, next) => {
                 res.locals.user = null;
                 next();
             } else {
-                console.log(decodedToken);
+                console.log("JWT Token is not expired, refresh it...");
                 let user = await User.findById(decodedToken.id);
+                res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000})
                 res.locals.user = user;
                 next();
             }
