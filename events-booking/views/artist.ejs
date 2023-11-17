@@ -1,16 +1,5 @@
 <%- include('partials/header'); -%>
 
-<%
-// Funzione per formattare la data
-function formatDateTime(inputDate) {
-    const date = new Date(inputDate);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-
-    return `${year}/${month}/${day}`;
-}
-%>
 <div class="bg_black" style="background-color: blanchedalmond;height: 55%;width: 100%;display: flex;justify-content: flex-start;"> 
   <div class="container_top" style="display: contents;">
     <img src="<%= events.artist.image_URL %>" alt="Event Image" style="height: -webkit-fill-available;">
@@ -20,26 +9,6 @@ function formatDateTime(inputDate) {
     <h3 style="padding-left: 10%;">Eventi disponibili : <%= events.length %></h3>
   </div>
 </div>
-  <% if(events.length > 0) { %>
-  <div class="container_event">
-    <% events.forEach(function(event) { %>
-      <div class="card" data-id="<%=event._id %>">
-        <img src="<%= event.image_URL %>" alt="Event Image" style="width:100%">
-        <div class="container_info_artist">
-          <h4><b><%= event.artist.name %></b></h4>
-          <p><%= event.title %></p>
-          <p><%= event.city %> - <%= event.site %></p>
-        </div>
-        <div class="container_info_event">
-          <span><i class="fa-solid fa-calendar"></i> <%= formatDateTime(event.date) %></span>
-          <span><i class="fa-solid fa-couch"></i> <%= event.seats %></span>
-          <span><i class="fa-solid fa-euro-sign"></i> <%= event.price_for_ticket %></span>
-        </div>
-      </div>
-    <% }); %>
-  </div>
-  <% } else { %>
-    <h1>No events found</h1>
-  <% } %>
+<%- include('utils/show_events'); -%>
 
 <%- include('partials/footer'); -%>
