@@ -92,7 +92,7 @@ Once the dependencies are installed, you can start the server using the followin
 node app
 ```
 
-The application will be available at [https://localhost:3000](https://localhost:3000)
+The application will be available at [http://localhost:3000](http://localhost:3000)
 
 
 
