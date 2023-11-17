@@ -11,6 +11,11 @@ function formatDateTime(inputDate) {
     return `${year}/${month}/${day}`;
 }
 %>
+  <div class="bg_black" style="background-color: blanchedalmond; height: 55%;">
+    <div class="container_top" style="display: inline-block;">
+      <img src="/uploads/events/Il_coraggio_dei_bambini.jpg" alt="Event Image" style="width: 58%;align-self: flex-end;/* flex: auto; *//* max-height: 91%; *//* background-color: black; */">
+    </div>
+  </div>
   <% if(events.length > 0) { %>
   <div class="container_event">
     <% events.forEach(function(event) { %>
@@ -32,12 +37,5 @@ function formatDateTime(inputDate) {
   <% } else { %>
     <h1>No events found</h1>
   <% } %>
-
-
-
-<script>
-
-</script>
-
 
 <%- include('partials/footer'); -%>

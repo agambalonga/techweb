@@ -166,7 +166,7 @@ nav{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 120px;
+  /* margin-bottom: 120px; */
 }
 nav ul{
   display: flex;

@@ -1,5 +1,6 @@
 const { Router }  = require('express');
 const Artist = require('../model/Artist');
+const Event = require('../model/Event');
 
 //Funzione che prende tutti gli artisti
 module.exports.getAll = async (req, res) => {
@@ -15,10 +16,16 @@ module.exports.getAll = async (req, res) => {
 
 //Funzione che prende un artista in base all'id
 module.exports.getArtistById = async (req, res) => {
+    let artista={};
+    let events =[];
+    debugger;
+    console.log(req.params.id);
     try {
-        Artist.findById(req.params.id, function(err, artist) {
-            res.status(200).json(artist);  
-          });
+        //find artist by id
+        artista = await Artist.findById(req.params.id);
+        events = await Event.find({ 'artist._id': artista._id });
+        events.artist = artista;
+        res.render('artist', {events: events});  
     } catch (err) {
         console.log(err)
         // const errors = handleErrors(err);
