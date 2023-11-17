@@ -15,6 +15,9 @@ const artistSchema = new mongoose.Schema({
     artist_name: {
         type: String
     },
+    image_URL : {
+        type : String
+    }
 });
 
 const Artist = mongoose.model('artists', artistSchema)
