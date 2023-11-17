@@ -18,7 +18,7 @@ $(document).ready(function() {
                 minLength: 0,
                 select: function (event, ui) {
                     var artistId = ui.item.id;
-                    window.location.href = '/artist?id=' + artistId;
+                    window.location.href = '/artist/'+ artistId;
                 }
             }).autocomplete("instance")._renderItem = function (ul, item) {
                 return $("<li class='ui-menu-item'>")
