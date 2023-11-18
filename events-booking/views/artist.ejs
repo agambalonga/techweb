@@ -2,13 +2,18 @@
 
 <div class="bg_black" style="background-color: blanchedalmond;height: 55%;width: 100%;display: flex;justify-content: flex-start;"> 
   <div class="container_top" style="display: contents;">
-    <img src="<%= events.artist.image_URL %>" alt="Event Image" style="height: -webkit-fill-available;">
+    <% if(events.artist.image_URL){ %>
+      <img src= "<%= events.artist.image_URL %>" alt="Artist Image" style="height: -webkit-fill-available;">
+    <% } else { %>
+      <img src= "../public/logo_large.png" alt="Artist Image" style="height: -webkit-fill-available;">
+    <% } %>
   </div>
   <div style="width: -webkit-fill-available;">
     <h1 style="padding-left: 10%;"><%= events.artist.artist_name %></h1><br><p></p>
     <h3 style="padding-left: 10%;">Eventi disponibili : <%= events.length %></h3>
   </div>
 </div>
+
 <%- include('utils/show_events'); -%>
 
 <%- include('partials/footer'); -%>

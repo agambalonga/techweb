@@ -557,7 +557,7 @@ color: #999;
         }
 
 .ui-autocomplete { 
-  max-height: 200px; overflow-y: scroll; overflow-x: hidden;
+  max-height: 200px; overflow-y: scroll; overflow-x: hidden; overflow: hidden;
 }
 
 
@@ -590,4 +590,8 @@ color: #999;
 .container_event {
   display: flex;
   flex-wrap: wrap;
+}
+
+input ul{
+  overflow: hidden;
 }
