@@ -15,6 +15,9 @@ const artistSchema = new mongoose.Schema({
     artist_name: {
         type: String
     },
+    genres: {
+        type: String
+    },
     image_URL : {
         type : String
         //required : true
