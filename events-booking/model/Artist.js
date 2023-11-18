@@ -17,6 +17,7 @@ const artistSchema = new mongoose.Schema({
     },
     image_URL : {
         type : String
+        //required : true
     }
 });
 

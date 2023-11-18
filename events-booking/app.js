@@ -39,3 +39,4 @@ app.use(authRoutes);
 app.use(userRoutes);
 app.use(eventRoutes);
 app.use(artistRoutes);
+
