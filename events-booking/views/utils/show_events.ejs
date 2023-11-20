@@ -10,6 +10,18 @@ function formatDateTime(inputDate) {
 }
 %>
 
+<div id="eventModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Event Details</h2>
+    <div id="eventDetails"></div>
+    <div id="event_img"></div>
+    <label for="ticketQuantity">Ticket Quantity:</label>
+    <input type="number" id="ticketQuantity" min="1" value="1">
+    <button id="addToCartBtn">Add to Cart</button>
+  </div>
+</div>
+
 <section class="container__event">
   <% if(events.length > 0) { %>
   <div class="card__container swiper">
@@ -31,7 +43,7 @@ function formatDateTime(inputDate) {
                 <span><i class="fa-solid fa-couch"></i> <%= event.seats %></span>
                 <span><i class="fa-solid fa-euro-sign"></i> <%= event.price_for_ticket %></span>
 
-                <a href="/events/<%=event._id %>" class="card__button">View More</a>
+                <a href="#" class="card__button" onclick="openModal('<%= JSON.stringify(event) %>')">View More</a>
               </div>
            </article>
             <% }); %>
@@ -54,6 +66,8 @@ function formatDateTime(inputDate) {
     <h1>No events found</h1>
   <% } %>
 </section>
+
+
 
 
 <!--
@@ -84,3 +98,61 @@ function formatDateTime(inputDate) {
 
 
     <script src="/swiper.js"></script>
+    <script>
+      // Function to open the modal and populate it with event details
+      function openModal(eventJSON) {
+        const event = JSON.parse(eventJSON);
+        // Get the event details based on the eventId
+    
+        // Populate the modal with event details
+        const modal = document.getElementById("eventModal");
+        const eventDetails = document.getElementById("eventDetails");
+        eventDetails.innerHTML = `
+          <h3>${event.title}</h3>
+          <p>Artist: ${event.artist.name}</p>
+          <p>Date: ${formatDateTime(event.date)}</p>
+          <p>Seats: ${event.seats}</p>
+          <p>Price: ${event.price_for_ticket}</p>
+        `;
+        const eventImg = document.getElementById("event_img");
+        eventImg.innerHTML = `
+          <img src="${event.image_URL}" alt="Event Image" style="width:100%">
+        `;
+    
+        // Show the modal
+        modal.style.display = "block";
+      }
+    
+      // Function to close the modal
+      function closeModal() {
+        const modal = document.getElementById("eventModal");
+        modal.style.display = "none";
+      }
+    
+      // Add event listener to close button
+      const closeButton = document.querySelector(".close");
+      closeButton.addEventListener("click", closeModal);
+    
+      // Add event listener to "Add to Cart" button
+      const addToCartButton = document.getElementById("addToCartBtn");
+      addToCartButton.addEventListener("click", addToCart);
+    
+      // Function to add tickets to the cart
+      function addToCart() {
+        const ticketQuantity = document.getElementById("ticketQuantity").value;
+        // Add the ticket quantity to the cart logic here
+        // ...
+        // Close the modal after adding to cart
+        closeModal();
+      }
+    
+      function formatDateTime(inputDate) {
+        const date = new Date(inputDate);
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+    
+        return `${year}/${month}/${day}`;
+    }
+    
+    </script>
