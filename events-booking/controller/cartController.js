@@ -46,8 +46,24 @@ module.exports.add_to_cart = async (req, res) => {
         res.status(200).json({success: true, message: 'Event added to cart', newItem: newItem});
         
 
-
     } else {
         res.status(400).json({success: false, message: 'Event not found'});
+    }
+};
+
+//Funzione che controlla se l'evento ha ancora posti disponibili
+module.exports.check_seats = async (req, res, next) => {
+    const event_id = req.body.event_id;
+    try {
+        const event = await Event.findById(event_id);
+        if(event.seats > 0 && event.seats >= req.body.qty){
+            next();
+        }else{
+            res.status(400).json({success: false, message: 'Seats not available'});
+        }
+    } catch (err) {
+        console.log(err)
+        // const errors = handleErrors(err);
+        res.status(400).json({ err });
     }
 };

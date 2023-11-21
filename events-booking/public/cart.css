@@ -1,0 +1,44 @@
+/* Stili per il carrello */
+.cart-section {
+    display: none; /* Carrello nascosto per default */
+    position: fixed;
+    top: 0;
+    right: 0; /* Posizionato sulla parte destra */
+    bottom: 0;
+    width: 300px; /* Larghezza del carrello */
+    background-color: #fefefe;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    overflow-y: auto; /* Aggiungi scrollbar se il contenuto è troppo lungo */
+    padding: 20px;
+    transition: transform 0.3s ease-out; /* Aggiungi transizione al movimento */
+  }
+   
+  /* Stili per il pulsante di chiusura del carrello */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+   
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  #overlay {   
+    display: none;   
+    position: fixed;   
+    top: 0;  
+    right: 0;   
+    bottom: 0;   
+    left: 0;   
+    background-color: rgba(0, 0, 0, 0.5);  
+    z-index: 999; /* Assicura che sia sopra gli altri elementi */
+}
+
+#span_cart:hover {
+    cursor: pointer;
+}

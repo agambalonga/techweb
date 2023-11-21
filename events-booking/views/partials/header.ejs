@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/wallet.css">
   <link rel="stylesheet" href="/events.css">
+  <link rel="stylesheet" href="/cart.css">
 
 
   <!--<link rel="stylesheet" href="/ticket.css"> -->    <!--Non ho ancora capito come gestici i css, ricordami di chiedertelo-->
@@ -30,7 +31,8 @@
     <div id="drop-menu">
 			<ul id="menu">
 				<li><a href="/home">Home</a></li>
-				<li><a id="user_name_menu" href="/user/<%=user._id%>"><%=user.name %></a>
+				<li><a id="user_name_menu" href="/user/<%=user._id%>"><%=user.name %></a></li>
+        <li><span id="span_cart"><i class="fa-solid fa-cart-shopping fa-lg"></i></span></li>
 					<ul>      
           <!-- Manage events solo un utente admin può visualizzarla-->
           <% if(user.role === 1) { %>
@@ -50,4 +52,48 @@
     </ul>
     <% } %>
   </nav>
+
   
+
+<!-- La sezione del carrello -->
+<div id="overlay"></div>
+<div id="cartSection" class="cart-section">  <!-- Contenuto del carrello -->  
+  <span class="close">&times;</span>  
+  <p>Contenuto del tuo carrello qui...</p>
+</div>
+
+<script>
+  $(document).ready(function() {
+  var $btn = $('#span_cart');
+  var $cartSection = $('#cartSection');
+  var $overlay = $('#overlay');
+ 
+  // Quando il pulsante viene cliccato, mostra la sezione del carrello con l'effetto di transizione
+  $btn.on('click', function(event) {
+    event.stopPropagation();
+    $cartSection.css('display', 'block');
+    $overlay.fadeIn(); // Mostra l'overlay
+    $cartSection.animate({ 'right': 0 }, 300); // Mostra la sezione del carrello con un'animazione
+  });
+ 
+  // Chiudi la sezione del carrello quando si clicca sul simbolo "x" o sullo sfondo
+  $cartSection.on('click', function(event) {
+    if ($(event.target).hasClass('close') || event.target === $cartSection[0]) {
+      $overlay.fadeOut(); // Nascondi l'overlay
+      $cartSection.animate({ 'right': '-100%' }, 300, function() {
+        $cartSection.css('display', 'none');
+      });
+    }
+  });
+ 
+  // Chiudi la sezione del carrello quando si clicca al di fuori di essa
+  $(document).on('click', function(event) {
+    if (!$cartSection.is(event.target) && $cartSection.has(event.target).length === 0 && event.target !== $btn[0]) {
+      $overlay.fadeOut(); // Nascondi l'overlay
+      $cartSection.animate({ 'right': '-100%' }, 300, function() {
+        $cartSection.css('display', 'none');
+      });
+    }
+  });
+});
+</script>
