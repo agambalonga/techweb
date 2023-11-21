@@ -78,12 +78,14 @@
  
   // Chiudi la sezione del carrello quando si clicca sul simbolo "x" o sullo sfondo
   $cartSection.on('click', function(event) {
-    if ($(event.target).hasClass('close') || event.target === $cartSection[0]) {
+    if ($(event.target).hasClass('close')) {
       $overlay.fadeOut(); // Nascondi l'overlay
       $cartSection.animate({ 'right': '-100%' }, 300, function() {
         $cartSection.css('display', 'none');
       });
     }
+    // Impedisci la chiusura se viene cliccato all'interno del cart-section
+    event.stopPropagation();
   });
  
   // Chiudi la sezione del carrello quando si clicca al di fuori di essa
