@@ -5,10 +5,12 @@ const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const artistRoutes = require('./routes/artistRoutes');
+const cartRoutes = require('./routes/cartRoute');
 const cookieParser = require('cookie-parser');
 const {checkAuth} = require('./middleware/authMiddleware');
 const {checkUser} = require('./middleware/authMiddleware');
 const eventController = require('./controller/eventController');
+const sessions = require('express-session');
 
 const app = express();
 
@@ -16,6 +18,17 @@ const app = express();
 app.use(express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(cookieParser());
+
+// creating 24 hours from milliseconds
+const oneDay = 1000 * 60 * 60 * 24;
+
+//session middleware
+app.use(sessions({
+    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+    saveUninitialized:true,
+    cookie: { maxAge: oneDay },
+    resave: false
+}));
 
 // view engine
 app.set('view engine', 'ejs');
@@ -30,7 +43,11 @@ mongoose.connect(process.env.MONGO_ATLAS_URL)
 .catch((err) => console.log("error "+ err));
 
 // routes
-app.get('*', checkUser);
+app.get('*', checkUser, (req, res, next) => {
+    res.locals.cart = req.session.cart;
+    console.log(res.locals.cart);
+    next();
+});
 app.get('/', (req, res) => res.render('index'));
 
 app.get('/home', checkAuth, eventController.get_events);
@@ -39,4 +56,5 @@ app.use(authRoutes);
 app.use(userRoutes);
 app.use(eventRoutes);
 app.use(artistRoutes);
+app.use(cartRoutes);
 

@@ -130,4 +130,9 @@
     margin: auto auto;
   }
 
-  
+  #addToCartBtn:hover{
+    background-color: black;
+    color: white;
+    cursor: pointer;
+  }
+

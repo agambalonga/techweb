@@ -74,64 +74,80 @@ function formatDateTime(inputDate) {
 </section>
 
 <script src="/swiper.js"></script>
-    <script>
-      // Function to open the modal and populate it with event details
-      function openModal(eventJSON) {
-        const event = JSON.parse(eventJSON);
-        // Get the event details based on the eventId
-    
-        // Populate the modal with event details
-        const modal = document.getElementById("eventModal");
-        const eventDetails = document.getElementById("eventDetails");
-        eventDetails.innerHTML = `
-          <h3>${event.artist.name} - ${event.title}</h3>
-          <p>Start Date: ${formatDateTime(event.date)}</p>
-          <p>Seats Avaiabile: ${event.seats}</p>
-          <p>Location: ${event.city} - ${event.site}</p>
-          <p>Price: ${event.price_for_ticket} € </p>
-        `;
-        const eventImg = document.getElementById("event-image");
-        eventImg.innerHTML = `
-          <img src="${event.image_URL}" alt="Event Image" style="width:50%">
-        `;
-    
-        // Show the modal
-        modal.style.display = "block";
-      }
-    
-      // Function to close the modal
-      function closeModal() {
-        const modal = document.getElementById("eventModal");
-        modal.style.display = "none";
-      }
-    
-      // Add event listener to close button
-      const closeButton = document.querySelector(".close");
-      closeButton.addEventListener("click", closeModal);
-    
-      // Add event listener to "Add to Cart" button
-      const addToCartButton = document.getElementById("addToCartBtn");
-      addToCartButton.addEventListener("click", addToCart);
-    
-      // Function to add tickets to the cart
-      function addToCart() {
-        const ticketQuantity = document.getElementById("ticketQuantity").value;
-        // Add the ticket quantity to the cart logic here
-        // ...
-        // Close the modal after adding to cart
-        closeModal();
-      }
-    
-      function formatDateTime(inputDate) {
-        const date = new Date(inputDate);
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
-        const hours = date.getHours().toString().padStart(2, '0');
-        const minutes = date.getMinutes().toString().padStart(2, '0');
-        const seconds = date.getSeconds().toString().padStart(2, '0');
 
-        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+<script>
+  // Function to open the modal and populate it with event details
+
+  function openModal(eventJSON) {
+    const event = JSON.parse(eventJSON);
+    // Get the event details based on the eventId
+
+    // Populate the modal with event details
+    const eventDetails = `
+      <h3>${event.artist.name} - ${event.title}</h3>
+      <p>Start Date: ${formatDateTime(event.date)}</p>
+      <p>Seats Available: ${event.seats}</p>
+      <p>Location: ${event.city} - ${event.site}</p>
+      <p>Price: ${event.price_for_ticket} € </p>
+    `;
+    const eventImg = `
+      <img src="${event.image_URL}" alt="Event Image" style="width:50%">
+    `;
+
+    // Show the modal
+    $("#eventDetails").attr("data-event-id", event._id);
+    $("#eventDetails").html(eventDetails);
+    $("#event-image").html(eventImg);
+    $("#eventModal").show();
+  }
+  
+    // Function to close the modal
+
+    $('.close').click(function(){
+      $("#eventModal").hide();
+    });
+
+
+    $('#addToCartBtn').click(function(){
+      var data = {};
+      data.event_id = $("#eventDetails").attr("data-event-id");
+      data.qty = parseInt($("#ticketQuantity").val(), 10);
+      console.log(data)
+
+      $.ajax({
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        url: '/cart/add',
+        success: function(data) {
+          console.log('success');
+          console.log(JSON.stringify(data));
+        }
+      });
+
+      
+      $("#eventModal").hide();
+    });
+
+    // Function to add tickets to the cart
+    function addToCart() {
+      const ticketQuantity = document.getElementById("ticketQuantity").value;
+      // Add the ticket quantity to the cart logic here
+      // ...
+      // Close the modal after adding to cart
+      closeModal();
     }
+  
+    function formatDateTime(inputDate) {
+      const date = new Date(inputDate);
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
+      const hours = date.getHours().toString().padStart(2, '0');
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+      const seconds = date.getSeconds().toString().padStart(2, '0');
+
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
     
     </script>
