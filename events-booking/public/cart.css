@@ -5,7 +5,7 @@
     top: 0;
     right: 0; /* Posizionato sulla parte destra */
     bottom: 0;
-    width: 300px; /* Larghezza del carrello */
+    width: 390px; /* Larghezza del carrello */
     background-color: #fefefe;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 9999;
@@ -41,4 +41,36 @@
 
 #span_cart:hover {
     cursor: pointer;
+}
+
+.h2_cart {
+  color: #333;
+}
+
+ul.menu__cart {
+  list-style-type: none;
+  padding: 0;
+}
+
+li.li_cart {
+  background-color: #fff;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+}
+
+.cart-item__image {
+  width: 50px; /* Imposta la larghezza desiderata per l'immagine */
+  height: auto; /* Imposta l'altezza in base all'immagine originale */
+  margin-right: 10px; /* Aggiunge uno spazio tra l'immagine e le informazioni */
+}
+
+.cart-item__info {
+  /* Aggiungi stili desiderati per la sezione delle informazioni */
 }

@@ -1,7 +1,6 @@
+<link rel="stylesheet" href="/cart.css">
 <li><span id="span_cart"><i class="fa-solid fa-cart-shopping fa-lg"></i></span></li>
         <div class="cart-indicator" id="cart-indicator">
-          
-          
           <% if(typeof cart === 'undefined') { %> 
               0 
           <% } else { %> 
@@ -11,14 +10,30 @@
               });%>
               <%= count %> 
           <% } %>
-          
         </div> <!-- Elemento per mostrare il numero di elementi nel carrello -->
 
 <!-- La sezione del carrello -->
 <div id="overlay"></div>
 <div id="cartSection" class="cart-section">  <!-- Contenuto del carrello -->  
   <span class="close">&times;</span>  
-  <p>Contenuto del tuo carrello qui...</p>
+  <h2 class="h2_cart">Cart Details</h2>
+  <ul class="menu__cart">
+    <% if(typeof cart === 'undefined') { %> 
+        <p>Contenuto del tuo carrello qui...</p>
+    <% } else { %> 
+    <% cart.forEach(function(event) { %>
+        <li class="li_cart" data-id="event._id">
+            <div class="cart-item">
+                <img src="<%= event.event_img %>" alt="img event" class="cart-item__image">
+                <div class="cart-item__info">
+                    <p><%= event.title %></p>
+                    <p>Quantity: <%= event.quantity %></p>
+                    <p>Price: <%= event.price %></p>
+                </div>
+            </div>
+        </li>
+    <% }) } %>
+    </ul>
 </div>
 
 <script>

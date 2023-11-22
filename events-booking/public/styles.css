@@ -168,7 +168,7 @@ nav{
   align-items: center;
   /* margin-bottom: 120px; */
 }
-nav ul{
+nav ul#menu{
   display: flex;
   align-items: center;
 }
@@ -210,7 +210,7 @@ ul#menu li a:hover {
   border-radius: 36px;
 }
 
-ul#menu ul {
+ul#menu ul.menu__profile {
 	margin:2px 0 0;
 	padding:0;
 	display:inline-block;

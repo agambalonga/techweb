@@ -32,7 +32,7 @@
 			<ul id="menu">
 				<li><a href="/home">Home</a></li>
 				<li><a id="user_name_menu" href="/user/<%=user._id%>"><%=user.name %></a>
-          <ul>      
+          <ul class="menu__profile">      
           <!-- Manage events solo un utente admin può visualizzarla-->
           <% if(user.role === 1) { %>
             <li><a href="home" class="btn-yellow-hover">Manage events</a></li> <!--Porta alla pagina per modificare, eliminare e inserire eventi--> 
@@ -45,6 +45,7 @@
         </li>
         <%- include('../utils/cart'); -%>
 			</ul>
+      
 		</div>
     <% } else { %>
     <ul>
