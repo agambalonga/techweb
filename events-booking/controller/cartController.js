@@ -43,7 +43,7 @@ module.exports.add_to_cart = async (req, res) => {
 
         console.log(req.session.cart);
 
-        res.status(200).json({success: true, message: 'Event added to cart', new_item: newItem, cart: req.session.cart});
+        res.status(200).json({success: true, message: 'Event added to cart', qty_added: req.body.qty, cart: req.session.cart});
         
 
     } else {

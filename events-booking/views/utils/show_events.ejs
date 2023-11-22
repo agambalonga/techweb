@@ -33,6 +33,11 @@ function formatDateTime(inputDate) {
   <p></p>
 </div>
 
+<div id="warningBox" class="warning-box">
+  <i class="fa-solid fa-triangle-exclamation"></i>
+  <p></p>
+</div>
+
 <section class="container__event">
   <% if(events.length > 0) { %>
   <div class="card__container swiper">
@@ -127,12 +132,16 @@ function formatDateTime(inputDate) {
         success: function(data) {
           
           if(data.success) {
-            if(data.new_item) {
-              $(".cart-indicator").html(data.cart.length);
-            }
+            $(".cart-indicator").html(parseInt($(".cart-indicator").html(), 10) + data.qty_added);
           }
           showSuccessAnimation(data.cart[data.cart.length - 1].title + " added to cart successfully!");
           console.log(JSON.stringify(data));
+        },
+        error: function(data) {
+          var error = data.responseJSON;
+          if(error.code === 'EB001') {
+            showErrorModal(data.responseJSON.message);
+          }
         }
       });
 
@@ -160,5 +169,20 @@ function formatDateTime(inputDate) {
     $successBox.fadeOut();
   }, 2000); // Nasconde il box di successo dopo 2 secondi
 }
+
+function showErrorModal(text) {
+  var $warningBox = $('#warningBox');
+    $warningBox.find('p').text(text);
+    $warningBox.fadeIn();
+
+    setTimeout(function() {
+    $warningBox.fadeOut();
+  }, 2000); // Nasconde il box di successo dopo 2 secondi
+}
+
+// Funzione per chiudere il modal di avviso/errori
+$('.close').click(function(){
+  $("#errorModal").hide();
+});
     
-    </script>
+</script>

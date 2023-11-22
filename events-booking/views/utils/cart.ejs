@@ -1,10 +1,15 @@
 <li><span id="span_cart"><i class="fa-solid fa-cart-shopping fa-lg"></i></span></li>
         <div class="cart-indicator" id="cart-indicator">
           
+          
           <% if(typeof cart === 'undefined') { %> 
               0 
           <% } else { %> 
-            <%=cart.length %> 
+            <% let count=0;
+            cart.forEach(function(item) { %>
+              <% count += item.quantity; 
+              });%>
+              <%= count %> 
           <% } %>
           
         </div> <!-- Elemento per mostrare il numero di elementi nel carrello -->

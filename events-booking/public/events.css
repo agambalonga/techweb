@@ -181,3 +181,30 @@
     margin-bottom: 10px;
   }
 
+
+
+  .warning-box {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 63px;
+    background-color: #FEE996;
+    color: black;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    z-index: 9999;
+  }
+
+  .warning-box p {
+    color: black;
+    font-size: 18px;
+  }
+  
+  .fa-triangle-exclamation {
+    font-size: 50px;
+    margin-bottom: 10px;
+  }
+
