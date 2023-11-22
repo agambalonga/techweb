@@ -22,7 +22,7 @@
         <p>Contenuto del tuo carrello qui...</p>
     <% } else { %> 
     <% cart.forEach(function(event) { %>
-        <li class="li_cart" data-id="event._id">
+        <li class="li_cart" data-id="<%= event.event_id %>">
             <div class="cart-item">
                 <img src="<%= event.event_img %>" alt="img event" class="cart-item__image">
                 <div class="cart-item__info">

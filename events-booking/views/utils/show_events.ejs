@@ -135,7 +135,7 @@ function formatDateTime(inputDate) {
             $(".cart-indicator").html(parseInt($(".cart-indicator").html(), 10) + data.qty_added);
             if(data.new_item){
               $(".menu__cart").append(`
-                <li class="li_cart">
+                <li class="li_cart" data-id="${data.cart[data.cart.length -1].event_id}">
                   <div class="cart-item">
                     <img src="${data.cart[data.cart.length - 1].event_img}" alt="img event" class="cart-item__image">
                     <div class="cart-item__info">
@@ -148,10 +148,10 @@ function formatDateTime(inputDate) {
               `);
 
             } else {
-              $.each( data.cart, function( index, event ) {  alert( index + ": " + event );
+              $.each( data.cart, function( index, event ) {
               var event_obj = JSON.parse(JSON.stringify(event));
               if(event_obj.event_id === json.event_id) {
-                  $("li[data-id="+json.event_id+"] .cart-item__info p:nth-child(2)").html("Quantity: " + event_obj.quantity );
+                  var el = $("li[data-id="+json.event_id+"] .cart-item__info p:nth-child(2)").html("Quantity: " + event_obj.quantity );
                 }
               });
             }
