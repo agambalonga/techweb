@@ -31,7 +31,18 @@
     <div id="drop-menu">
 			<ul id="menu">
 				<li><a href="/home">Home</a></li>
-				<li><a id="user_name_menu" href="/user/<%=user._id%>"><%=user.name %></a></li>
+				<li><a id="user_name_menu" href="/user/<%=user._id%>"><%=user.name %></a>
+          <ul>      
+          <!-- Manage events solo un utente admin può visualizzarla-->
+          <% if(user.role === 1) { %>
+            <li><a href="home" class="btn-yellow-hover">Manage events</a></li> <!--Porta alla pagina per modificare, eliminare e inserire eventi--> 
+            <% } %>
+            <li><a href="/user/<%=user._id%>">My Profile</a></li>
+            <li><a href="#">My Bookings</a></li>
+            <li><a href="/user/<%=user._id%>/wallet">My Wallet</a></li>
+            <li><a href="/logout">Log out</a></li>
+          </ul>
+        </li>
         <li><span id="span_cart"><i class="fa-solid fa-cart-shopping fa-lg"></i></span></li>
         <div class="cart-indicator" id="cart-indicator">
           
@@ -42,16 +53,6 @@
           <% } %>
           
         </div> <!-- Elemento per mostrare il numero di elementi nel carrello -->
-					<ul>      
-          <!-- Manage events solo un utente admin può visualizzarla-->
-          <% if(user.role === 1) { %>
-            <li><a href="home" class="btn-yellow-hover">Manage events</a></li> <!--Porta alla pagina per modificare, eliminare e inserire eventi--> 
-            <% } %>
-						<li><a href="/user/<%=user._id%>">My Profile</a></li>
-						<li><a href="#">My Bookings</a></li>
-            <li><a href="/user/<%=user._id%>/wallet">My Wallet</a></li>
-            <li><a href="/logout">Log out</a></li>
-					</ul>
 			</ul>
 		</div>
     <% } else { %>

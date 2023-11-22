@@ -59,7 +59,7 @@ module.exports.check_seats = async (req, res, next) => {
         if(event.seats > 0 && event.seats >= req.body.qty){
             next();
         }else{
-            res.status(400).json({success: false, message: 'Seats not available'});
+            res.status(400).json({success: false, code:'EB001', message: 'Seats not available for quantity selected'});
         }
     } catch (err) {
         console.log(err)
