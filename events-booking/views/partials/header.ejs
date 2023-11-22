@@ -33,7 +33,7 @@
 				<li><a href="/home">Home</a></li>
 				<li><a id="user_name_menu" href="/user/<%=user._id%>"><%=user.name %></a></li>
         <li><span id="span_cart"><i class="fa-solid fa-cart-shopping fa-lg"></i></span></li>
-        <div class="cart-indicator">
+        <div class="cart-indicator" id="cart-indicator">
           
           <% if(typeof cart === 'undefined') { %> 
               0 
@@ -74,11 +74,18 @@
 <script>
   $(document).ready(function() {
   var $btn = $('#span_cart');
+  var $indicator = $('#cart-indicator');
   var $cartSection = $('#cartSection');
   var $overlay = $('#overlay');
  
   // Quando il pulsante viene cliccato, mostra la sezione del carrello con l'effetto di transizione
   $btn.on('click', function(event) {
+    event.stopPropagation();
+    $cartSection.css('display', 'block');
+    $overlay.fadeIn(); // Mostra l'overlay
+    $cartSection.animate({ 'right': 0 }, 300); // Mostra la sezione del carrello con un'animazione
+  });
+  $indicator.on('click', function(event) {
     event.stopPropagation();
     $cartSection.css('display', 'block');
     $overlay.fadeIn(); // Mostra l'overlay
