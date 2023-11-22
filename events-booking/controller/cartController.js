@@ -28,7 +28,7 @@ module.exports.add_to_cart = async (req, res) => {
                     break;
                 }
             }
-            
+
             if(newItem) {
                 req.session.cart.push({
                     event_id: event_id,
@@ -43,7 +43,7 @@ module.exports.add_to_cart = async (req, res) => {
 
         console.log(req.session.cart);
 
-        res.status(200).json({success: true, message: 'Event added to cart', newItem: newItem});
+        res.status(200).json({success: true, message: 'Event added to cart', new_item: newItem, cart: req.session.cart});
         
 
     } else {

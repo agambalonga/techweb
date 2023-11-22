@@ -28,6 +28,11 @@ function formatDateTime(inputDate) {
   </div>
 </div>
 
+<div id="successBox" class="success-box">
+  <i class="fa-solid fa-check-circle"></i>
+  <p></p>
+</div>
+
 <section class="container__event">
   <% if(events.length > 0) { %>
   <div class="card__container swiper">
@@ -120,23 +125,19 @@ function formatDateTime(inputDate) {
         contentType: 'application/json',
         url: '/cart/add',
         success: function(data) {
-          console.log('success');
+          
+          if(data.success) {
+            if(data.new_item) {
+              $(".cart-indicator").html(data.cart.length);
+            }
+          }
+          showSuccessAnimation(data.cart[data.cart.length - 1].title + " added to cart successfully!");
           console.log(JSON.stringify(data));
         }
       });
 
-      
       $("#eventModal").hide();
     });
-
-    // Function to add tickets to the cart
-    function addToCart() {
-      const ticketQuantity = document.getElementById("ticketQuantity").value;
-      // Add the ticket quantity to the cart logic here
-      // ...
-      // Close the modal after adding to cart
-      closeModal();
-    }
   
     function formatDateTime(inputDate) {
       const date = new Date(inputDate);
@@ -149,5 +150,15 @@ function formatDateTime(inputDate) {
 
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
+
+  function showSuccessAnimation(text) {
+    var $successBox = $('#successBox');
+    $successBox.find('p').text(text);
+    $successBox.fadeIn();
+
+    setTimeout(function() {
+    $successBox.fadeOut();
+  }, 2000); // Nasconde il box di successo dopo 2 secondi
+}
     
     </script>

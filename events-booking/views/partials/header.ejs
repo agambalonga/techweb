@@ -33,6 +33,15 @@
 				<li><a href="/home">Home</a></li>
 				<li><a id="user_name_menu" href="/user/<%=user._id%>"><%=user.name %></a></li>
         <li><span id="span_cart"><i class="fa-solid fa-cart-shopping fa-lg"></i></span></li>
+        <div class="cart-indicator">
+          
+          <% if(typeof cart === 'undefined') { %> 
+              0 
+          <% } else { %> 
+            <%=cart.length %> 
+          <% } %>
+          
+        </div> <!-- Elemento per mostrare il numero di elementi nel carrello -->
 					<ul>      
           <!-- Manage events solo un utente admin può visualizzarla-->
           <% if(user.role === 1) { %>
