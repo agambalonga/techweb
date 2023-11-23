@@ -67,3 +67,24 @@ module.exports.check_seats = async (req, res, next) => {
         res.status(400).json({ err });
     }
 };
+
+module.exports.remove_from_cart = async (req, res) => {
+    const event_id = req.params.event_id;
+
+    var removed = false;
+
+    if(typeof req.session.cart != "undefined") {
+        for(let i = 0; i < req.session.cart.length; i++) {
+            if(req.session.cart[i].event_id == event_id) {
+                req.session.cart.splice(i, 1);
+                removed = true;
+            }
+        }
+    }
+
+    if(!removed) {
+        res.status(400).json({success: false, message: 'Event not found in cart'});
+    } else {
+        res.status(200).json({success: true, message: 'Event removed from cart', cart: req.session.cart});
+    }
+};

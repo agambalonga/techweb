@@ -116,59 +116,6 @@ function formatDateTime(inputDate) {
     $('.close').click(function(){
       $("#eventModal").hide();
     });
-
-
-    $('#addToCartBtn').click(function(){
-      var json = {};
-      json.event_id = $("#eventDetails").attr("data-event-id");
-      json.qty = parseInt($("#ticketQuantity").val(), 10);
-      console.log(json)
-
-      $.ajax({
-        type: 'POST',
-        data: JSON.stringify(json),
-        contentType: 'application/json',
-        url: '/cart/add',
-        success: function(data) {
-          
-          if(data.success) {
-            $(".cart-indicator").html(parseInt($(".cart-indicator").html(), 10) + data.qty_added);
-            if(data.new_item){
-              $(".menu__cart").append(`
-                <li class="li_cart" data-id="${data.cart[data.cart.length -1].event_id}">
-                  <div class="cart-item">
-                    <img src="${data.cart[data.cart.length - 1].event_img}" alt="img event" class="cart-item__image">
-                    <div class="cart-item__info">
-                      <p>${data.cart[data.cart.length - 1].title}</p>
-                      <p>Quantity: ${data.cart[data.cart.length - 1].quantity}</p>
-                      <p>Price: ${data.cart[data.cart.length - 1].price}</p>
-                    </div>
-                  </div>
-                </li>
-              `);
-
-            } else {
-              $.each( data.cart, function( index, event ) {
-              var event_obj = JSON.parse(JSON.stringify(event));
-              if(event_obj.event_id === json.event_id) {
-                  var el = $("li[data-id="+json.event_id+"] .cart-item__info p:nth-child(2)").html("Quantity: " + event_obj.quantity );
-                }
-              });
-            }
-          }
-          showSuccessAnimation(data.cart[data.cart.length - 1].title + " added to cart successfully!");
-          console.log(JSON.stringify(data));
-        },
-        error: function(data) {
-          var error = data.responseJSON;
-          if(error.code === 'EB001') {
-            showErrorModal(data.responseJSON.message);
-          }
-        }
-      });
-
-      $("#eventModal").hide();
-    });
   
     function formatDateTime(inputDate) {
       const date = new Date(inputDate);
