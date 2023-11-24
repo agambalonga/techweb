@@ -3,94 +3,93 @@
 <form method="POST" enctype="multipart/form-data" id="reg_form">
     <input type="hidden" name="user_id" id="user_id" value="<%= user._id %>">
     <div class="row">
-        <div>
-          <div class="circle">
-            <% if(user.profile_pic_URL) { %>
-            <img class="profile-pic" src="<%= user.profile_pic_URL %>">
-            <% } else { %>
+        <div class="col-md-6">
+            <div class="circle">
+                <% if(user.profile_pic_URL) { %>
+                <img class="profile-pic" src="<%= user.profile_pic_URL %>">
+                <% } else { %>
                 <img class="profile-pic" src="https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg">
-            <% } %>
-          </div>
-          <div class="p-image">
-             <input class="file-upload" type="file" accept="image/*"/>
-          </div>
-       </div>
-     </div>
+                <% } %>
+            </div>
+            <div class="p-image">
+                <input class="file-upload" type="file" accept="image/*" />
+            </div>
+        </div>
+    </div>
 
-    <label for="name">Name*</label>
-    <input type="text" value="<%= user.name %>" name="name" id="name" />
-    <div class="name error"></div>
+    <div class="mb-3">
+        <label for="name" class="form-label">Name*</label>
+        <input type="text" class="form-control" value="<%= user.name %>" name="name" id="name" />
+        <div class="name error"></div>
+    </div>
 
-    <label for="surname">Surname*</label>
-    <input type="text" value="<%= user.surname %>" id="surname" />
-    <div class="surname error"></div>
+    <div class="mb-3">
+        <label for="surname" class="form-label">Surname*</label>
+        <input type="text" class="form-control" value="<%= user.surname %>" id="surname" />
+        <div class="surname error"></div>
+    </div>
 
-    <label for="phone">Phone</label>
-    <div class="select-box">
-        <div class="selected-option">
-            <div>
+    <div class="mb-3">
+        <label for="phone" class="form-label">Phone</label>
+        <div class="input-group">
+            <span class="input-group-text">
                 <span class="iconify" data-icon="flag:it-4x3"></span>
                 <strong>+39</strong>
-            </div>
-            <input type="tel" name="phone_number" id="phone_number" placeholder="Insert a phone number" value="<%=user.phone_number %>" autocomplete="off">
+            </span>
+            <input type="tel" class="form-control" name="phone_number" id="phone_number" placeholder="Insert a phone number" value="<%=user.phone_number %>" autocomplete="off">
         </div>
-        <div class="options">
-            <input type="text" class="search-box" placeholder="Search Country Name">
-            <ol>
-            </ol>
-        </div>
+        <div class="phone error"></div>
     </div>
-    <div class="phone error"></div>
 
-    <label for="email">Email*</label>
-    <input type="email" value="<%=user.email %>" disabled name="email" id="email"/>
-    <div class="email error"></div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email*</label>
+        <input type="email" class="form-control" value="<%=user.email %>" disabled name="email" id="email" />
+        <div class="email error"></div>
+    </div>
 
-    <label for="Date of birth">Date of Birth</label>
-    <% if(user.birth_date) { 
-        let date = new Date(user.birth_date);
-        let day = date.getDate().toString().padStart(2, '0');
-        let month = (date.getMonth() + 1).toString().padStart(2, '0');
-        let year = date.getFullYear();
-        let formattedDate = `${year}-${month}-${day}`; %>
-    <input type="date" value="<%=formattedDate%>" name="date_of_birth" id="date_of_birth" />
-    <% } else { %>
-    <input type="date" name="date_of_birth" id="date_of_birth" />
-    <% } %>
-    <div class="date error"></div>
-    
+    <div class="mb-3">
+        <label for="date_of_birth" class="form-label">Date of Birth</label>
+        <% if(user.birth_date) { 
+            let date = new Date(user.birth_date);
+            let day = date.getDate().toString().padStart(2, '0');
+            let month = (date.getMonth() + 1).toString().padStart(2, '0');
+            let year = date.getFullYear();
+            let formattedDate = `${year}-${month}-${day}`; %>
+        <input type="date" class="form-control" value="<%=formattedDate%>" name="date_of_birth" id="date_of_birth" />
+        <% } else { %>
+        <input type="date" class="form-control" name="date_of_birth" id="date_of_birth" />
+        <% } %>
+        <div class="date error"></div>
+    </div>
+
     <% if(user.password) { %>
-    <div class="password_change">
-        <label for="Change password">
-        <input class="input_checkbox" type="checkbox" id="change_password" name="change_password">
-        Change password
-        </label>
+    <div class="mb-3 form-check">
+        <input class="form-check-input" type="checkbox" id="change_password" name="change_password">
+        <label class="form-check-label" for="change_password">Change password</label>
     </div>
     <div class="password_ins" hidden>
-    <label for="password">Old Password*</label>
-    <div class="input-box">
-        <input type="password" placeholder="Enter a password" id="old_password" autocomplete="new-password" />
-    </div>
-    <div class="old_password error"></div>
-    <label for="password">New Password*</label>
-    <div class="input-box">
-        <input type="password" placeholder="Enter a password" id="new_password" autocomplete="new-password" />
-    </div>
+        <div class="mb-3">
+            <label for="old_password" class="form-label">Old Password*</label>
+            <input type="password" class="form-control" placeholder="Enter a password" id="old_password" autocomplete="new-password" />
+            <div class="old_password error"></div>
+        </div>
+        <div class="mb-3">
+            <label for="new_password" class="form-label">New Password*</label>
+            <input type="password" class="form-control" placeholder="Enter a password" id="new_password" autocomplete="new-password" />
+        </div>
     </div>
     <div class="password error" hidden>
         <p id="length" class="invalid">Minimum 8 characters </p>
         <p id="letter" class="invalid">A uppercase letter</p>
-        <p id="number" class="invalid">A number</b></p>
+        <p id="number" class="invalid">A number</p>
         <p id="special" class="invalid">A special character</p>
     </div>
     <% } %>
 
-    <button type="submit" class="btn" id="update_button">Update</button>
+    <button type="submit" class="btn btn-primary" id="update_button">Update</button>
 
-    <div class="message">
-    </div>
+    <div class="message"></div>
 </form>
-
 
 <script src="/countries.js" defer async></script>
 
