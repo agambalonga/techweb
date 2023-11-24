@@ -21,7 +21,7 @@ $(document).ready(function() {
                     window.location.href = '/artist/'+ artistId;
                 }
             }).autocomplete("instance")._renderItem = function (ul, item) {
-                return $("<li class='ui-menu-item'>")
+                return $("<li class='ui-menu-item' id='item_artists'>")
                     .append(item.label)
                     .appendTo(ul);
             };
