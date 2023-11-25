@@ -4,7 +4,7 @@
 
     var searchPopup = function() {
       // open search box
-      $('#header-nav').on('click', '.search-button', function(e) {
+      $(document).on('click', '.search-button', function(e) {
         $('.search-popup').toggleClass('is-visible');
       });
 
@@ -66,11 +66,11 @@
         },
       });         
 
-      var swiper = new Swiper(".product-swiper", {
+      var swiper = new Swiper(".event-swiper", {
         slidesPerView: 4,
         spaceBetween: 10,
         pagination: {
-          el: "#mobile-products .swiper-pagination",
+          el: "#next-events .swiper-pagination",
           clickable: true,
         },
         breakpoints: {

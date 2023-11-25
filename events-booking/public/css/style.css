@@ -691,7 +691,7 @@ h3.cart-title {
 
 /* 4. Product
 /*----------------------------------------------*/
-.product-store .product-card .cart-concern {
+.product-store .event-card .cart-concern {
     bottom: 75px;
     width: 100%;
     display: flex;
@@ -701,22 +701,22 @@ h3.cart-title {
     transition: all 0.3s ease-out;
     opacity: 0;
 }
-.product-store .product-card:hover .cart-concern {
+.product-store .event-card:hover .cart-concern {
     bottom: 90px;
     opacity: 1;
 }
-.product-card .cart-concern svg {
+.event-card .cart-concern svg {
     width: 16px;
     height: 16px;
     fill: var(--light-color);
     margin-left: 9px;
 }
-.product-card .card-detail span {
+.event-card .card-detail span {
     font-size: 1.5em;
 }
 
 @media only screen and (max-width: 575px) {
-  .product-store .product-card .card-detail {
+  .product-store .event-card .card-detail {
       padding: 10px;
   }
 }
@@ -1019,5 +1019,3 @@ figure.instagram-item img.insta-image {
 .post-navigation:focus svg {
     fill: var(--primary-color);
 }
-
-nav-link-user

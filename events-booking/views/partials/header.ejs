@@ -16,6 +16,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
     <!-- script
     ================================================== -->
     <script src="js/modernizr.js"></script>
@@ -94,7 +96,7 @@
     <div class="search-popup">
         <div class="search-popup-container">
           <form role="search" method="get" class="search-form" action="">
-            <input type="search" id="search-form" class="search-field" placeholder="Type and press enter" value="" name="s" />
+            <input type="search" id="search-form" class="search-field" placeholder="Search Artist..." value="" name="s" />
             <button type="submit" class="search-submit"><svg class="search"><use xlink:href="#search"></use></svg></button>
           </form>
         </div>
@@ -135,7 +137,7 @@
                   <a href="/logout" class="dropdown-item">Logout</a>
                 </li>
                 <% } else {%>
-                <li class="d-lg-none">
+                <li class="d-lg-none nav-link">
                   <a href="/login" class=" dropdown-item" data-bs-target="#bdNavbar">Login</a>
                 </li>
                 <li class="d-lg-none">
@@ -174,10 +176,10 @@
                             </li>
                           <% } else {%>
                             <li>
-                              <a href="/login" class=" dropdown-item" data-bs-target="#bdNavbar">Login</a>
+                              <a href="/login" class=" dropdown-item">Login</a>
                             </li>
                             <li>
-                              <a href="/signup" class="dropdown-item" data-bs-target="#bdNavbar">Sign up</a>
+                              <a href="/signup" class="dropdown-item">Sign up</a>
                             </li>
                           <% } %> 
                         </ul>
