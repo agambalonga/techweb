@@ -85,11 +85,11 @@
         },
       });      
 
-      var swiper = new Swiper(".product-watch-swiper", {
+      var swiper = new Swiper(".artist-swiper", {
         slidesPerView: 4,
         spaceBetween: 10,
         pagination: {
-          el: "#smart-watches .swiper-pagination",
+          el: "#top-artists .swiper-pagination",
           clickable: true,
         },
         breakpoints: {
@@ -107,8 +107,8 @@
       var swiper = new Swiper(".testimonial-swiper", {
         loop: true,
         navigation: {
-          nextEl: ".swiper-arrow-prev",
-          prevEl: ".swiper-arrow-next",
+          nextEl: ".swiper-arrow-next",
+          prevEl: ".swiper-arrow-prev",
         },
       }); 
 
