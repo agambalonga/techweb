@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser');
 const {checkAuth} = require('./middleware/authMiddleware');
 const {checkUser} = require('./middleware/authMiddleware');
 const eventController = require('./controller/eventController');
+const indexController = require('./controller/indexController');
 const sessions = require('express-session');
 
 const app = express();
@@ -48,7 +49,7 @@ app.get('*', checkUser, (req, res, next) => {
     console.log(res.locals.cart);
     next();
 });
-app.get('/', (req, res) => res.render('index'));
+app.get('/', indexController.get_index);
 
 app.get('/home', checkAuth, eventController.get_events);
 
