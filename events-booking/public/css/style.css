@@ -188,6 +188,10 @@ a:hover {
   margin-bottom: 9em;
 }
 
+.logo {
+  width:200px;
+}
+
 @media only screen and (max-width: 768px) {
   .margin-small,
   .margin-medium,
@@ -689,7 +693,7 @@ h3.cart-title {
   }
 }
 
-/* 4. Product
+/* 4. Event
 /*----------------------------------------------*/
 .product-store .event-card .cart-concern {
     bottom: 75px;
@@ -702,7 +706,7 @@ h3.cart-title {
     opacity: 0;
 }
 .product-store .event-card:hover .cart-concern {
-    bottom: 90px;
+    bottom: 50%;
     opacity: 1;
 }
 .event-card .cart-concern svg {

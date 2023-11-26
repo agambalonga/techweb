@@ -25,8 +25,8 @@
           <div class="row d-flex flex-wrap align-items-center">
             <div class="col-md-6">
               <div class="banner-content">
-                <h1 class="display-2 text-uppercase text-dark pb-5">Technology Hack You Won't Get</h1>
-                <a href="shop.html" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Shop Product</a>
+                <h1 class="display-2 text-uppercase text-dark pb-5">Search your Artist</h1>
+                <a href="#" class="btn btn-medium btn-dark text-uppercase btn-rounded-none search-button">Search Artist</a>
               </div>
             </div>
             <div class="col-md-5">
@@ -86,7 +86,7 @@
           </div>
           <div class="icon-box-content">
             <h3 class="card-title text-uppercase text-dark">Daily offers</h3>
-            <p>Amet consectetur adipi elit loreme ipsum dolor sit.</p>
+            <p>Discover our daily offers and save big on your favorite products.</p>
           </div>
         </div>
       </div>
@@ -99,7 +99,7 @@
           </div>
           <div class="icon-box-content">
             <h3 class="card-title text-uppercase text-dark">100% secure payment</h3>
-            <p>Rem Lopsum dolor sit amet, consectetur adipi elit.</p>
+            <p>100% secure payment</p>
           </div>
         </div>
       </div>
@@ -173,7 +173,7 @@
               </div>
               <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
                 <h3 class="card-title text-uppercase">
-                  <a href="#"><%=artist.artist_name %></a>
+                  <a href="artist/<%=artist._id%>"><%=artist.artist_name %></a>
                 </h3>
               </div>
             </div>
@@ -186,7 +186,7 @@
   <div class="swiper-pagination position-absolute text-center"></div>
 </section>
 
-<section id="testimonials" class="position-relative">
+<section id="testimonials" class="position-relative pt-3 mb-5">
   <div class="container">
     <div class="row">
       <div class="review-content position-relative">
@@ -205,7 +205,7 @@
             <div class="swiper-slide text-center d-flex justify-content-center">
               <div class="review-item col-md-10">
                 <i class="icon icon-review"></i>
-                <blockquote>“Tempus oncu enim pellen tesque este pretium in neque, elit morbi sagittis lorem habi mattis Pellen tesque pretium feugiat vel morbi suspen dise sagittis lorem habi tasse morbi.”</blockquote>
+                <blockquote>“"I had an amazing experience booking events through this platform. The process was seamless and the events were top-notch. Highly recommended!"”</blockquote>
                 <div class="rating">
                   <svg class="star star-fill">
                     <use xlink:href="#star-fill"></use>
@@ -224,14 +224,14 @@
                   </svg>
                 </div>
                 <div class="author-detail">
-                  <div class="name text-dark text-uppercase pt-2">Emma Chamberlin</div>
+                  <div class="name text-dark text-uppercase pt-2">Alberto Gambalonga</div>
                 </div>
               </div>
             </div>
             <div class="swiper-slide text-center d-flex justify-content-center">
               <div class="review-item col-md-10">
                 <i class="icon icon-review"></i>
-                <blockquote>“A blog is a digital publication that can complement a website or exist independently. A blog may include articles, short posts, listicles, infographics, videos, and other digital content.”</blockquote>
+                <blockquote>"EventBooking has made booking musical events a breeze! With an intuitive interface and a wide range of options, I found and booked my favorite concerts effortlessly. It's fast, convenient, and keeps me updated on new offers. A fantastic experience that I recommend to all music lovers!"</blockquote>
                 <div class="rating">
                   <svg class="star star-fill">
                     <use xlink:href="#star-fill"></use>
@@ -250,7 +250,7 @@
                   </svg>
                 </div>
                 <div class="author-detail">
-                  <div class="name text-dark text-uppercase pt-2">Jennie Rose</div>
+                  <div class="name text-dark text-uppercase pt-2">Fabio Cosentino</div>
                 </div>
               </div>
             </div>
