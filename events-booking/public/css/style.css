@@ -640,6 +640,12 @@ h3.cart-title {
     cursor: pointer;
 }
 
+.site-header .user-items-nav svg {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
 @media only screen and (max-width: 991px) {
   #navbar .user-items {
     display: none;
