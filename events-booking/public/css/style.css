@@ -189,10 +189,6 @@ a:hover {
   margin-bottom: 9em;
 }
 
-.logo {
-  width:200px;
-}
-
 @media only screen and (max-width: 768px) {
   .margin-small,
   .margin-medium,
@@ -596,6 +592,11 @@ h3.cart-title {
 
 /* 1. Header
 /*----------------------------------------------*/
+
+.logo {
+  width:200px;
+}
+
 .site-header {
     width: 100%;
     z-index: 10;
@@ -649,6 +650,12 @@ h3.cart-title {
 @media only screen and (max-width: 991px) {
   #navbar .user-items {
     display: none;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .logo {
+      width: 120px;
   }
 }
 

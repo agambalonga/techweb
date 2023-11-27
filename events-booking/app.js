@@ -38,7 +38,7 @@ app.set('view engine', 'ejs');
 mongoose.connect(process.env.MONGO_ATLAS_URL)
 .then((result) => {
   console.log("connected to db");
-  app.listen(3000)
+  app.listen('3000','0.0.0.0');
   console.log("app listening on port 3000");
 })
 .catch((err) => console.log("error "+ err));

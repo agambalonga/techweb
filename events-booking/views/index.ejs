@@ -1,5 +1,50 @@
 <%- include('partials/header'); -%>
 
+<!-- Modal -->
+<div class="modal fade" id="add-to-cart-modal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add to Cart</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <!-- Colonna sinistra con l'immagine dell'evento -->
+            <div class="col-md-6">
+              <img src="" id="modal_img" alt="Immagine dell'evento" class="img-fluid">
+            </div>
+            <!-- Colonna destra con le informazioni dell'evento -->
+            <div class="col-md-6">
+              <h5 id="add-to-cart-modal-title" class="text-uppercase"></h5>
+              <p class="text-uppercase" id="add-to-cart-modal-title-artist-name"></p>
+              <p id="add-to-cart-modal-date"></p>
+              <p id="add-to-cart-modal-city"></p>
+             <div class="row align-items-center mb-3">
+                <div class="col-md-6">
+                  <p><strong>Quantità:</strong></p>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group">
+                    <input type="number" class="form-control text-center" value="1" min="1" max="10" id="quantityInput">
+                  </div>
+                </div>
+                <p id="add-to-cart-modal-remaining_seats"></p>
+                <p id="add-to-cart-modal-price"></p>
+              </div>
+              <!-- Aggiungi qui altri dettagli dell'evento se necessario -->
+              <button type="button" class="btn btn-primary">Aggiungi al carrello</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 <section id="billboard" class="position-relative overflow-hidden bg-light-blue">
   <div class="swiper main-swiper">
     <div class="swiper-wrapper">
@@ -111,8 +156,8 @@
                 <img src="<%= event.image_URL %>" alt="event-img" class="img-fluid img-sliding">
               </div>
               <div class="cart-concern position-absolute">
-                <div class="cart-button d-flex">
-                  <a href="#" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
+                <div class="cart-button d-flex add-to-cart">
+                  <a href="#" onClick="openModal('<%= JSON.stringify(event) %>')" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
                 </div>
               </div>
               <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
@@ -255,5 +300,49 @@
   </div>
   <div class="swiper-pagination"></div>
 </section>
+
+
+<script>
+
+  function openModal(eventJSON) {
+    const event = JSON.parse(eventJSON);
+    var modalBox = document.getElementById('add-to-cart-modal');
+    var modalTitle = $(modalBox).find('#add-to-cart-modal-title');
+    var modalBody = $(modalBox).find('.modal-body');
+    var modalArtistName = $(modalBox).find('#add-to-cart-modal-title-artist-name');
+    var modalCity = $(modalBox).find('#add-to-cart-modal-city');
+    var modalQuantity = $(modalBox).find('#add-to-cart-modal-quantity');
+    var modalPrice = $(modalBox).find('#add-to-cart-modal-price');
+    var modalRemainingSeats = $(modalBox).find('#add-to-cart-modal-remaining_seats');
+    var modalDate = $(modalBox).find('#add-to-cart-modal-date');
+
+
+    modalTitle.text(event.title);
+    modalBody.find('#modal_img').attr('src', event.image_URL);
+    modalArtistName.text(event.artist.name);
+    modalCity.text(event.city + ' - ' + event.site);
+    modalQuantity.text('Quantity: ' + event.seats);
+    modalPrice.text('Price: ' + event.price_for_ticket + '€');
+    modalRemainingSeats.text('Posti disponibili: ' + event.seats);
+    modalDate.text(formatDateTime(event.date));
+
+
+    var modal = new bootstrap.Modal(modalBox);
+    modal.show();
+  }
+
+  function formatDateTime(inputDate) {
+      const date = new Date(inputDate);
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
+      const hours = date.getHours().toString().padStart(2, '0');
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+      const seconds = date.getSeconds().toString().padStart(2, '0');
+
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
+
+</script>
 
 <%- include('partials/footer'); -%>
