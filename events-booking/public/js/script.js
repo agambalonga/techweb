@@ -10,7 +10,6 @@
 
       $(document).on('keyup', '#search-form', function(e) {
 
-        /*
         if($(this).val().length == 0){
           $('#searchSuggestions').html('');
           return;
@@ -19,7 +18,6 @@
         if($(this).val().length < 3){
           return;
         } 
-        */
 
         $.ajax({
           url: '/artists/getArtistByNameLike?name='+$(this).val(),
