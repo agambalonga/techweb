@@ -46,10 +46,9 @@
   
             <!-- Password input -->
             <div class="form-outline mb-3">
-                <label class="form-label" for="form3Example4">Password*</label>
-                <input id="password" type="password" id="form3Example4" class="form-control form-control-lg"
-                    placeholder="Enter password" />
-                <div id="password-feedback" class="invalid-feedback"></div>
+                <label class="form-label" for="Password">Password*</label>
+                <input id="password" type="password" class="form-control form-control-lg" placeholder="Enter password"/>
+                <div id="password-feedback" class="invalid-feedback d-block"></div>
             </div>
   
             <div class="text-center text-lg-start mt-4 pt-2">
@@ -92,19 +91,7 @@ function handleCredentialResponse(response) {
   }
 }
 
-/*
-$('#togglePassword').click(function(){
-        $(this).toggleClass('fa-eye fa-eye-slash');
-        var input = $('#password');
-        if(input.attr('type') == 'password'){
-            input.attr('type', 'text');
-        } else {
-            input.attr('type', 'password');
-        }
-    });
-*/
-
-$('#email').keyup(function(){
+$(document).on('keyup', '#email', function(){
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const email = $(this).val();
 
@@ -119,9 +106,18 @@ $('#email').keyup(function(){
     }
 });
 
-$('#password').keyup(function(){
-    $('.password.error').html('');
-    $('#password').removeClass('error-input');
+$(document).on('keyup', '#password', function(){
+    const password = $(this).val();
+
+    if(!password){
+        $('#password-feedback').html('Password is required');
+        $(this).removeClass('is-valid');
+        $(this).addClass('is-invalid');
+    } else {
+        $('#password-feedback').html('');
+        $(this).removeClass('is-invalid');
+        $(this).addClass('is-valid');
+    }
 });
 
 $('#login_button').click(function(e){
@@ -168,7 +164,7 @@ $('#login_button').click(function(e){
                 const err = JSON.parse(errString);
                 if(err.email){
 
-                    $('#email-feedback').html('Invalid email address');
+                    $('#email-feedback').html(err.email);
                     $('#email').addClass('is-invalid');
                 }
                 if(err.password){
