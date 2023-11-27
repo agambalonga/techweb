@@ -141,3 +141,11 @@
     }); // End of a document ready
 
 })(jQuery);
+
+
+
+$(() => {
+
+  $('[type="password"]').togglepassword('btn');
+
+});

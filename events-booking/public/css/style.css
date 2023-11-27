@@ -78,6 +78,7 @@ body {
   font-weight: 500;
   line-height: 1.6;
   margin: 0;
+  padding-top:60px;
 }
 p {
   font-size: 1.2em;
@@ -596,7 +597,6 @@ h3.cart-title {
 /* 1. Header
 /*----------------------------------------------*/
 .site-header {
-    position: fixed;
     width: 100%;
     z-index: 10;
     transition: background 0.3s ease-out;
@@ -840,6 +840,10 @@ figure.instagram-item img.insta-image {
 
 /* 8. Footer
 /*----------------------------------------------*/
+
+#footer {
+  margin-top:150px;
+}
 /*------------ Social Icon -----------*/
 .social-links svg {
     width: 20px;
