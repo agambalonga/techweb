@@ -8,6 +8,34 @@
         $('.search-popup').toggleClass('is-visible');
       });
 
+      $(document).on('keyup', '#search-form', function(e) {
+
+        /*
+        if($(this).val().length == 0){
+          $('#searchSuggestions').html('');
+          return;
+        }
+        
+        if($(this).val().length < 3){
+          return;
+        } 
+        */
+
+        $.ajax({
+          url: '/artists/getArtistByNameLike?name='+$(this).val(),
+          method: 'GET',
+          contentType: 'application/json',
+          success: function(data){
+            console.log(data);
+            var html = '';
+            $.each(data.artists, function(index, value){
+              html += '<a class="list-group-item list-group-item-action list-group-item-search" href="/artist/'+value._id+'">'+value.artist_name+'</a></li>';
+            });
+            $('#searchSuggestions').html(html);
+          }
+        });
+        });
+
       $('#header-nav').on('click', '.btn-close-search', function(e) {
         $('.search-popup').toggleClass('is-visible');
       });

@@ -32,3 +32,17 @@ module.exports.getArtistById = async (req, res) => {
         res.status(400).json({ errors: err });
     }
 };
+
+module.exports.getArtistByNameLike = async (req, res) => {
+    try {
+        if(req.query.name == undefined) {
+            res.status(400).json({ errors: "No name specified" });
+        }
+        const artists = await Artist.find({artist_name: {$regex: req.query.name, $options: 'i'}}).limit(10);
+        res.status(200).json({artists: artists});
+    } catch (err) {
+        console.log(err)
+        // const errors = handleErrors(err);
+        res.status(400).json({ errors: err });
+    }
+};

@@ -441,7 +441,7 @@ h3.cart-title {
 .search-popup-container {
   background-color: transparent;
   position: relative;
-  top: 50%;
+  top: 25%;
   margin: 0 auto;
   padding: 0;
   width: 90%;
@@ -456,10 +456,6 @@ h3.cart-title {
   transition-property: transform;
   -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
-}
-.is-visible .search-popup-container {
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
 }
 .search-popup-form {
   position: relative;
@@ -547,6 +543,16 @@ h3.cart-title {
 }
 .search-popup .cat-list-item:last-child::after {
   display: none;
+}
+
+.search-cont{
+  padding: 0 23px;
+}
+
+.search-cont .list-group-item-search {
+  border-top: none;
+  border-left: none;
+  border-right: none;
 }
 
 @media only screen and (max-width: 991px) {
