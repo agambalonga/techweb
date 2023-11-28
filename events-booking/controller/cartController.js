@@ -15,16 +15,21 @@ module.exports.add_to_cart = async (req, res) => {
             req.session.cart = [];
             req.session.cart.push({
                 event_id: event_id,
-                title: event.title,
-                price: event.price_for_ticket,
+                event_title: event.title,
+                artist_name: event.artist.name,
+                event_price: event.price_for_ticket,
                 event_img: event.image_URL,
-                quantity: req.body.qty,
+                event_quantity: req.body.qty,
+                event_city: event.city,
+                event_date: event.formatDate(event.date),
             });
         } else {
+            var updatedItem = {};
             for(let i = 0; i < req.session.cart.length; i++) {
                 if(req.session.cart[i].event_id == event_id) {
                     newItem = false;
-                    req.session.cart[i].quantity += req.body.qty;
+                    req.session.cart[i].event_quantity += req.body.qty;
+                    updatedItem = req.session.cart[i];
                     break;
                 }
             }
@@ -32,20 +37,23 @@ module.exports.add_to_cart = async (req, res) => {
             if(newItem) {
                 req.session.cart.push({
                     event_id: event_id,
-                    title: event.title,
-                    price: event.price_for_ticket,
+                    event_title: event.title,
+                    artist_name: event.artist.name,
+                    event_price: event.price_for_ticket,
                     event_img: event.image_URL,
-                    quantity: req.body.qty,
+                    event_quantity: req.body.qty,
+                    event_city: event.city,
+                    event_date: event.formatDate(event.date),
                 });
             }
         }
 
+
  
         console.log(req.session.cart);
 
-        res.status(200).json({success: true, message: 'Event added to cart', qty_added: req.body.qty, cart: req.session.cart, new_item: newItem});
-        
-
+        res.status(200).json({success: true, message: 'Event added to cart', qty_added: req.body.qty, cart: req.session.cart, new_item: newItem, updated_item: updatedItem});
+    
     } else {
         res.status(400).json({success: false, message: 'Event not found'});
     }
@@ -53,9 +61,11 @@ module.exports.add_to_cart = async (req, res) => {
 
 //Funzione che controlla se l'evento ha ancora posti disponibili
 module.exports.check_seats = async (req, res, next) => {
+    console.log(req.body);
     const event_id = req.body.event_id;
     try {
         const event = await Event.findById(event_id);
+        console.log(event)
         if(event.seats > 0 && event.seats >= req.body.qty){
             next();
         }else{

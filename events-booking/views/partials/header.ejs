@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ministore</title>
+    <title>EventBooking</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -131,7 +131,7 @@
                     </a>
                   </li>
                   <li>
-                    <a href="#">
+                    <a href="#offcanvasCart" data-bs-toggle="offcanvas" aria-controls="offcanvasRight">
                       <svg class="cart">
                         <use xlink:href="#cart"></use>
                       </svg>
@@ -185,7 +185,7 @@
                           <svg class="search">
                             <use xlink:href="#search"></use>
                           </svg>
-                        </a>
+                        </a>  
                       </li>
                       <li class="dropdown pe-3">
                         <a class="nav-link-user dropdown-toggle link-dark" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" style="padding: 0 2px;">
@@ -218,7 +218,7 @@
                         </ul>
                       </li>
                       <li>
-                        <a href="#">
+                        <a href="#offcanvasCart" data-bs-toggle="offcanvas" aria-controls="offcanvasRight">
                           <svg class="cart">
                             <use xlink:href="#cart"></use>
                           </svg>
@@ -233,4 +233,45 @@
         </div>
       </nav>
     </header>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasExampleLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Cart</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body" id="cart-body">
+        <ul class="list-group" id="list-cart">
+        <% let total=0; %>
+        <% if(cart === undefined || cart.length == 0) { %>
+        <p class="empty-cart">Your cart is empty</p>
+        </ul>
+        <% } else { %>
+          <% cart.forEach(function(c) {
+            total += c.event_price * c.event_quantity;
+            %>
+            <li class="list-group-item d-flex align-items-center" data-event-id="<%=c.event_id %>">
+              <div class="row">
+                <div class="col-md-4 col-sm-4 col-4">
+                  <img src="<%= c.event_img %>" class="img-thumbnail" style="width: 100%;" alt="Immagine evento">
+                </div>
+                <div class="col-md-8 col-sm-8 col-8">
+                  <h5 class="mb-0"><%= c.event_title %></h5>
+                  <p class="mb-0"><%= c.artist_name %></p>
+                  <p class="mb-0"> <%= c.event_city %> - <%= c.event_date %> </p>
+                  <div>
+                    <p class="mb-0 quantity"><strong><%= c.event_price %>€ X <%= c.event_quantity %> </strong></p>
+                  </div>
+                </div>
+              </div>
+            </li>
+          <% }) %>
+        </ul>
+        <% } %>
+        
+        <div class="py-3 px-3 text-end">
+          <h6 id="total-cart">Total : <%=total%> €</h6>
+          <button class="btn btn-primary"><a href="/checkout">Checkout</a></button>
+        </div>
+      </div>
+    </div>
     

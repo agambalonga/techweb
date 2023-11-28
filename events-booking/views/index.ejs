@@ -23,7 +23,7 @@
               <p id="add-to-cart-modal-city"></p>
              <div class="row align-items-center mb-3">
                 <div class="col-md-6">
-                  <p><strong>Quantità:</strong></p>
+                  <p><strong>Quantity:</strong></p>
                 </div>
                 <div class="col-md-6">
                   <div class="input-group">
@@ -34,7 +34,7 @@
                 <p id="add-to-cart-modal-price"></p>
               </div>
               <!-- Aggiungi qui altri dettagli dell'evento se necessario -->
-              <button type="button" class="btn btn-primary">Aggiungi al carrello</button>
+              <button id="add-to-cart-btn" type="button" class="btn btn-primary">Add to Cart</button>
             </div>
           </div>
         </div>
@@ -301,6 +301,44 @@
   <div class="swiper-pagination"></div>
 </section>
 
+<!-- Modal Success -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="successModalLabel">Event added to cart!</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="fas fa-check-circle fa-5x text-success"></i>
+        <p class="mt-3">Your Event is added correctly to cart</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Error -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="errorModalLabel">OPS... Something is gone wrong</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="fas fa-times-circle fa-5x text-danger"></i>
+        <p class="mt-3" id="modal-error-message"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
 
@@ -319,6 +357,7 @@
 
     modalTitle.text(event.title);
     modalBody.find('#modal_img').attr('src', event.image_URL);
+    modalBody.attr('data-event-id', event._id);
     modalArtistName.text(event.artist.name);
     modalCity.text(event.city + ' - ' + event.site);
     modalQuantity.text('Quantity: ' + event.seats);
@@ -342,6 +381,79 @@
 
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
+
+  $(document).on('click', '#add-to-cart-btn', function() {
+    var quantity = parseInt($('#quantityInput').val());
+    var event_id = $('#add-to-cart-modal .modal-body').attr('data-event-id');
+    var data = {
+      event_id: event_id,
+      qty: quantity
+    };
+
+    $.ajax({
+      type: 'POST',
+      url: '/cart/add',
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+      success: function(data) {
+        console.log(data);
+        
+        if(data.new_item) {
+          var total = 0;
+
+          $(".empty-cart").remove()
+
+          $('#list-cart').append(`
+            <li class="list-group-item d-flex align-items-center" data-event-id="${data.cart[data.cart.length-1].event_id}">
+                <div class="row">
+                  <div class="col-md-4 col-sm-4 col-4">
+                    <img src="${data.cart[data.cart.length-1].event_img}" class="img-thumbnail" style="width: 100%;" alt="Immagine evento">
+                  </div>
+                  <div class="col-md-8 col-sm-8 col-8">
+                    <h5 class="mb-0">${data.cart[data.cart.length -1].event_title}</h5>
+                    <p class="mb-0">${data.cart[data.cart.length -1].artist_name}</p>
+                    <p class="mb-0">${data.cart[data.cart.length -1].event_city} -  ${data.cart[data.cart.length -1].event_date}</p>
+                    <div>
+                      <p class="mb-0 quantity"><strong>${data.cart[data.cart.length -1].event_price}€ X ${data.cart[data.cart.length -1].event_quantity}</strong></p>
+                    </div>
+                  </div>
+                </div>
+              </li>
+          `);
+
+          data.cart.forEach(function(item) {
+            total += item.event_price * item.event_quantity;
+          });
+
+          $('#total-cart').text('Total:'+ total + '€');
+
+        } else {
+          var total = 0;
+
+          data.cart.forEach(function(item) {
+            total += item.event_price * item.event_quantity;
+          });
+
+          $('#total-cart').text('Total:'+ total + '€');
+
+          var itemToUpdate = $(`#list-cart li[data-event-id="${data.updated_item.event_id}"]`);
+
+          var quantityContainer = $(itemToUpdate).find('.quantity');
+          quantityContainer.html(`<strong>${data.updated_item.event_price}€ X ${data.updated_item.event_quantity}</strong>`);
+        }
+
+        $('#add-to-cart-modal').modal('hide');
+        $('#successModal').modal('show');
+      },
+      error: function(err) {
+        console.log(err);
+        var error = JSON.parse(err.responseText);
+        $('#modal-error-message').text(error.message);
+        $('#add-to-cart-modal').modal('hide');
+        $('#errorModal').modal('show');
+      }
+    });
+  });
 
 </script>
 
