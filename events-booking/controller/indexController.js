@@ -30,8 +30,6 @@ module.exports.get_index = async (req, res) => {
             }
         ]);
 
-        console.log(artists);
-
         res.render('index', {events, artists});
     } catch (err) {
         console.log(err)

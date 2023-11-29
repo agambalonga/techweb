@@ -59,6 +59,24 @@ module.exports.add_to_cart = async (req, res) => {
     }
 };
 
+
+module.exports.delete_from_cart = async (req, res) => {
+    const event_id = req.query.event_id;
+
+    if(typeof req.session.cart != "undefined") {
+        for(let i = 0; i < req.session.cart.length; i++) {
+            if(req.session.cart[i].event_id == event_id) {
+                req.session.cart.splice(i, 1);
+                break;
+            }
+        }
+    }
+
+    console.log(req.session.cart);
+
+    res.status(200).json({success: true, message: 'Event deleted from cart', cart: req.session.cart});
+};
+
 //Funzione che controlla se l'evento ha ancora posti disponibili
 module.exports.check_seats = async (req, res, next) => {
     console.log(req.body);
