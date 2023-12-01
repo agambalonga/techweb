@@ -1,295 +1,409 @@
 <%- include('partials/header'); -%>
 
-<form method="POST" enctype="multipart/form-data" id="reg_form">
-    <h2 style="text-align: center;">Sign up</h2>
-    <div class="divider">
-        <hr>
-    </div>
+<style>
+    .d-none{
+        display: none;
+    }
+    .wrong .fa-check {
+    display: none;
+    }
+    .good .fa-times {
+    display: none;
+    }
+</style>
 
-    <div class="row">
-        <div>
-          <div class="circle">
-            <img class="profile-pic" src="https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg">
-          </div>
-          <div class="p-image">
-             <input class="file-upload" type="file" accept="image/*"/>
-          </div>
-       </div>
-     </div>
-
-    <label for="name">Name*</label>
-    <input type="text" placeholder="Enter a name" name="name" id="name" />
-    <div class="name error"></div>
-
-    <label for="surname">Surname*</label>
-    <input type="text" placeholder="Enter a surname" id="surname" />
-    <div class="surname error"></div>
-
-    <label for="phone">Phone</label>
-    <div class="select-box">
-        <div class="selected-option">
-            <div>
-                <span class="iconify" data-icon="flag:it-4x3"></span>
-                <strong>+39</strong>
-            </div>
-            <input type="tel" name="phone_number" id="phone_number" placeholder="Phone Number" value="+39">
+<!-- Modal Success -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title" id="successModalLabel"></h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="options">
-            <input type="text" class="search-box" placeholder="Search Country Name">
-            <ol>
-            </ol>
+        <div class="modal-body text-center">
+          <i class="fas fa-check-circle fa-5x text-success"></i>
+          <p class="mt-3">Your Profile has been created correctly</p>
         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
     </div>
-    <div class="phone error"></div>
+  </div>
 
-    <label for="email">Email*</label>
-    <input type="email" placeholder="example@example.com" name="email" id="email" />
-    <div class="email error"></div>
+  <!-- Modal Error -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="errorModalLabel">OPS... Something is gone wrong :(</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <i class="fas fa-times-circle fa-5x text-danger"></i>
+          <p class="mt-3" id="modal-error-message">Check your data before send data.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <label for="Date of birth">Date of Birth</label>
-    <input type="date" name="date_of_birth" id="date_of_birth" />
-    <div class="date error"></div>
+<div class="container rounded bg-white mt-5 mb-5">
     
-    <label for="password">Password*</label>
-    <div class="input-box">
-        <input type="password" placeholder="Enter a password" id="password" />
-        <i class="far fa-eye" id="togglePassword"></i>
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <img class="rounded-circle shadow-4-strong mt-5 mb-3" width="150px" src="/images/avatar_M.png" id="profilePic">
+                <label for="profilePicInput" class="btn btn-primary profile-button">
+                    <i class="fas fa-camera"></i> Choose a Profile Picture
+                </label>
+                <input type="file" id="profilePicInput" accept="image/*" style="display: none;">
+                <span> </span>
+            </div>
+        </div>
+        <div class="col-md-9 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Profile Settings</h4>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6 py-2">
+                        <label class="labels">Name*</label>
+                        <input type="text" id="name" class="form-control is-invalid" placeholder="Enter your First Name">
+                        <div id="invalid_name" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 py-2">
+                        <label class="labels">Surname*</label>
+                        <input type="text" id="surname" class="form-control is-invalid" placeholder="Enter your Surname">
+                        <div id="invalid_surname" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6 col-6 py-2">
+                        <label class="labels">Date of Birth*</label>
+                        <input type="date" id="birth_date" class="form-control is-invalid">
+                        <div class="valid-feedback"></div>
+                        <div id="invalid_birth_date" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 col-6 py-2">
+                        <label class="labels">Nationality*</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control is-valid" id="country">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6 py-2">
+                        <label class="labels">Email*</label>
+                        <input id="email" type="email" class="form-control is-invalid">
+                        <div id="invalid_email" class="invalid-feedback"></div>
+                    </div>
+                    
+                    <div class="col-md-6 py-2">
+                        <label class="labels ">Sex*</label>
+                        <select id="sex" class="form-select is-valid" aria-label="Sex">
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6 py-2">
+                        <label class="labels">Address Line</label>
+                        <input type="text" class="form-control" id="address_line" placeholder="Enter Address Line">
+                    </div>
+                    <div class="col-md-6 py-2">
+                        <label class="labels">Phone Number</label>
+                        <div class="input-group">
+                            <input id="phone" type="tel" class="form-control " placeholder="Enter phone number">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6 py-2 pwd-change">
+                        <label class="labels">Password*</label>
+                        <input type="password" id="password" class="form-control is-invalid" placeholder="Enter new password">
+                        <div id="valid_pwd" class="valid-feedback"></div>
+                        <div id="invalid_pwd" class="invalid-feedback"></div>
+                        <div class="px-4 py-3 mb-0" id="password-alert">
+                            <ul class="list-unstyled mb-0">
+                                <li class="requirements leng">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    <i class="fas fa-times text-danger me-3"></i>
+                                    <small>Your password must have at least 8 chars</small>
+                                </li>
+                                <li class="requirements big-letter">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    <i class="fas fa-times text-danger me-3"></i>
+                                    <small>Your password must have at least 1 big letter.</small>
+                                </li>
+                                <li class="requirements num">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    <i class="fas fa-times text-danger me-3"></i>
+                                    <small>Your password must have at least 1 number.</small>
+                                </li>
+                                <li class="requirements special-char">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    <i class="fas fa-times text-danger me-3"></i>
+                                    <small>Your password must have at least 1 special char.</small>
+                                </li>
+                                <li class="requirements is-same">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    <i class="fas fa-times text-danger me-3"></i>
+                                    <small>Password must be same.</small>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6 py-2 pwd-change">
+                        <label class="labels">Repeat Password*</label>
+                        <input type="password" id="repeat_password" class="form-control is-invalid" placeholder="Enter password">
+                    </div>
+                </div>
+                <div class="mt-5 text-center"><button id="save_profile" class="btn btn-primary profile-button" type="button">Sign Up</button>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <input type="password" id="confirm-password" placeholder="Confirm password" />
-
-    <div class="password error">
-        <p id="length" class="invalid">Minimum 8 characters </p>
-        <p id="letter" class="invalid">A uppercase letter</p>
-        <p id="number" class="invalid">A number</b></p>
-        <p id="special" class="invalid">A special character</p>
-        <p id="match" class="invalid">Passwords don't match</p>
-    </div>
-
-    <button type="submit" class="btn" id="signup_button">Sign up</button>
-</form>
+</div>
 
 
-<script src="/countries.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 <script>
 
-var readURL = function(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $('.profile-pic').attr('src', e.target.result);
-            }
+   $(document).ready(function () {
     
-            reader.readAsDataURL(input.files[0]);
+    $("#country").countrySelect({
+        defaultCountry: 'it',
+    });
+
+    //default country
+    $('#country').attr('data-country-code', 'it');
+
+    var input = document.querySelector("#phone");
+    var iti = window.intlTelInput(input, {
+        separateDialCode: true,
+    });
+
+    $('.country').on('click', function() {
+        $('#country').attr('data-country-code', $(this).attr('data-country-code'))
+    });
+
+    $('#name').on('input', function() {
+        if($(this).val() === '') {
+            $(this).removeClass('is-valid').addClass('is-invalid');
+            $('#invalid_name').text('Name cannot be empty');
+        } else {
+            $(this).removeClass('is-invalid').addClass('is-valid');
+        }
+    });
+
+    $('#surname').on('input', function() {
+        if($(this).val() === '') {
+            $(this).removeClass('is-valid').addClass('is-invalid');
+            $('#invalid_surname').text('Surname cannot be empty');
+        } else {
+            $(this).removeClass('is-invalid').addClass('is-valid');
+        }
+    });
+
+    $('#birth_date').on('input', function() {
+        if($(this).val() === '') {
+            $(this).removeClass('is-valid').addClass('is-invalid');
+            $('#invalid_birth_date').text('Date of Birth cannot be empty');
+        } else {
+            $(this).removeClass('is-invalid').addClass('is-valid');
+        }
+    });
+
+    $('#email').on('input', function() {
+        if($(this).val() === '') {
+            $(this).removeClass('is-valid').addClass('is-invalid');
+            $('#invalid_email').text('Email cannot be empty');
+        } else {
+            $(this).removeClass('is-invalid').addClass('is-valid');
+        }
+    });
+
+
+    const passwordAlert = $("#password-alert");
+    const requirements = $(".requirements");
+    const leng = $(".leng");
+    const bigLetter = $(".big-letter");
+    const num = $(".num");
+    const specialChar = $(".special-char");
+    const same = $(".is-same");
+
+    requirements.addClass("wrong");
+
+    $(document).on('focus', '#password', function() {
+        if (!password.hasClass("is-valid")) {
+            password.addClass("is-invalid");
+        }
+    });
+
+    $(document).on("input", "#password", function() {
+        checkPassword($(this).val());
+    });
+
+    $(document).on("input", '#repeat_password', function() {
+        checkPassword($('#password').val());
+    });
+
+    function checkPassword(value) {
+        const isLengthValid = value.length >= 8;
+        const hasUpperCase = /[A-Z]/.test(value);
+        const hasNumber = /\d/.test(value);
+        const hasSpecialChar = /[!@#$%^&*()\[\]{}\\|;:'",<.>/?`~]/.test(value);
+        const hasSame = (value === '') ? false : value === $("#repeat_password").val();
+
+        leng.toggleClass("good", isLengthValid);
+        leng.toggleClass("wrong", !isLengthValid);
+        bigLetter.toggleClass("good", hasUpperCase);
+        bigLetter.toggleClass("wrong", !hasUpperCase);
+        num.toggleClass("good", hasNumber);
+        num.toggleClass("wrong", !hasNumber);
+        specialChar.toggleClass("good", hasSpecialChar);
+        specialChar.toggleClass("wrong", !hasSpecialChar);
+        same.toggleClass("good", hasSame);
+        same.toggleClass("wrong", !hasSame);
+
+        const isValidPwd = isLengthValid && hasUpperCase && hasNumber && hasSpecialChar && hasSame;
+
+        if (isValidPwd) {
+            $('#password').removeClass("is-invalid").addClass("is-valid");
+            $('#repeat_password').removeClass("is-invalid").addClass("is-valid");
+            requirements.removeClass("wrong").addClass("good");
+            passwordAlert.removeClass("alert-warning");
+        } else {
+            $('#password').removeClass("is-valid").addClass("is-invalid");
+
+            if(!hasSame)
+                $('#repeat_password').removeClass("is-valid").addClass("is-invalid");
+
+            passwordAlert.removeClass("alert-success");
         }
     }
 
-    $('.circle').hover(function() {
-        $(this).css('cursor', 'pointer');
-    })
+    $("#profilePicInput").change(function (e) {
+        var file = e.target.files[0];
+        var reader = new FileReader();
 
-    $(".circle").on('click', function() {
-       $(".file-upload").click();
-    });
-    
+        reader.onload = function (e) {
+            $("#profilePic").attr("src", e.target.result);
+        };
 
-    $(".file-upload").on('change', function(){
-        readURL(this);
-    });
-    
-    $(".upload-button").on('click', function() {
-       $(".file-upload").click();
-    });
-
-    $('#name').keyup(function(){
-        $('.name.error').html('');
-        $('#name').removeClass('error-input');
-    });
-
-    $('#surname').keyup(function(){
-        $('.surname.error').html('');
-        $('#surname').removeClass('error-input');
-    });
-
-    $('#email').keyup(function(){
-        $('.email.error').html('');
-        $('#email').removeClass('error-input');
-    });
-
-    $('#togglePassword').click(function(){
-        $(this).toggleClass('fa-eye fa-eye-slash');
-        var input = $('#password');
-        if(input.attr('type') == 'password'){
-            input.attr('type', 'text');
-        } else {
-            input.attr('type', 'password');
+        if (file) {
+            reader.readAsDataURL(file);
         }
     });
 
-    $('#password').keyup(function(){
+    $('#save_profile').on('click', function() {
 
-        if($('#password').val().length < 8){
-            $('#length').removeClass('valid');
-            $('#length').addClass('invalid');
-        } else {
-            $('#length').removeClass('invalid');
-            $('#length').addClass('valid');
+        if($('#name').hasClass('is-invalid') || $('#surname').hasClass('is-invalid') || $('#birth_date').hasClass('is-invalid')) {
+            $('#errorModal').modal('show');
+            return;
         }
 
-        if($('#password').val().match(/[A-Z]/)){
-            $('#letter').removeClass('invalid');
-            $('#letter').addClass('valid');
-        } else {
-            $('#letter').removeClass('valid');
-            $('#letter').addClass('invalid');
+        if($('#password').hasClass('is-invalid')) {
+            $('#errorModal').modal('show');
+            return;
         }
-
-        if($('#password').val().match(/[0-9]/)){
-            $('#number').removeClass('invalid');
-            $('#number').addClass('valid');
-        } else {
-            $('#number').removeClass('valid');
-            $('#number').addClass('invalid');
-        }
-
-        if($('#password').val().match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/)){
-            $('#special').removeClass('invalid');
-            $('#special').addClass('valid');
-        } else {
-            $('#special').removeClass('valid');
-            $('#special').addClass('invalid');
-        }
-
-        if($('#password').val() != '' && ($('#password').val() == $('#confirm-password').val())){
-            $('#match').removeClass('invalid');
-            $('#match').addClass('valid');
-        } else {
-            $('#match').removeClass('valid');
-            $('#match').addClass('invalid');
-        }
-
-        //$('.password.error').html('');
-        //$('#password').removeClass('error-input');
-    });
-
-    $('#confirm-password').keyup(function(){
-
-        if($('#password').val() != '' && ($('#password').val() == $('#confirm-password').val())){
-            $('#match').removeClass('invalid');
-            $('#match').addClass('valid');
-        } else {
-            $('#match').removeClass('valid');
-            $('#match').addClass('invalid');
-        }
-    });
-
-    $('#date_of_birth').keyup(function(){
-        $('.date.error').html('');
-        $('#date_of_birth').removeClass('error-input');
-    });
-
-
-    $('#signup_button').click(function(e){
-        e.preventDefault();
-
-        var error = false;
-
-        debugger;
-        name = $('#name').val();
-        surname = $('#surname').val();
-        email = $('#email').val();
-        password = $('#password').val();
-        phone_number = $('#phone_number').val();
-        birth_date = $('#date_of_birth').val();
         
-        $('.name.error').html('');
-        $('.surname.error').html('');
-        $('.email.error').html('');
-        $('.phone.error').html('');
-        $('.date.error').html('');
-
-        $('#name').removeClass('error-input');
-        $('#surname').removeClass('error-input');
-        $('#email').removeClass('error-input');
-        $('#phone').removeClass('error-input');
-        $('#date_of_birth').removeClass('error-input');
+        const name = $('#name').val();
+        const surname = $('#surname').val();
+        const birth_date = $('#birth_date').val();
+        const email = $('#email').val();
+        const sex = $('#sex').val();
+        const country = $('#country').attr('data-country-code');
+        const address_line = $('#address_line').val();
+        const password = $('#password').val();
 
 
-        if(!($('#password').val().match(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/)) || $('#password').val() != $('#confirm-password').val()){
-            $('#password').addClass('error-input');
-            $('#confirm-password').addClass('error-input');
-            error = true;
+        const dialCode = iti.getSelectedCountryData().dialCode;
+        const phone_number = $('#phone').val();
+        const full_phone_number = '+'+dialCode+phone_number;
+
+        console.log(phone);
+
+        var formData = new FormData();
+        formData.append('name', name);
+        formData.append('surname', surname);
+        formData.append('email', $('#email').val());
+        formData.append('birth_date', birth_date);
+        formData.append('sex', sex);
+        formData.append('nationality', country);
+        formData.append('password', password);
+        
+        if(phone_number != '' && typeof phone_number !== 'undefined')
+            formData.append('phone_number', full_phone_number);
+
+        if(address_line !== '' && typeof address_line !== 'undefined')
+            formData.append('address_line', address_line);
+
+        var file = $('#profilePicInput')[0].files[0];
+        if(file){
+            formData.append('profile_pic', file);
         }
 
-        if(!name){
-            $('.name.error').html('Name is required');
-            $('#name').addClass('error-input');
-            error = true;
-        }
-        if(!surname){
-            $('.surname.error').html('Surname is required');
-            $('#surname').addClass('error-input');
-            error = true;
-        }
-        if(!email){
-            $('.email.error').html('Email is required');
-            $('#email').addClass('error-input');
-            error = true;
-        }
+        console.log(formData);
 
-
-        if(!error) {
-            var formData = new FormData();
-
-            formData.append('name', name);
-            formData.append('surname', surname);
-            formData.append('email', email);
-            formData.append('password', password);
-            formData.append('phone_number', phone_number);
-            formData.append('birth_date', birth_date);
-
-            var file = $('.file-upload')[0].files[0];
-            if(file){
-                formData.append('profile_pic', file);
-            }
-
-            $.ajax({
+        $.ajax({
                 type: 'POST',
                 data: formData,
                 contentType: false,
                 processData: false,
                 url: '/signup',
                 success: function(data) {
-                    window.location.href = '/home';
+                    $('#successModal').modal('show').on('hidden.bs.modal', function (e) {
+                        window.location.href = '/';
+                    });
                 },
                 error: function(data) {
-                    const errString = JSON.stringify(data.responseJSON.errors);
-                    const err = JSON.parse(errString);
-                    if(err.name){
-                        $('.name.error').html(err.name);
-                        $('#name').addClass('error-input');
+                    const err = JSON.parse(JSON.stringify(data.responseJSON.errors));
+
+                    if(err.name) {
+                        $('#name').removeClass('is-valid').addClass('is-invalid');
+                        $('#invalid_name').text(err.name);
                     }
-                    if(err.surname){
-                        $('.surname.error').html(err.surname);
-                        $('#surname').addClass('error-input');
+
+                    if(err.surname) {
+                        $('#surname').removeClass('is-valid').addClass('is-invalid');
+                        $('#invalid_surname').text(err.surname);
                     }
+
+                    if(err.birth_date) {
+                        $('#birth_date').removeClass('is-valid').addClass('is-invalid');
+                        $('#invalid_birth_date').text(err.birth_date);
+                    }
+
                     if(err.email){
-                        $('.email.error').html(err.email);
-                        $('#email').addClass('error-input');
+                        $('#email').removeClass('is-valid').addClass('is-invalid');
+                        $('#invalid_email').text(err.email);
                     }
-                    if(err.password){
-                        $('.password.error').html(err.password);
-                        $('#password').addClass('error-input');
+                    if(err.old_password){
+                        $('#old_password').removeClass('is-valid').addClass('is-invalid');
+                        $('#old_password').text(err.old_password);
+                    }
+
+                    if(err.new_password){
+                        $('#new_password').removeClass('is-valid').addClass('is-invalid');
+                        $('#new_password').text(err.new_password);
                     }
 
                     if(err.phone_number) {
-                        $('.phone.error').html(err.phone_number);
-                        $('#phone').addClass('error-input');
+                        $('#phone').removeClass('is-valid').addClass('is-invalid');
+                        $('#phobe').text(err.phone);
                     }
                 }
-            });
-    }
+        
     });
+});
+    
+});
+
 </script>
+
 <%- include('partials/footer'); -%>

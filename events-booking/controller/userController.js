@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 var ObjectId = require('mongoose').Types.ObjectId;
 require('dotenv').config();
 var fs = require('fs');
+const bcrypt = require('bcrypt');
 
 
 //handle errors
@@ -58,7 +59,7 @@ module.exports.login_get = (req, res) => {res.render('login')};
 
 module.exports.signup_post = async (req, res) => {
     console.log(req.body);
-    const { name, surname, email, password, phone_number, birth_date, profile_pic } = req.body;
+    const { name, surname, email, password, phone_number, birth_date, profile_pic, sex, address_line, nationality } = req.body;
     console.log('profile pic '+ profile_pic);
     try {
         var profile_pic_URL = null;
@@ -66,8 +67,12 @@ module.exports.signup_post = async (req, res) => {
         if(profile_pic) {
             profile_pic_URL = "/uploads/" + profile_pic;
         }
-        console.log(profile_pic_URL);
-        const user = await User.create({name, surname, email, password, phone_number, birth_date, profile_pic_URL});
+
+        const salt = await bcrypt.genSalt();
+        const password_hashed = await bcrypt.hash(password, salt);
+
+        const user = await User.create({name, surname, email, password: password_hashed, phone_number, birth_date, profile_pic_URL, sex, address_line, nationality});
+
         console.log('user '+ user._id +' created successfully');
         const token = createToken(user._id);
         res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
@@ -134,6 +139,7 @@ module.exports.login_google = async (req, res) => {
 module.exports.get_profile = async (req, res) => {
     console.log('/profile/'+ req.params.id +' called...');
     let user = await User.findOne({_id: req.params.id});
+    console.log('user retrieved: '+ user);
     res.render('profile', {user});
 }
 
@@ -154,6 +160,7 @@ module.exports.update_profile = async (req, res) => {
     userRetrieved.phone_number = req.body.phone_number;
     userRetrieved.sex = req.body.sex;
     userRetrieved.address_line = req.body.address_line;
+    userRetrieved.nationality = req.body.nationality;
 
     if(!old_profile_pic_URL || (old_profile_pic_URL && req.body.profile_pic_URL && old_profile_pic_URL != req.body.profile_pic_URL)) {
         userRetrieved.profile_pic_URL = req.body.profile_pic_URL;
@@ -165,7 +172,11 @@ module.exports.update_profile = async (req, res) => {
         const auth = await User.comparePassword(userRetrieved.password, req.body.old_password);
         if(auth) {
             console.log('old password correct');
-            userRetrieved.password = req.body.new_password;
+
+            const salt = await bcrypt.genSalt();
+            const new_password = await bcrypt.hash(req.body.new_password, salt);
+
+            userRetrieved.password = new_password;
         } else {
             console.log('incorrect old password');
             res.status(400).send({ errors: {old_password: 'Incorrect old password'} });

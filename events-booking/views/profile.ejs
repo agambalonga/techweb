@@ -6,10 +6,10 @@
     }
     .wrong .fa-check {
     display: none;
-}
-.good .fa-times {
+    }
+    .good .fa-times {
     display: none;
-}
+    }
 </style>
 
 <!-- Modal Success -->
@@ -129,7 +129,7 @@
                     <div class="col-md-6 py-2">
                         <label class="labels">Phone Number</label>
                         <div class="input-group">
-                            <input id="phone" type="tel" class="form-control " placeholder="Enter phone number" value="<%=user.phone_number%>">
+                            <input id="phone" type="text" class="form-control " placeholder="Enter phone number" value="<%=user.phone_number%>">
                         </div>
                     </div>
                 </div>
@@ -251,7 +251,6 @@
         }
     });
 
-    const password = $("#new_password");
     const passwordAlert = $("#password-alert");
     const requirements = $(".requirements");
     const leng = $(".leng");
@@ -261,13 +260,13 @@
 
     requirements.addClass("wrong");
 
-    password.focus(function() {
-        if (!password.hasClass("is-valid")) {
-            password.addClass("is-invalid");
+    $(document).on('focus', '#new_password', function() {
+        if ($(this).hasClass("is-valid")) {
+            $(this).addClass("is-invalid");
         }
     });
 
-    password.on("input", function() {
+    $(document).on("input", "#new_password", function() {
         const value = $(this).val();
         const isLengthValid = value.length >= 8;
         const hasUpperCase = /[A-Z]/.test(value);
@@ -286,11 +285,11 @@
         const isPasswordValid = isLengthValid && hasUpperCase && hasNumber && hasSpecialChar;
 
         if (isPasswordValid) {
-            password.removeClass("is-invalid").addClass("is-valid");
+            $(this).removeClass("is-invalid").addClass("is-valid");
             requirements.removeClass("wrong").addClass("good");
             passwordAlert.removeClass("alert-warning");
         } else {
-            password.removeClass("is-valid").addClass("is-invalid");
+            $(this).removeClass("is-valid").addClass("is-invalid");
             passwordAlert.removeClass("alert-success");
         }
     });
@@ -341,6 +340,7 @@
         formData.append('email', $('#email').val());
         formData.append('birth_date', birth_date);
         formData.append('sex', sex);
+        formData.append('nationality', country);
         
         if(phone_number != '' && typeof phone_number !== 'undefined')
             formData.append('phone_number', full_phone_number);

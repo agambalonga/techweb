@@ -70,14 +70,6 @@ const userSchema = new mongoose.Schema({
     ]
  });
 
- userSchema.pre(['save', 'update'], async function(next) {
-    if(this.password) {
-        const salt = await bcrypt.genSalt();
-        this.password = await bcrypt.hash(this.password, salt);
-    }
-    next();
- });
-
  userSchema.statics.login = async function(email, password) {
         const user = await this.findOne({email});
         if(user) {
@@ -85,6 +77,7 @@ const userSchema = new mongoose.Schema({
                 throw Error('User not registered with email. Please login with Google');
             }
             const auth = await bcrypt.compare(password, user.password);
+            
             if(auth) {
                 return user;
             }
