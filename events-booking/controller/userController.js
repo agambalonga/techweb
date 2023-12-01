@@ -132,9 +132,8 @@ module.exports.login_google = async (req, res) => {
 }
 
 module.exports.get_profile = async (req, res) => {
-    console.log('retrieving user with id: '+ req.params.id);
+    console.log('/profile/'+ req.params.id +' called...');
     let user = await User.findOne({_id: req.params.id});
-    console.log('user retrieved: '+ user);
     res.render('profile', {user});
 }
 
@@ -153,6 +152,8 @@ module.exports.update_profile = async (req, res) => {
     userRetrieved.email = req.body.email;
     userRetrieved.birth_date = req.body.birth_date;
     userRetrieved.phone_number = req.body.phone_number;
+    userRetrieved.sex = req.body.sex;
+    userRetrieved.address_line = req.body.address_line;
 
     if(!old_profile_pic_URL || (old_profile_pic_URL && req.body.profile_pic_URL && old_profile_pic_URL != req.body.profile_pic_URL)) {
         userRetrieved.profile_pic_URL = req.body.profile_pic_URL;

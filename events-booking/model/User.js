@@ -13,6 +13,9 @@ const userSchema = new mongoose.Schema({
     surname : {
         type : String
     },
+    sex : {
+        type : String
+    },
     // 0 - user, 1 - admin
     role : {
         type : Number,
@@ -31,6 +34,12 @@ const userSchema = new mongoose.Schema({
         type : String
     },
     phone_number : {
+        type : String
+    },
+    address_line : {
+        type : String
+    },
+    nationality : {
         type : String
     },
     google_id : {
