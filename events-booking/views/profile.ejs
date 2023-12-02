@@ -141,7 +141,7 @@
                     </div>
                     <div class="col-md-6 py-2 pwd-change d-none">
                         <label class="labels">Old Password*</label>
-                        <input type="password" id="old_password" class="form-control" placeholder="Enter old password">
+                        <input type="password" id="old_password" class="form-control is-invalid" placeholder="Enter old password">
                         <div id="valid_old_pwd" class="valid-feedback"></div>
                         <div id="invalid_old_pwd" class="invalid-feedback"></div>
                     </div>
@@ -242,10 +242,9 @@
         }
     });
 
-    $('#old_password').on('input', function() {
+    $(document).on('input', '#old_password', function() {
         if($(this).val() === '') {
             $(this).removeClass('is-valid').addClass('is-invalid');
-            $('#invalid_old_pwd').text('Please enter your old password');
         } else {
             $(this).removeClass('is-invalid').addClass('is-valid');
         }
@@ -259,12 +258,6 @@
     const specialChar = $(".special-char");
 
     requirements.addClass("wrong");
-
-    $(document).on('focus', '#new_password', function() {
-        if ($(this).hasClass("is-valid")) {
-            $(this).addClass("is-invalid");
-        }
-    });
 
     $(document).on("input", "#new_password", function() {
         const value = $(this).val();
@@ -314,7 +307,7 @@
             return;
         }
 
-        if($('#change_password_checkbox').is(':checked') && $('#new_password').hasClass('is-invalid')) {
+        if($('#change_password_checkbox').is(':checked') && ( $('#new_password').hasClass('is-invalid') || $('#old_password').hasClass('is-invalid'))) {
             $('#errorModal').modal('show');
             return;
         }
@@ -367,7 +360,9 @@
                 processData: false,
                 url: '/user/'+$('#user_id').val(),
                 success: function(data) {
-                    $('#successModal').modal('show');
+                    $('#successModal').modal('show').on('hidden.bs.modal', function (e) {
+                        window.location.href = '/';
+                    });
                 },
                 error: function(data) {
                     const err = JSON.parse(JSON.stringify(data.responseJSON.errors));
@@ -393,7 +388,8 @@
                     }
                     if(err.old_password){
                         $('#old_password').removeClass('is-valid').addClass('is-invalid');
-                        $('#old_password').text(err.old_password);
+                        $('#modal-error-message').text(err.old_password);
+                        $('#errorModal').modal('show');
                     }
 
                     if(err.new_password){

@@ -179,9 +179,11 @@ module.exports.update_profile = async (req, res) => {
             userRetrieved.password = new_password;
         } else {
             console.log('incorrect old password');
-            res.status(400).send({ errors: {old_password: 'Incorrect old password'} });
-            if(updatePic && fs.statSync('public' + userRetrieved.profile_pic_URL).isFile())
+            
+            if(updatePic && fs.existsSync('public' + userRetrieved.profile_pic_URL))
                 fs.unlinkSync('public' + userRetrieved.profile_pic_URL);
+
+            res.status(400).send({ errors: {old_password: 'Incorrect old password'} });
             return;
         }
     }
