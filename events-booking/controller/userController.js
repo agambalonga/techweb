@@ -72,8 +72,6 @@ module.exports.signup_post = async (req, res) => {
         const password_hashed = await bcrypt.hash(password, salt);
 
         const user = await User.create({name, surname, email, password: password_hashed, phone_number, birth_date, profile_pic_URL, sex, address_line, nationality});
-
-        console.log('user '+ user._id +' created successfully');
         const token = createToken(user._id);
         res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
         res.status(201).json({user: user._id});
@@ -111,7 +109,6 @@ module.exports.logout_get = (req, res) => {
 
 module.exports.login_google = async (req, res) => {
     const userInfo = jwt.decode(req.body.credential);
-    console.log('user info: '+ JSON.stringify(userInfo));
     try {
         let user = await User.findOne({google_id: userInfo.sub});
         if(!user) {
@@ -139,7 +136,6 @@ module.exports.login_google = async (req, res) => {
 module.exports.get_profile = async (req, res) => {
     console.log('/profile/'+ req.params.id +' called...');
     let user = await User.findOne({_id: req.params.id});
-    console.log('user retrieved: '+ user);
     res.render('profile', {user});
 }
 

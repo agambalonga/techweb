@@ -16,16 +16,19 @@ module.exports.getAll = async (req, res) => {
 
 //Funzione che prende un artista in base all'id
 module.exports.getArtistById = async (req, res) => {
-    let artista={};
+    let artist={};
     let events =[];
-    debugger;
-    console.log(req.params.id);
     try {
         //find artist by id
-        artista = await Artist.findById(req.params.id);
-        events = await Event.find({ 'artist._id': artista._id });
-        events.artist = artista;
-        res.render('artist', {events: events});  
+        artist = await Artist.findById(req.params.id);
+        //find all events not expired by artist
+        events = await Event.find({'artist._id': artist._id, date: {$gte: new Date()}}).sort({date: 1});
+
+        correlated_artists = await Artist.find({genres: artist.genres, _id: {$ne: artist._id}}).sort({artist_name: 1}).limit(10);
+
+        artist.events = events;
+        artist.correlated_artists = correlated_artists;
+        res.render('artist', {artist});  
     } catch (err) {
         console.log(err)
         // const errors = handleErrors(err);

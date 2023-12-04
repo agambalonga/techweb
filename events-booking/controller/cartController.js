@@ -48,10 +48,6 @@ module.exports.add_to_cart = async (req, res) => {
             }
         }
 
-
- 
-        console.log(req.session.cart);
-
         res.status(200).json({success: true, message: 'Event added to cart', qty_added: req.body.qty, cart: req.session.cart, new_item: newItem, updated_item: updatedItem});
     
     } else {
@@ -72,8 +68,6 @@ module.exports.delete_from_cart = async (req, res) => {
         }
     }
 
-    console.log(req.session.cart);
-
     res.status(200).json({success: true, message: 'Event deleted from cart', cart: req.session.cart});
 };
 
@@ -83,7 +77,6 @@ module.exports.check_seats = async (req, res, next) => {
     const event_id = req.body.event_id;
     try {
         const event = await Event.findById(event_id);
-        console.log(event)
         if(event.seats > 0 && event.seats >= req.body.qty){
             next();
         }else{

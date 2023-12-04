@@ -46,7 +46,6 @@ mongoose.connect(process.env.MONGO_ATLAS_URL)
 // routes
 app.get('*', checkUser, (req, res, next) => {
     res.locals.cart = req.session.cart;
-    console.log(res.locals.cart);
     next();
 });
 app.get('/', indexController.get_index);

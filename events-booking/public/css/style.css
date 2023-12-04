@@ -547,6 +547,7 @@ h3.cart-title {
 }
 
 .search-cont .list-group-item-search {
+  font-size: large;
   border-top: none;
   border-left: none;
   border-right: none;
