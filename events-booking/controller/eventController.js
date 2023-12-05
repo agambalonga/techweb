@@ -17,3 +17,15 @@ module.exports.get_events = async (req, res) => {
 };
 
 
+module.exports.get_event = async (req, res) => {
+    try {
+        const event = await Event.findOne({_id: req.params.id});
+        res.render('event', {event});
+    } catch (err) {
+        console.log(err)
+        // const errors = handleErrors(err);
+        res.status(400).json({ errors });
+    }
+};
+
+

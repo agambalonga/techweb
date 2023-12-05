@@ -186,7 +186,6 @@ module.exports.update_profile = async (req, res) => {
 
     try {
         const user = await userRetrieved.save();
-        console.log('user updated successfully');
 
         if(updatePic && fs.existsSync('public' + old_profile_pic_URL) && old_profile_pic_URL != userRetrieved.profile_pic_URL) {
             console.log('deleting old profile pic');
@@ -213,8 +212,6 @@ module.exports.get_wallet = async (req, res) => {
 }
 
 module.exports.add_wallet = async (req, res) => {
-    console.log('updating user with id: '+ req.params.id);
-    console.log('updating user with data: '+ JSON.stringify(req.body));
     
     //find user by id and update
     let userRetrieved = await User.findOne({_id: req.params.id});
@@ -225,7 +222,6 @@ module.exports.add_wallet = async (req, res) => {
     
     try {
         const user = await userRetrieved.save();
-        console.log('user updated successfully');
         res.status(200).json({curr_wallet: user.wallet, transaction: user.transactions[user.transactions.length - 1]});
     } catch (err) {
         console.log(err);
