@@ -90,6 +90,11 @@
 </div>  
 
 <div class="container mt-5">
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <h1 class="text-uppercase"><%=artist.artist_name%></h1>
+    </div>
+  </div>
   <div class="row">
     <div class="col-md-4 pb-2">
       <img src="<%=artist.image_URL%>" alt="<%=artist.artist_name%>" class="img-fluid img-details">
@@ -124,7 +129,7 @@
                     <a href="#"><%= event.title %></a>
                   </h3>
                 </div>
-                <div class="card-detail">
+                <div class="card-detail d-flex justify-content-between align-items-baseline">
                   <p class="text-uppercase"> <%= event.city %> - <%=event.site %></p>
                   <p class="text-uppercase"><%= event.formatDateTime(event.date) %></p>
                 </div>

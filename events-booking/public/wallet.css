@@ -44,21 +44,14 @@ label {
     padding-bottom: 5px;
 }
 
-input {
-    margin-top: 3px;
-    padding: 15px;
-    font-size: 16px;
-    width: 100%;
-    border-radius: 10px;
-    border: 1px solid #dcdcdc;
-}
+
 
 .ccicon {
     height: 38px;
     position: absolute;
-    right: 6px;
-    top: calc(50% + 17px);
-    width: 60px;
+    top: calc(50% - 76px);
+    width: 61px;
+    left: 586px;
 }
 
 /* CREDIT CARD IMAGE STYLING */
@@ -105,7 +98,6 @@ input {
     padding: 2px 4px;
     background-color: #909090;
     border-radius: 4px;
-    cursor: pointer;
     float:right;
 }
 
@@ -303,6 +295,7 @@ input {
 }
 
 .creditcard {
+    margin: 0 auto;
     width: 100%;
     max-width: 400px;
     -webkit-transform-style: preserve-3d;
@@ -384,4 +377,10 @@ input {
 
 .table tbody tr:hover {
     background-color: #f0f0f0;
+}
+
+@media only screen and (max-width: 768px) {
+    #credit_input {
+        margin-top:300px;
+    }
 }

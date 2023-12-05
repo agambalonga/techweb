@@ -144,7 +144,7 @@
   <div class="container">
     <div class="row">
       <div class="display-header d-flex justify-content-between pb-3">
-        <h2 class="display-7 text-dark text-uppercase">Next Events</h2>
+        <h2 class="display-7 text-dark text-uppercase">Upcoming Events</h2>
       </div>
       <div class="swiper event-swiper">
         <div class="swiper-wrapper">
@@ -160,12 +160,13 @@
                   <a href="#" onClick="openModal('<%= JSON.stringify(event) %>')" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
                 </div>
               </div>
-              <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
+              <div class="card-detail pt-3">
                 <h3 class="card-title text-uppercase">
                   <a href="#"><%= event.title %></a>
                 </h3>
+                <p><%=event.artist.name%></p>
               </div>
-              <div class="card-detail">
+              <div class="card-detail d-flex justify-content-between align-items-baseline">
                 <p class="text-uppercase"> <%= event.city %> - <%=event.site %></p>
                 <p class="text-uppercase"><%= event.formatDateTime(event.date) %></p>
               </div>
