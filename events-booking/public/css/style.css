@@ -546,8 +546,21 @@ h3.cart-title {
   padding: 0 23px;
 }
 
-.search-cont .list-group-item-search {
+.search-cont .list-group-item-search-primary {
   font-size: large;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
+.search-cont .list-group-item-search-secondary {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+}
+
+.search-cont .list-group-item-search-secondary-last {
   border-top: none;
   border-left: none;
   border-right: none;

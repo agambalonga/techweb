@@ -36,13 +36,32 @@ module.exports.getArtistById = async (req, res) => {
     }
 };
 
-module.exports.getArtistByNameLike = async (req, res) => {
+module.exports.getArtistAndEventsByNameLike = async (req, res) => {
     try {
         if(req.query.name == undefined) {
             res.status(400).json({ errors: "No name specified" });
         }
-        const artists = await Artist.find({artist_name: {$regex: req.query.name, $options: 'i'}}).limit(10);
-        res.status(200).json({artists: artists});
+        let response = {};
+        response.artists = [];
+
+        //find artists by name and its events
+        var artists = await Artist.find({artist_name: {$regex: req.query.name, $options: 'i'}}).limit(10);
+
+        if(artists) {
+            //per ogni artist trovato cerco gli eventi
+            for (let i = 0; i < artists.length; i++) {
+                
+                var artist = {};
+                artist._id = artists[i]._id;
+                artist.name = artists[i].artist_name;
+                artist.image_URL = artists[i].image_URL;
+
+                let events = await Event.find({'artist._id': artists[i]._id, date: {$gte: new Date()}}).sort({date: 1});
+                artist.events = events;
+                response.artists.push(artist);
+            }
+        }
+        res.status(200).json({response});
     } catch (err) {
         console.log(err)
         // const errors = handleErrors(err);

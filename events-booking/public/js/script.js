@@ -14,21 +14,27 @@
           $('#searchSuggestions').html('');
           return;
         }
-        
-        if($(this).val().length < 3){
-          return;
-        } 
 
         $.ajax({
-          url: '/artists/getArtistByNameLike?name='+$(this).val(),
+          url: '/artists/getArtistAndEventsByNameLike?name='+$(this).val(),
           method: 'GET',
           contentType: 'application/json',
           success: function(data){
             console.log(data);
             var html = '';
-            $.each(data.artists, function(index, value){
-              html += '<a class="list-group-item list-group-item-action list-group-item-search" href="/artist/'+value._id+'">'+value.artist_name+'</a></li>';
+            $.each(data.response.artists, function(index, value){
+              html += '<a class="list-group-item list-group-item-action list-group-item-search-primary" href="/artist/'+value._id+'">'+value.name+'</a></li>';
+
+              $.each(value.events, function(i, v){
+                if(i == value.events.length-1) {
+                  html += '<a class="list-group-item list-group-item-action list-group-item-search-secondary-last" href="/event/'+v._id+'">'+v.title+ ' - '+v.city+ ' '+formatDate(v.date)+ '</a></li>';
+                } else {
+                  html += '<a class="list-group-item list-group-item-action list-group-item-search-secondary" href="/event/'+v._id+'">'+v.title+ ' - '+v.city+' '+formatDate(v.date)+'</a></li>';
+                }
+              });
+
             });
+
             $('#searchSuggestions').html(html);
           }
         });
@@ -190,6 +196,15 @@ function formatDateTime(inputDate) {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
+function formatDate(inputDate) {
+  const date = new Date(inputDate);
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
+
 $(document).on('click', '#add-to-cart-btn', function() {
   var quantity = parseInt($('#quantityInput').val());
   var event_id = $('#add-to-cart-modal .modal-body').attr('data-event-id');
@@ -219,7 +234,7 @@ $(document).on('click', '#add-to-cart-btn', function() {
 });
 
 function handleCart(data) {
-  
+
   if(data.new_item) {
     var total = 0;
 
