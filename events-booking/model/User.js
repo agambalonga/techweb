@@ -67,7 +67,24 @@ const userSchema = new mongoose.Schema({
                 type: Number
             }
         }
-    ]
+    ],
+    events_booked: [
+        {
+            event_id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'events'
+            },
+            event_name: {
+                type: String
+            },
+            qty: {
+                type: Number
+            },
+            booking_date: {
+                type: Date
+            }
+        }
+    ],
  });
 
  userSchema.statics.login = async function(email, password) {
