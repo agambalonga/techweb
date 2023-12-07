@@ -70,12 +70,28 @@ const userSchema = new mongoose.Schema({
     ],
     events_booked: [
         {
+            _id: {
+                type: mongoose.Schema.Types.ObjectId,
+                auto: true
+            },
             event_id: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'events'
             },
             event_name: {
                 type: String
+            },
+            artist_name: {
+                type: String
+            },
+            event_img_URL: {
+                type: String
+            },
+            event_city: {
+                type: String
+            },
+            event_date: {
+                type: Date
             },
             qty: {
                 type: Number

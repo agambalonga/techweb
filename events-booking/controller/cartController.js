@@ -21,7 +21,7 @@ module.exports.add_to_cart = async (req, res) => {
                 event_img: event.image_URL,
                 event_quantity: req.body.qty,
                 event_city: event.city,
-                event_date: event.formatDate(event.date),
+                event_date: event.formatDateTime(event.date),
             });
         } else {
             var updatedItem = {};
@@ -43,7 +43,7 @@ module.exports.add_to_cart = async (req, res) => {
                     event_img: event.image_URL,
                     event_quantity: req.body.qty,
                     event_city: event.city,
-                    event_date: event.formatDate(event.date),
+                    event_date: event.formatDateTime(event.date),
                 });
             }
         }

@@ -1,0 +1,100 @@
+<%- include('partials/header'); -%>
+
+
+
+<section class="h-100 gradient-custom">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-10 col-xl-8">
+          <div class="card" style="border-radius: 10px;">
+            <div class="card-header px-4 py-5   ">
+              <h5 class="text-muted mb-0">My Events</h5>
+            </div>
+              <% if(events_booked) { %>
+                <% events_booked.forEach(function(event) { %>
+                    <div class="card shadow-0 border mb-4">
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-md-2">
+                              <img src="<%=event.event_img_URL%>" class="img-fluid">
+                            </div>
+                            <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                              <p class="text-muted mb-0"><%=event.event_name%></p>
+                            </div>
+                            <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                              <p class="text-muted mb-0 small"><%=event.artist_name%></p>
+                            </div>
+                            <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                              <p class="text-muted mb-0 small"><%=event.event_city%></p>
+                            </div>
+                            <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                <p class="text-muted mb-0 small"><%=user.formatDateTime(event.event_date)%></p>
+                              </div>
+                            <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                              <p class="text-muted mb-0 small">Qty: <%=event.qty%></p>
+                            </div>
+                            <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                <% if(new Date(event.event_date) < new Date()) { %>
+                                    <p class="text-muted mb-0 small">Expired</p>
+                                <% } else { %>
+                                    <p class="text-muted mb-0 small">In coming</p>
+                                <% } %>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12 text-center d-flex justify-content-end align-items-center">
+                                <button data-event-id="<%=event._id%>" class="btn btn-primary btn-block exportPdf" type="submit" id="exportPdf">Grab Your Ticket</button>
+                          </div>
+                        </div>
+                      </div>
+                    <%})} %>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+
+<script>
+
+$(document).ready(function() {
+    $('.exportPdf').click(function() {
+        var event_id = $(this).data('event-id');
+        
+        // Chiamata AJAX per ottenere il PDF
+        fetch('/ticket/' + event_id, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/pdf'
+            }
+        })
+        .then(response => {
+            // Verifica se la richiesta è andata a buon fine
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            // Crea un oggetto URL per il blob
+            var url = URL.createObjectURL(blob);
+
+            // Crea un link temporaneo per il download del PDF
+            var link = document.createElement('a');
+            link.href = url;
+            link.download = 'ticket.pdf';
+            document.body.appendChild(link);
+
+            // Simula il click sul link per avviare il download
+            link.click();
+
+            // Rimuovi il link temporaneo
+            document.body.removeChild(link);
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+    });
+});
+</script>
+<%- include('partials/footer'); -%>

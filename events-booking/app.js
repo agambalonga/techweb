@@ -7,6 +7,7 @@ const eventRoutes = require('./routes/eventRoutes');
 const artistRoutes = require('./routes/artistRoutes');
 const cartRoutes = require('./routes/cartRoute');
 const checkoutRoutes = require('./routes/checkoutRoutes');
+const ticketRoutes = require('./routes/ticketRoutes');
 const cookieParser = require('cookie-parser');
 const {checkAuth} = require('./middleware/authMiddleware');
 const {checkUser} = require('./middleware/authMiddleware');
@@ -59,4 +60,5 @@ app.use(eventRoutes);
 app.use(artistRoutes);
 app.use(cartRoutes);
 app.use(checkoutRoutes);
+app.use(ticketRoutes);
 

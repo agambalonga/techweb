@@ -228,5 +228,16 @@ module.exports.add_wallet = async (req, res) => {
         const errors = handleErrors(err);
         res.status(400).send({ errors });
     }
-}
+};
+
+module.exports.get_events_booked = async (req, res) => {
+
+    try {
+        const user = await User.findOne({_id: req.params.id});
+        res.render('my_events', {events_booked: user.events_booked});
+    } catch (err) {
+        console.log(err)
+        res.status(400).json({ errors });
+    }
+};
 
