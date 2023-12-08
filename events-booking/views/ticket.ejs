@@ -1,44 +1,157 @@
-<%- include('partials/header'); -%>
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+     body {
+  background-color: #436ea5;
+}
 
-<!-- Ho lasciato i campi riempiti dal template standard per rimanere chiaro a primo impatto-->
-<!-- Link per visualizzare il template : https://codepen.io/Hubba22/pen/vYYEvLe -->
+.ticket {
+  font-family: sans-serif;
 
-<div class="ticket ticket-1">
+  background-repeat: no-repeat;
+  background-position: top;
+  background-size: 100%;
+  background-color: #04030C;
+  width: 700px;
+  height: 300px;
+  border-radius: 15px;
+  -webkit-filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.3));
+            filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.3)); 
+  display: block;
+  margin: 10% auto auto auto;
+  color: #fff;;
+}
+
+.date {
+  margin: 15px;
+  -webkit-filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.3));
+            filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.3)); 
+}
+
+.date .day{
+  font-size: 80px;
+  float: left;
+}
+
+.date .month-and-time {
+  float: left;
+  margin: 15px 0 0 0;
+  font-weight: bold;
+}
+
+.artist {
+  font-size: 30px;
+  margin: 10px 100px 0 40px;
+  float: left;
+  font-weight: bold;
+  -webkit-filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.3));
+            filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.3)); 
+}
+
+.location {
+  float: left;
+  margin: 115px 0 0 78px;
+  font-size: 30px;
+  font-weight: bold;
+  -webkit-filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.3));
+            filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.3)); 
+}
+
+.location::before {
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/c/cb/QRCodeWikipedia.png');
+  background-size: 110px 110px;
+  width: 110px; 
+  height: 110px;
+  content:"";
+  display: inline-block;
+  float: left;
+  position: absolute;
+  left: -160px;
+  bottom: 5px;
+  -webkit-filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.3));
+            filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.3)); 
+}
+
+.rip {
+  border-right: 8px dotted #436ea5;
+  height: 300px;
+  position: absolute;
+  top: 0;
+  left: 530px;
+}
+
+.cta .buy {
+  position: absolute;
+  top: 135px;
+  right: 15px;
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: #436ea5;
+  padding: 10px 20px;
+  border-radius: 25px;
+  color: #fff;
+  text-decoration: none;
+  -webkit-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+  -webkit-filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.3));
+            filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.3)); 
+}
+
+.small {
+  font-weight: 200;
+}
+
+.ticket-1 {
+    background-image: url(https://images.unsplash.com/photo-1483101974978-cf266fdf1139?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3289&q=80);
+}
+
+.ticket-2{
+    background-image: url(https://images.unsplash.com/photo-1550184658-ff6132a71714?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2180&q=80);
+}
+
+
+		</style>
+  </head>
+
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<!-- CSS Ticket inspired by -->
+<!-- https://dribbble.com/shots/2677752-Dribbble-invite-competition -->
+
+<body>
+  <div class="ticket ticket-2">
   
-  <!--Scomposizione data, spero di averla fatta bene :') --> <!--Probabilmente l'if potrebbe essere inutile in questo caso -->
     <div class="date">
-      <% if(event.date) { 
-        let date = new Date(event.date);
-        let day = date.getDate().toString().padStart(2, '0');
-        let month = (date.getMonth() + 1).toString().padStart(2, '0');
-        let year = date.getFullYear();
-        let hour = date.getHours().toString().padStart(2, '0');
-        let formattedDate = `${year}-${month}-${day}`; %>
-      <span class="day" value="<%=day%>">31</span>
-      <span class="month-and-time" value="<%=month%>">OCT</br><span class="small" value="<%=hour%>">8PM</span></span>
-      <% } %>
+      <span class="day"><%=data.day%></span>
+      <span class="month-and-time"><%=data.month%></br><span class="small"><%=data.year%></span></br><span class="small"><%=data.hour%><%=data.ampm%></span></span>
     </div>
   
-    <div class="artist"> <!--Gestire la questione che è un array di String il campo artist-->
-      <span class="name" value="<%= event.artist %>">PETER TOSH</span>
+    <div class="artist">
+      <span class="name"><%=data.artist%></span>
       </br>
-  <span class="live small" value="<%= event.title %>">LIVE</span>
+      <span class="live small"><%=data.title%></span>
+    </br>
     </div>
   
     <div class="location">
-      <span value="<%= event.city %>">KINGSTON TOWN</span>
+      <span><%=data.city%></span>
       </br>
-      <span class="small" value="<%= event.site %>"><span>NANCY'S PUB</span>
+      <span class="small"><span><%=data.site%></span>
     </div>
   
     <div class="rip">
     </div>
     
     <div class="cta">
-      <button class="buy" href="#">GRAB A TICKET</button>
+      <button class="buy" href="#">X<%=data.qty%></button>
     </div>
   
   </div>
-  
-
-  <%- include('partials/footer'); -%>
+  </body>
+</html>

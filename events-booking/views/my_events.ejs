@@ -17,6 +17,11 @@
                           <div class="row">
                             <div class="col-md-2">
                               <img src="<%=event.event_img_URL%>" class="img-fluid">
+                              <% if(new Date(event.event_date) < new Date()) { %>
+                                <p class="text-muted mb-0 small">Expired</p>
+                            <% } else { %>
+                                <p class="text-muted mb-0 small">In coming</p>
+                            <% } %>
                             </div>
                             <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
                               <p class="text-muted mb-0"><%=event.event_name%></p>
@@ -33,17 +38,12 @@
                             <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
                               <p class="text-muted mb-0 small">Qty: <%=event.qty%></p>
                             </div>
-                            <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                <% if(new Date(event.event_date) < new Date()) { %>
-                                    <p class="text-muted mb-0 small">Expired</p>
-                                <% } else { %>
-                                    <p class="text-muted mb-0 small">In coming</p>
-                                <% } %>
-                            </div>
                           </div>
                           <div class="row">
                             <div class="col-md-12 text-center d-flex justify-content-end align-items-center">
-                                <button data-event-id="<%=event._id%>" class="btn btn-primary btn-block exportPdf" type="submit" id="exportPdf">Grab Your Ticket</button>
+                                <button data-event-id="<%=event._id%>" class="btn btn-primary btn-block exportPdf" type="submit" id="exportPdf">Download E-Ticket
+                                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                                </button>
                           </div>
                         </div>
                       </div>
@@ -59,6 +59,8 @@
 
 $(document).ready(function() {
     $('.exportPdf').click(function() {
+        //mostra lo spinner
+        $(this).find('.spinner-border').show();
         var event_id = $(this).data('event-id');
         
         // Chiamata AJAX per ottenere il PDF
@@ -74,6 +76,8 @@ $(document).ready(function() {
                 throw new Error('Network response was not ok');
             }
             return response.blob();
+            // Nascondi lo spinner
+            $(this).find('.spinner-border').hide();
         })
         .then(blob => {
             // Crea un oggetto URL per il blob
@@ -90,6 +94,9 @@ $(document).ready(function() {
 
             // Rimuovi il link temporaneo
             document.body.removeChild(link);
+
+            //nascondi lo spinner
+            $(this).find('.spinner-border').hide();
         })
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
