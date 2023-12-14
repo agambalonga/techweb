@@ -13,6 +13,9 @@ const userSchema = new mongoose.Schema({
     surname : {
         type : String
     },
+    sex : {
+        type : String
+    },
     // 0 - user, 1 - admin
     role : {
         type : Number,
@@ -31,6 +34,12 @@ const userSchema = new mongoose.Schema({
         type : String
     },
     phone_number : {
+        type : String
+    },
+    address_line : {
+        type : String
+    },
+    nationality : {
         type : String
     },
     google_id : {
@@ -58,15 +67,40 @@ const userSchema = new mongoose.Schema({
                 type: Number
             }
         }
-    ]
- });
-
- userSchema.pre(['save', 'update'], async function(next) {
-    if(this.password) {
-        const salt = await bcrypt.genSalt();
-        this.password = await bcrypt.hash(this.password, salt);
-    }
-    next();
+    ],
+    events_booked: [
+        {
+            _id: {
+                type: mongoose.Schema.Types.ObjectId,
+                auto: true
+            },
+            event_id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'events'
+            },
+            event_name: {
+                type: String
+            },
+            artist_name: {
+                type: String
+            },
+            event_img_URL: {
+                type: String
+            },
+            event_city: {
+                type: String
+            },
+            event_date: {
+                type: Date
+            },
+            qty: {
+                type: Number
+            },
+            booking_date: {
+                type: Date
+            }
+        }
+    ],
  });
 
  userSchema.statics.login = async function(email, password) {
@@ -76,6 +110,7 @@ const userSchema = new mongoose.Schema({
                 throw Error('User not registered with email. Please login with Google');
             }
             const auth = await bcrypt.compare(password, user.password);
+            
             if(auth) {
                 return user;
             }

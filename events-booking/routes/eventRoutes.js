@@ -7,4 +7,6 @@ const eventController = require('../controller/eventController');
 
 router.get('/event/', eventController.get_events);
 
+router.get('/event/:id', eventController.get_event);
+
 module.exports = router;

@@ -13,4 +13,6 @@ router.get('/user/:id/wallet', checkAuth, userController.get_wallet);
 
 router.post('/user/:id/wallet', checkAuth, userController.add_wallet);
 
+router.get('/user/:id/events', checkAuth, userController.get_events_booked);
+
 module.exports = router;

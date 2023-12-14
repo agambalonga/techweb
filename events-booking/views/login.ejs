@@ -1,44 +1,68 @@
 <%- include('partials/header'); -%>
 
-<form method="POST">
-    <h2>Log in</h2>
-    <div id="g_id_onload"
-        data-client_id="456515688442-f92dp1vudi369d67j8hredi65a6sianu.apps.googleusercontent.com"
-        data-auto-select="false"
-        data-context="signin"
-        data-ux_mode="popup"
-        data-callback="handleCredentialResponse"
-        data-auto_prompt="false">
+<section id="login" class="pb-3">
+    <div class="container-fluid h-custom">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-5 col-lg-6 col-xl-5">
+          <img src="/uploads/artist/The_Weekend.png"
+            class="img-fluid" alt="Sample image">
+        </div>
+        <div class="col-sm-12 col-md-7 col-lg-6 col-xl-4 offset-xl-1 pt-5">
+          <form>
+            <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+              <p class="lead fw-normal mb-0 me-3">Sign in with</p>
+              <div id="g_id_onload"
+                data-client_id="456515688442-f92dp1vudi369d67j8hredi65a6sianu.apps.googleusercontent.com"
+                data-auto-select="false"
+                data-context="signin"
+                data-ux_mode="popup"
+                data-callback="handleCredentialResponse"
+                data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin"
+                data-locale="en"
+                data-type="icon"
+                data-shape="pill"
+                data-theme="outline"
+                data-text="continue_with"
+                data-size="large"
+                data-logo_alignment="left"
+                data-width="350">
+            </div>
+            </div>
+  
+            <div class="divider d-flex align-items-center my-4">
+              <p class="text-center fw-bold mx-3 mb-0">Or</p>
+            </div>
+  
+            <!-- Email input -->
+            <div class="form-outline mb-4">
+                <label class="form-label fw-semibold" for="form3Example3">Email*</label>
+                <input type="email" id="email" class="form-control form-control-lg"
+                    placeholder="Enter a valid email address" />
+                <div id="email-feedback" class="invalid-feedback"></div>
+            </div>
+            
+  
+            <!-- Password input -->
+            <div class="form-outline mb-3">
+                <label class="form-label" for="Password">Password*</label>
+                <input id="password" type="password" class="form-control form-control-lg" placeholder="Enter password"/>
+                <div id="password-feedback" class="invalid-feedback d-block"></div>
+            </div>
+  
+            <div class="text-center text-lg-start mt-4 pt-2">
+              <button id="login_button" type="button" class="btn btn-medium btn-black"
+                style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+              <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="/signup"
+                  class="link-danger">Register</a></p>
+            </div>
+  
+          </form>
+        </div>
+      </div>
     </div>
-    <div class="g_id_signin"
-        data-locale="en"
-        data-type="standard"
-        data-shape="pill"
-        data-theme="outline"
-        data-text="continue_with"
-        data-size="large"
-        data-logo_alignment="left"
-        data-width="350">
-    </div>
-    <div class="divider">
-        <hr>
-        <span>or</span>
-    </div>
-    <label for="email">Email*</label>
-    <input type="email" placeholder="example@example.com" name="email" id="email" />
-    <div class="email error"></div>
-    <label for="password">Password*</label>
-    <div class="input-box">
-        <input type="password" placeholder="Enter a password" id="password" />
-        <i class="far fa-eye" id="togglePassword"></i>
-    </div>
-    <div class="password error"></div>
-    <button type="submit" class="btn" id="login_button">Log in</button>
-    <br/>
-    <br/>
-    <p class="text-info">Don't have an account? <a href="/signup" class="link">Sign up</a></p>
-    <br/>
-</form>
+  </section>
 
 <script src="https://accounts.google.com/gsi/client"></script>
 <script>
@@ -57,7 +81,7 @@ function handleCredentialResponse(response) {
             data: JSON.stringify(data),
             contentType: 'application/json',    
             success: function(response) {
-                window.location.href = '/home';
+                window.location.href = '/';
             },
             error: function(xhr, status, error) {
                 // Gestisci gli errori
@@ -66,48 +90,58 @@ function handleCredentialResponse(response) {
   }
 }
 
-$('#togglePassword').click(function(){
-        $(this).toggleClass('fa-eye fa-eye-slash');
-        var input = $('#password');
-        if(input.attr('type') == 'password'){
-            input.attr('type', 'text');
-        } else {
-            input.attr('type', 'password');
-        }
-    });
+$(document).on('keyup', '#email', function(){
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const email = $(this).val();
 
-$('#email').keyup(function(){
-        $('.email.error').html('');
-        $('#email').removeClass('error-input');
-    });
+    if(!emailPattern.test(email)){
+        $('#email-feedback').html('Invalid email address');
+        $(this).removeClass('is-valid');
+        $(this).addClass('is-invalid');
+    } else {
+        $('#email-feedback').html('');
+        $(this).removeClass('is-invalid');
+        $(this).addClass('is-valid');
+    }
+});
 
-$('#password').keyup(function(){
-    $('.password.error').html('');
-    $('#password').removeClass('error-input');
+$(document).on('keyup', '#password', function(){
+    const password = $(this).val();
+
+    if(!password){
+        $('#password-feedback').html('Password is required');
+        $(this).removeClass('is-valid');
+        $(this).addClass('is-invalid');
+    } else {
+        $('#password-feedback').html('');
+        $(this).removeClass('is-invalid');
+        $(this).addClass('is-valid');
+    }
 });
 
 $('#login_button').click(function(e){
         e.preventDefault();
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         var data = {};
         data.email = $('#email').val();
         data.password = $('#password').val();
         
-        $('.email.error').html('');
-        $('.password.error').html('');
-        $('#email').removeClass('error-input');
-        $('#password').removeClass('error-input');
+        $('#email').removeClass('is-invalid');
+        $('#email-feedback').html('');
+        $('#password').removeClass('is-invalid');
+        $('#password-feedback').html('');
 
         var errors = false;
 
-        if(!data.email){
-            $('.email.error').html('Email is required');
-            $('#email').addClass('error-input');
+        if(!data.email || emailPattern.test(data.email) == false){
+            $('#email-feedback').html('Invalid email address');
+            $('#email').addClass('is-invalid');
             errors = true;
         }
 
         if(!data.password){
-            $('.password.error').html('Password is required');
-            $('#password').addClass('error-input');
+            $('#password').addClass('is-invalid');
+            $('#password-feedback').html('Password is required');
             errors = true;
         }
 
@@ -121,19 +155,20 @@ $('#login_button').click(function(e){
             contentType: 'application/json',
             url: '/login',
             success: function(data) {
-                window.location.href = '/home';
+                window.location.href = '/';
             },
             error: function(data) {
                 console.log(data)
                 const errString = JSON.stringify(data.responseJSON.errors);
                 const err = JSON.parse(errString);
                 if(err.email){
-                    $('.email.error').html(err.email);
-                    $('#email').addClass('error-input');
+
+                    $('#email-feedback').html(err.email);
+                    $('#email').addClass('is-invalid');
                 }
                 if(err.password){
-                    $('.password.error').html(err.password);
-                    $('#password').addClass('error-input');
+                    $('#password-feedback').html(err.password);
+                    $('#password').addClass('is-invalid');
                 }
             }
         });

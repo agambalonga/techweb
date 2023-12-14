@@ -1,14 +1,344 @@
 <%- include('partials/header'); -%>
 
-  <div class="headings">
-    <div class="logo">
-      <img src="/logo_small.png" alt="logo" />
+<!-- Modal -->
+<div class="modal fade" id="add-to-cart-modal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add to Cart</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <!-- Colonna sinistra con l'immagine dell'evento -->
+            <div class="col-md-6">
+              <img src="" id="modal_img" alt="Immagine dell'evento" class="img-fluid">
+            </div>
+            <!-- Colonna destra con le informazioni dell'evento -->
+            <div class="col-md-6">
+              <h5 id="add-to-cart-modal-title" class="text-uppercase"></h5>
+              <p class="text-uppercase" id="add-to-cart-modal-title-artist-name"></p>
+              <p id="add-to-cart-modal-date"></p>
+              <p id="add-to-cart-modal-city"></p>
+             <div class="row align-items-center mb-3">
+                <div class="col-md-6">
+                  <p><strong>Quantity:</strong></p>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group">
+                    <input type="number" class="form-control text-center" value="1" min="1" max="10" id="quantityInput">
+                  </div>
+                </div>
+                <p id="add-to-cart-modal-remaining_seats"></p>
+                <p id="add-to-cart-modal-price"></p>
+              </div>
+              <!-- Aggiungi qui altri dettagli dell'evento se necessario -->
+              <button id="add-to-cart-btn" type="button" class="btn btn-primary">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="headings__title">
-      <h2>Book your favourite events here</h2>
-    </div>
-    <a href="/home" class="btn">View Events</a>
   </div>
+</div>
 
+
+
+<section id="billboard" class="position-relative overflow-hidden bg-light-blue">
+  <div class="swiper main-swiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <div class="container">
+          <div class="row d-flex align-items-center">
+            <div class="col-md-6">
+              <div class="banner-content">
+                <h1 class="display-2 text-uppercase text-dark pb-5">Book your favourite Event</h1>
+                <a href="#next-events" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">View Next Event</a>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="image-holder">
+                <img src="uploads/events/The-Weeknd-PNG-Pic.png" alt="banner">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-slide">
+        <div class="container">
+          <div class="row d-flex flex-wrap align-items-center">
+            <div class="col-md-6">
+              <div class="banner-content">
+                <h1 class="display-2 text-uppercase text-dark pb-5">Search your Artist</h1>
+                <a href="#" class="btn btn-medium btn-dark text-uppercase btn-rounded-none search-button">Search Artist</a>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="image-holder">
+                <img src="uploads/events/The-Weeknd-PNG-Pic.png" alt="banner">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="swiper-icon swiper-arrow swiper-arrow-prev">
+    <svg class="chevron-left">
+      <use xlink:href="#chevron-left" />
+    </svg>
+  </div>
+  <div class="swiper-icon swiper-arrow swiper-arrow-next">
+    <svg class="chevron-right">
+      <use xlink:href="#chevron-right" />
+    </svg>
+  </div>
+</section>
+<section id="company-services" class="padding-large">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-md-6 pb-3">
+        <div class="icon-box d-flex">
+          <div class="icon-box-icon pe-3 pb-3">
+            <svg class="quality">
+              <use xlink:href="#quality" />
+            </svg>
+          </div>
+          <div class="icon-box-content">
+            <h3 class="card-title text-uppercase text-dark">Quality guarantee</h3>
+            <p>Dolor sit amet orem ipsu mcons ectetur adipi elit.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 pb-3">
+        <div class="icon-box d-flex">
+          <div class="icon-box-icon pe-3 pb-3">
+            <svg class="price-tag">
+              <use xlink:href="#price-tag" />
+            </svg>
+          </div>
+          <div class="icon-box-content">
+            <h3 class="card-title text-uppercase text-dark">Daily offers</h3>
+            <p>Discover our daily offers and save big on your favorite products.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 pb-3">
+        <div class="icon-box d-flex">
+          <div class="icon-box-icon pe-3 pb-3">
+            <svg class="shield-plus">
+              <use xlink:href="#shield-plus" />
+            </svg>
+          </div>
+          <div class="icon-box-content">
+            <h3 class="card-title text-uppercase text-dark">100% secure payment</h3>
+            <p>100% secure payment</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="next-events" class="product-store position-relative padding-large no-padding-top">
+  <div class="container">
+    <div class="row">
+      <div class="display-header d-flex justify-content-between pb-3">
+        <h2 class="display-7 text-dark text-uppercase">Upcoming Events</h2>
+      </div>
+      <div class="swiper event-swiper">
+        <div class="swiper-wrapper">
+          <% events.forEach(function(event) { %>
+
+          <div class="swiper-slide">
+            <div class="event-card position-relative">
+              <div class="image-holder">
+                <img src="<%= event.image_URL %>" alt="event-img" class="img-fluid img-sliding">
+              </div>
+              <div class="cart-concern position-absolute">
+                <div class="cart-button d-flex add-to-cart">
+                  <a href="#" onClick="openModal('<%= JSON.stringify(event) %>')" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
+                </div>
+              </div>
+              <div class="card-detail pt-3">
+                <h3 class="card-title text-uppercase">
+                  <a href="/event/<%=event._id%>"><%= event.title %></a>
+                </h3>
+                <p><%=event.artist.name%></p>
+              </div>
+              <div class="card-detail d-flex justify-content-between align-items-baseline">
+                <p class="text-uppercase"> <%= event.city %> - <%=event.site %></p>
+                <p class="text-uppercase"><%= event.formatDateTime(event.date) %></p>
+              </div>
+          
+              <div class="card-detail d-flex justify-content-between align-items-baseline">
+                <p class="fw-semibold"> <%= event.seats %> 
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ticket" viewBox="0 0 16 16">
+                  <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6zM1.5 4a.5.5 0 0 0-.5.5v1.05a2.5 2.5 0 0 1 0 4.9v1.05a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-1.05a2.5 2.5 0 0 1 0-4.9V4.5a.5.5 0 0 0-.5-.5z"/>
+                </svg>
+              </p>
+              <span class="item-price text-primary"><%= event.price_for_ticket %>€</span>
+              </div>
+              </div>
+          </div>
+          <% }); %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="swiper-pagination position-absolute text-center"></div>
+</section>
+<section id="top-artists" class="product-store padding-large position-relative">
+  <div class="container">
+    <div class="row">
+      <div class="display-header d-flex justify-content-between pb-3">
+        <h2 class="display-7 text-dark text-uppercase">Top Artist</h2>
+      </div>
+      <div class="swiper artist-swiper">
+        <div class="swiper-wrapper">
+          <% artists.forEach(function(artist) { %>
+          <div class="swiper-slide">
+            <div class="event-card position-relative">
+              <div class="image-holder">
+                <img src="<%=artist.image_URL %>" alt="artist_img" class="img-fluid img-sliding">
+              </div>
+              <div class="cart-concern position-absolute">
+                <div class="cart-button d-flex">
+                  <a href="artist/<%=artist._id%>" class="btn btn-medium btn-black">View Events<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
+                </div>
+              </div>
+              <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
+                <h3 class="card-title text-uppercase">
+                  <a href="artist/<%=artist._id%>"><%=artist.artist_name %></a>
+                </h3>
+              </div>
+            </div>
+          </div>
+          <% }); %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="swiper-pagination position-absolute text-center"></div>
+</section>
+
+<section id="testimonials" class="position-relative pt-3 mb-5">
+  <div class="container">
+    <div class="row">
+      <div class="review-content position-relative">
+        <div class="swiper-icon swiper-arrow swiper-arrow-prev position-absolute d-flex align-items-center">
+          <svg class="chevron-left">
+            <use xlink:href="#chevron-left" />
+          </svg>
+        </div>
+        <div class="swiper testimonial-swiper">
+          <div class="quotation text-center">
+            <svg class="quote">
+              <use xlink:href="#quote" />
+            </svg>
+          </div>
+          <div class="swiper-wrapper">
+            <div class="swiper-slide text-center d-flex justify-content-center">
+              <div class="review-item col-md-10">
+                <i class="icon icon-review"></i>
+                <blockquote>“"I had an amazing experience booking events through this platform. The process was seamless and the events were top-notch. Highly recommended!"”</blockquote>
+                <div class="rating">
+                  <svg class="star star-fill">
+                    <use xlink:href="#star-fill"></use>
+                  </svg>
+                  <svg class="star star-fill">
+                    <use xlink:href="#star-fill"></use>
+                  </svg>
+                  <svg class="star star-fill">
+                    <use xlink:href="#star-fill"></use>
+                  </svg>
+                  <svg class="star star-half">
+                    <use xlink:href="#star-half"></use>
+                  </svg>
+                  <svg class="star star-empty">
+                    <use xlink:href="#star-empty"></use>
+                  </svg>
+                </div>
+                <div class="author-detail">
+                  <div class="name text-dark text-uppercase pt-2">Alberto Gambalonga</div>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide text-center d-flex justify-content-center">
+              <div class="review-item col-md-10">
+                <i class="icon icon-review"></i>
+                <blockquote>"EventBooking has made booking musical events a breeze! With an intuitive interface and a wide range of options, I found and booked my favorite concerts effortlessly. It's fast, convenient, and keeps me updated on new offers. A fantastic experience that I recommend to all music lovers!"</blockquote>
+                <div class="rating">
+                  <svg class="star star-fill">
+                    <use xlink:href="#star-fill"></use>
+                  </svg>
+                  <svg class="star star-fill">
+                    <use xlink:href="#star-fill"></use>
+                  </svg>
+                  <svg class="star star-fill">
+                    <use xlink:href="#star-fill"></use>
+                  </svg>
+                  <svg class="star star-half">
+                    <use xlink:href="#star-half"></use>
+                  </svg>
+                  <svg class="star star-empty">
+                    <use xlink:href="#star-empty"></use>
+                  </svg>
+                </div>
+                <div class="author-detail">
+                  <div class="name text-dark text-uppercase pt-2">Fabio Cosentino</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-icon swiper-arrow swiper-arrow-next position-absolute d-flex align-items-center">
+          <svg class="chevron-right">
+            <use xlink:href="#chevron-right" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="swiper-pagination"></div>
+</section>
+
+<!-- Modal Success -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="successModalLabel">Event added to cart!</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="fas fa-check-circle fa-5x text-success"></i>
+        <p class="mt-3">Your Event is added correctly to cart</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Error -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="errorModalLabel">OPS... Something is gone wrong</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="fas fa-times-circle fa-5x text-danger"></i>
+        <p class="mt-3" id="modal-error-message"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <%- include('partials/footer'); -%>

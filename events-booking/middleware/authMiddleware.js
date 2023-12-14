@@ -5,7 +5,6 @@ require('dotenv').config();
 const maxAge = 15 * 60;
 
 const checkAuth = (req, res, next)  => {
-    console.log('checking authentication')
     //retrieve token from cookies
     const token = req.cookies.jwt;
     if(token){
@@ -27,7 +26,6 @@ const checkAuth = (req, res, next)  => {
 }
 
 const checkUser = (req, res, next) => {
-    console.log('checking user...')
     const token = req.cookies.jwt;
     if(token) {
         jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
@@ -36,7 +34,6 @@ const checkUser = (req, res, next) => {
                 res.locals.user = null;
                 next();
             } else {
-                console.log("JWT Token is not expired, refresh it...");
                 let user = await User.findById(decodedToken.id);
                 res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000})
                 res.locals.user = user;

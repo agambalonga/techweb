@@ -1,36 +1,29 @@
 <%- include('partials/header'); -%>
+<link rel="stylesheet" href="/css/wallet.css">
 
-<%
-// Funzione per formattare la data
-function formatDateTime(inputDate) {
-    const date = new Date(inputDate);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-
-    return `${year}/${month}/${day}`;
-}
-%>
-
-<div id="container">
-   
-
-    <div id="wallet-info">
-        <h2>My wallet</h2><i class="fa-solid fa-wallet fa-2x" style="color: #FEE996;"></i>
-        <br/>
-        <br/>
-        <h3><%=user.wallet%> € </h3>
-        <br/>
-        <i id="add-wallet" class="fa-solid fa-plus fa-lg" style="color: #FEE996;"></i>
-        <br/>
-        <br/>
-        <div class="message_success"></div>
+<!-- Modal Success -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title" id="successModalLabel">Payment executed succesfully</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <i class="fas fa-check-circle fa-5x text-success"></i>
+          <p class="mt-3"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <div class="modal">
-        <div class="modal-content">
-            <span id="close_modal" class="close">&times;</span>
-            <div class="container_wallet preload">
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="preload">
                 <div class="creditcard">
                     <div class="front">
                         <div id="ccsingle"></div>
@@ -128,131 +121,160 @@ function formatDateTime(inputDate) {
                     </div>
                 </div>
             </div>
-            <div class="form-container">
-                <div class="field-container">
-                    <label for="name">Name</label>
-                    <input id="name" maxlength="20" type="text">
-                    <div class="name error"></div>
+        </div>
+        <div class="col-md-6" id="credit_input">
+            <div class="container mx-auto">
+                <div class="row mb-3">
+                    <div class="col-12 col-sm-12 col-md-12">
+                        <label class="labels" for="name">Name On Card</label>
+                        <input class="form-control" id="name" maxlength="20" type="text">
+                        <div class="invalid-feedback" id="invalid_name"></div>
+                    </div>
                 </div>
-                <div class="field-container">
-                    <label for="cardnumber">Card Number</label><span id="generatecard">generate random</span>
-                    <input id="cardnumber" type="text" pattern="[0-9]*" inputmode="numeric">
-                    <div class="card error"></div>
-                    <svg id="ccicon" class="ccicon" width="750" height="471" viewBox="0 0 750 471" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                <div class="row mb-3">
+                    <div class="col-12 col-md-12">
+                        <label for="cardnumber" class="labels">Card Number</label><span id="generatecard">generate random</span>
+                        <input class="form-control" id="cardnumber" type="text" pattern="[0-9]*" inputmode="numeric">
+                        <div class="invalid-feedback" id="invalid_card"></div>
+                        <svg id="ccicon" class="ccicon" width="750" height="471" viewBox="0 0 750 471" version="1.1" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink">
-        
-                    </svg>
+                        </svg>
+                    </div>
                 </div>
-                <div class="field-container">
-                    <label for="expirationdate">Expiration (mm/yy)</label>
-                    <input id="expirationdate" type="text" pattern="[0-9]*" inputmode="numeric">
-                    <div class="expirationdate error"></div>
+                <div class="row mb-3">
+                    <div class="col-12  col-md-3">
+                        <label class="labels" for="expirationdate">Exp</label>
+                        <input class="form-control" id="expirationdate" type="text" pattern="[0-9]*" inputmode="numeric">
+                        <div class="invalid-feedback" id="invalid_expiration_date"></div>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <label class="labels" for="securitycode">CVC</label>
+                        <input class="form-control" id="securitycode" type="text" pattern="[0-9]*" inputmode="numeric">
+                        <div class="invalid-feedback" id="invalid_cvc"></div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="labels" for="securitycode">Amount</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text">€</span>
+                            </div>
+                            <input id="amount" type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                            <div class="input-group-append">
+                                <span class="input-group-text">.00</span>
+                            </div>
+                            <div class="invalid-feedback" id="invalid_amount"></div>
+                        </div>     
+                    </div>
                 </div>
-                <div class="field-container">
-                    <label for="securitycode">Security Code</label>
-                    <input id="securitycode" type="text" pattern="[0-9]*" inputmode="numeric">
-                    <div class="securitycode error"></div>
+                <div class="mt-4 text-center">  
+                    <button type="submit" class="btn btn-primary" id="pay_button">Pay</button>        
+                </div>  
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-12" id="wallet-info">
+                <h4 class="float-end">Total: <%=user.wallet%> €</h4>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="table-responsive" style="max-height: 400px;">
+                    <table class="table table-striped" id="transaction-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if(user.transactions.length > 0) { %>
+                                <% user.transactions.reverse(); %>
+                                <% user.transactions.forEach(function(transaction) { %>
+                                    <tr>
+                                        <td><%= user.formatDateTime(transaction.date) %></td>
+                                        <td><%= transaction.description %></td>
+                                        <td><%= transaction.sign %> <%=transaction.amount %> €</td>
+                                    </tr>
+                                <% })} %>
+                        </tbody>
+                    </table>
                 </div>
-
-                <div class="field-container">
-                    <label for="amount">Amount</label>
-                    <input id="amount" type="text" pattern="[0-9]*" inputmode="numeric">          
-                    <div class="amount error"></div>      
-                </div>
-                
-                    <button type="submit" class="btn" id="pay_button" style="margin-top:55px">Pay</button>        
-                
             </div>
         </div>
     </div>
-    <div id="wallet-transaction">
-            <div class="tableContainer">
-                <table id="transaction-table" class="table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Description</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <% if(user.transactions.length > 0) { %>
-                    <% user.transactions.reverse(); %>
-                    <% user.transactions.forEach(function(transaction) { %>
-                        <tr>
-                            <td><%= user.formatDateTime(transaction.date) %></td>
-                            <td><%= transaction.description %></td>
-                            <td><%= transaction.sign; %> <%=transaction.amount %> €</td>
-                        </tr>
-                    <% })} %>
-                    </tbody>
-                </table>
-            </div>
-    </div>
-    
 </div>
 
 
+
 <script src='https://cdnjs.cloudflare.com/ajax/libs/imask/3.4.0/imask.min.js'></script>
-<script src="/wallet.js"></script>
+<script src="/js/wallet.js"></script>
+
 <script>
 
-$('#add-wallet').hover(function(){
-    $(this).css('cursor', 'pointer');
-});
+    $('#pay_button').click(function(){
 
-$('#add-wallet').click(function(){
-    $('.modal').css('display', 'block');
-});
+        const name = $('#name').val();
+        const cardnumber = $('#cardnumber').val();
+        const expirationdate = $('#expirationdate').val();
+        const securitycode = $('#securitycode').val();
+        const amount = $('#amount').val();
 
-$('#close_modal').click(function(){
-    $('.modal').css('display', 'none');
-});
+        var error = false;
 
-$('#pay_button').click(function(){
-    const name = $('#name').val();
-    const cardnumber = $('#cardnumber').val();
-    const expirationdate = $('#expirationdate').val();
-    const securitycode = $('#securitycode').val();
-    const amount = $('#amount').val();
+        if(name == ''){
+            $('#invalid_name').text('Name is required');
+            $('#name').addClass('is-invalid');
+            error = true;
+        } else {
+            $('#invalid_name').text('');
+            $('#name').removeClass('is-invalid').addClass('is-valid');
+        }
 
-    var error = false;
+        if(cardnumber == ''){
+            $('#invalid_card').text('Card number is required');
+            $('#cardnumber').addClass('is-invalid');
+            error = true;
+        } else {
+            $('#invalid_card').text('');
+            $('#cardnumber').removeClass('is-invalid').addClass('is-valid');
+        }
 
-    if(name == '') {
-        $('#name').css('border', '1px solid red');
-        $('.name').html('Please enter your name');
-        error = true;
-    }
+        if(typeof expirationdate === 'undefined' || expirationdate == '') {
+            $('#invalid_expiration_date').text('Expiration date is required');
+            $('#expirationdate').addClass('is-invalid');
+            error = true;
+        } else {
+            $('#invalid_expiration_date').text('');
+            $('#expirationdate').removeClass('is-invalid').addClass('is-valid');
+        }
 
-    if(cardnumber == '') {
-        $('#cardnumber').css('border', '1px solid red');
-        $('.card').html('Please enter your card number');
-        error = true;
-    }
+        if(securitycode == '') {
+            $('#invalid_cvc').text('CVC is required');
+            $('#securitycode').addClass('is-invalid');
+            error = true;
+        } else {
+            $('#invalid_cvc').text('');
+            $('#securitycode').removeClass('is-invalid').addClass('is-valid');
+        }
 
-    if(expirationdate == '') {
-        $('#expirationdate').css('border', '1px solid red');
-        $('.expirationdate').html('Please enter your expiration date');
-        error = true;
-    }
+        if(amount == '') {
+            $('#invalid_amount').text('Amount is required');
+            $('#amount').addClass('is-invalid');
+            error = true;
+        } else {
+            $('#invalid_amount').text('');
+            $('#amount').removeClass('is-invalid').addClass('is-valid');
+        }
 
-    if(securitycode == '') {
-        $('#securitycode').css('border', '1px solid red');
-        $('.securitycode').html('Please enter your security code');
-        error = true;
-    }
+        if(error) {
+            return;
+        }
 
-    if(amount == '') {
-        $('#amount').css('border', '1px solid red');
-        $('.amount').html('Please enter the amount');
-        error = true;
-    }
+        var data = {};
+        data.amount = amount;
+        data.card_number = cardnumber;
 
-    var data = {};
-    data.amount = amount;
-    data.card_number = cardnumber;
-
-    if(!error) {
         $.ajax({
             url: '/user/<%=user._id%>/wallet',
             type: 'POST',
@@ -260,29 +282,19 @@ $('#pay_button').click(function(){
             data: JSON.stringify(data),
             success: function(data) {
                 console.log(JSON.parse(JSON.stringify(data)));
-                $('.modal').css('display', 'none');
-                $('#wallet-info h3').html(data.curr_wallet + ' €');
-                $('#transaction-table').prepend('<tr><td>' + formatDateTime(data.transaction.date) + '</td> <td>'+ data.transaction.description + '</td> <td>' + data.transaction.sign + data.transaction.amount + ' €</td></tr>');
-                $('.message_success').html('Payment executed successfully');
+
+               // $('#wallet-info h3').html(data.curr_wallet + ' €');
+
+               $('#successModal').modal('show').on('hidden.bs.modal', function (e) {
+                   $('#transaction-table').prepend('<tr><td>' + formatDateTime(data.transaction.date) + '</td> <td>'+ data.transaction.description + '</td> <td>' + data.transaction.sign + data.transaction.amount + ' €</td></tr>');
+                   $('#wallet-info h4').html('Total: '+data.curr_wallet + ' €')
+            });
                 //$('#wallet-transaction').html('Transaction: ' + amount + ' €');
             }
         });
-        
-    }
-});
 
-function formatDateTime(inputDate) {
-    const date = new Date(inputDate);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    const seconds = date.getSeconds().toString().padStart(2, '0');
 
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
-
+    });
 </script>
 
 <%- include('partials/footer'); -%>
