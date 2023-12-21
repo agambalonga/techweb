@@ -86,6 +86,8 @@ cd events-booking
 npm install
 ```
 
+Change value of property MONGO_ATLAS_URL located in .env file with your MongoDB connection string.
+
 Once the dependencies are installed, you can start the server using the following command
 
 ```bash
